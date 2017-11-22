@@ -107,7 +107,7 @@ public class BD
 		try 
 		{
 			statement.executeUpdate("create table if not exists carrera " +
-				"(fecha date, duracion double, calorias integer, km double, elevacion double, ritmo double, usuario string, primary key (fecha))");
+				"(fecha date, duracion double, calorias integer, km double, ritmo double, usuario string, primary key (fecha))");
 		} 
 		catch (SQLException e) 
 		{
@@ -200,11 +200,11 @@ public class BD
 	 * @param usuario
 	 * @throws ClassNotFoundException
 	 */
-	public static void registrarCarrera (Date fecha, double duracion, int calorias,  double km, double elevacion, double ritmo, String usuario) throws ClassNotFoundException
+	public static void registrarCarrera (Date fecha, double duracion, int calorias,  double km, double ritmo, String usuario) throws ClassNotFoundException
 	{
 		try
 		{	
-			statement.executeUpdate("insert into carrera values("+fecha+", "+duracion+", "+calorias+", "+km+", "+elevacion+", "+ritmo+", '"+usuario+"')");
+			statement.executeUpdate("insert into carrera values("+fecha+", "+duracion+", "+calorias+", "+km+", "+ritmo+", '"+usuario+"')");
 		}	 
 		catch(SQLException e)
 		{
