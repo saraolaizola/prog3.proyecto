@@ -90,7 +90,7 @@ public class BD
 		try 
 		{
 			statement.executeUpdate("create table if not exists entrenamiento " +
-				"(fecha date, durancion double,  calorias integer, codigo string, usuario string, primary key (fecha))");
+				"(fecha string, durancion real,  calorias integer, codigo string, usuario string, primary key (fecha))");
 		} 
 		catch (SQLException e) 
 		{
@@ -107,7 +107,7 @@ public class BD
 		try 
 		{
 			statement.executeUpdate("create table if not exists carrera " +
-				"(fecha date, duracion real, calorias integer, km real, ritmo real, usuario string, primary key (fecha))");
+				"(fecha string, duracion real, calorias integer, km real, ritmo real, usuario string, primary key (fecha))");
 		} 
 		catch (SQLException e) 
 		{

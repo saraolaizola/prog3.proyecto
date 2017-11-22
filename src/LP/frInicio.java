@@ -2,6 +2,7 @@ package LP;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
 import LD.BD;
 
 public class frInicio extends JFrame
@@ -95,14 +97,31 @@ public class frInicio extends JFrame
 	}
 	
 	 
+	/**
+	 * Launch the application.
+	 */
 	public static void main(String[] args) 
 	{
-		// Crea y visibiliza la ventana con el coche
-		frInicio miVentana = new frInicio();
-		miVentana.setVisible( true );
-		
-		
-		
-		
+		EventQueue.invokeLater(new Runnable() 
+		{
+			public void run() 
+			{
+				try 
+				{
+					BD.initBD("RUNAPP");
+					BD.crearTablaCarrera();
+					BD.crearTablaEntrenamiento();
+					BD.crearTablaOpcEntrenamiento();
+					BD.crearTablaUsuarios();
+					
+					frInicio frame = new frInicio ();
+					frame.setVisible(true);
+				} 
+				catch (Exception e) 
+				{
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 }

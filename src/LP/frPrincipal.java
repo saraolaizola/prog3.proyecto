@@ -22,8 +22,7 @@ public class frPrincipal extends JFrame
 		pPrincipal = new JPanel();
 		JPanel pMenu = new JPanel();
 		JButton bRegistro = new JButton( "Registro" );
-		JButton bCarrera = new JButton( "Carrera" );
-		JButton bEntrenamiento = new JButton( "Entrenamiento" );
+		JButton bActividad = new JButton( "Actividad" );
 		JButton bPerfil = new JButton( "Perfil" );
 		
 		// Formato y layouts
@@ -33,8 +32,7 @@ public class frPrincipal extends JFrame
 		// Añadido de componentes a contenedores
 		add( pPrincipal, BorderLayout.CENTER );
 		pMenu.add( bRegistro );
-		pMenu.add( bCarrera );
-		pMenu.add( bEntrenamiento );
+		pMenu.add( bActividad );
 		pMenu.add( bPerfil );
 		add( pMenu, BorderLayout.SOUTH );
 		
@@ -50,14 +48,7 @@ public class frPrincipal extends JFrame
 				
 			}
 		});
-		bCarrera.addActionListener( new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) 
-			{
-				
-			}
-		});
-		bEntrenamiento.addActionListener( new ActionListener() {
+		bActividad.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
