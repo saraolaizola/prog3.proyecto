@@ -40,6 +40,7 @@ public class frPrincipal extends JFrame
 		
 		// Formato de ventana
 		setSize( 750, 1334 );
+		setVisible(true);
 		
 		// Escuchadores de botones
 		bRegistro.addActionListener( new ActionListener() {

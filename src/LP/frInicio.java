@@ -100,5 +100,9 @@ public class frInicio extends JFrame
 		// Crea y visibiliza la ventana con el coche
 		frInicio miVentana = new frInicio();
 		miVentana.setVisible( true );
+		
+		
+		
+		
 	}
 }
