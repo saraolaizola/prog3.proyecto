@@ -16,19 +16,23 @@ public class clsActividad
 		this.calorias = calorias;
 	}
 
-	public double getDuracion() {
+	public double getDuracion() 
+	{
 		return duracion;
 	}
 
-	public void setDuracion(double duracion) {
+	public void setDuracion(double duracion) 
+	{
 		this.duracion = duracion;
 	}
 
-	public int getCalorias() {
+	public int getCalorias() 
+	{
 		return calorias;
 	}
 
-	public void setCalorias(int calorias) {
+	public void setCalorias(int calorias) 
+	{
 		this.calorias = calorias;
 	}
 

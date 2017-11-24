@@ -124,7 +124,7 @@ public class BD
 		try 
 		{
 			statement.executeUpdate("create table if not exists opcionentrenamiento " +
-				"(codigo string, nombre string, calxmin real, primary key (codigo))");
+				"(codigo string, nombre string, nivel string, calxmin integer, duracion real, primary key (codigo))");
 		} 
 		catch (SQLException e) 
 		{
@@ -240,11 +240,11 @@ public class BD
 	 * @param calxmin
 	 * @throws clsOpcEntrenamientoRepetida 
 	 */
-	public static void registrarOpcEntrenamiento (String codigo, String nombre, double calxmin) throws clsOpcEntrenamientoRepetida
+	public static void registrarOpcEntrenamiento (String codigo, String nombre, LN.clsOpcEntrenamiento.Nivel nivel, int calxmin, double duracion) throws clsOpcEntrenamientoRepetida
 	{
 		try
 		{	
-			statement.executeUpdate("insert into opcionentrenamiento values('"+codigo+"','"+nombre+"',"+calxmin+")");
+			statement.executeUpdate("insert into opcionentrenamiento values('"+codigo+"','"+nombre+"','"+nivel+"',"+calxmin+","+duracion+")");
 		}	 
 		catch(SQLException e)
 		{
