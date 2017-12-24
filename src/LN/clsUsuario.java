@@ -25,6 +25,11 @@ public class clsUsuario
 		this.sexo = sexo;
 	}
 
+	public clsUsuario()
+	{
+	
+	}
+	
 	public String getNombre() {
 		return nombre;
 	}

@@ -3,7 +3,9 @@ package COMUN;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
+import javax.swing.tree.DefaultTreeModel;
 
+import LN.clsUsuario;
 import LP.frCarrera;
 import LP.frDetalleCarrera;
 import LP.frDetalleEntrena;
@@ -31,20 +33,18 @@ public class clsVentanas
 	frDetalleCarrera detalleC;
 	frDetalleEntrena detalleE;
 	
-	public clsVentanas(String usuario)
+	public clsVentanas(clsUsuario user)
 	{
 		this.usuario=usuario;
-		carrera = new frCarrera();
+		carrera = new frCarrera(user);
 		entrena = new frEntrena();
 		elegir = new frElegirEntrena();
-		lista = new frLista(usuario);
-		perfil = new frPerfil();
-		principal = new frPrincipal(usuario);
+		lista = new frLista(user);
+		perfil = new frPerfil(user);
+		principal = new frPrincipal(user);
 		listaC = new frListaCarrera();
 		listaE = new frListaEntrena();
 	}
-	
-	
 	
 	public void VentanaSiguiente(JFrame ventanaActual,int num, String variable)
 	{
@@ -119,4 +119,23 @@ public class clsVentanas
 	}
 	
 	
+	public void OpcionMenu (JFrame ventanaActual,int opcion)
+	{
+		switch (opcion)
+		{
+			case 1:
+				lista.setVisible(true);
+				break;
+			case 2:
+				carrera.setVisible(true);
+				break;
+			case 3:
+				entrena.setVisible(true);
+				break;
+			case 4:
+				perfil.setVisible(true);
+				break;
+		}
+		ventanaActual.dispose();
+	}
 }

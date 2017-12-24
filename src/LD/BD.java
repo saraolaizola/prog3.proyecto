@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 import COMUN.clsOpcEntrenamientoRepetida;
 import COMUN.clsUsuarioRepetido;
+import LN.clsUsuario;
 
 public class BD 
 {
@@ -169,7 +170,8 @@ public class BD
 	{
 		try
 		{
-			ResultSet rs = statement.executeQuery("select * from usuario");
+			statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery("select * from usuarios");
 		    	
 			while(rs.next())
 			{
@@ -189,6 +191,34 @@ public class BD
 		return false;
 	}
 	 
+	public static clsUsuario getUser (String usuario)
+	{
+		clsUsuario user = new clsUsuario();
+		try
+		{
+			statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery("select * from usuarios");
+			while(rs.next())
+			{
+				if (rs.getString("usuario").equals(usuario))
+		       	{
+					user.setUsuario(usuario);
+					user.setContraseña(rs.getString("contraseña"));
+					user.setNombre(rs.getString("nombre"));
+					user.setApellido(rs.getString("apellido"));
+					user.setSexo(rs.getString("sexo"));
+					user.setAltura(rs.getDouble("altura"));
+					user.setPeso(rs.getDouble("peso"));
+		       	}
+			}
+		}	 
+		catch(SQLException e)
+		{
+			logger.log(Level.WARNING, e.getMessage());
+		}
+		return user;
+	}
+	
 	/**
 	 * Guarda los datos de la carrera en la tabla Carrera
 	 * @param fecha

@@ -11,11 +11,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import LN.clsUsuario;
+
 public class frLista extends JFrame 
 {
 	JPanel pPrincipal;   
 	
-	public frLista(String usuario) 
+	public frLista(clsUsuario user) 
 	{
 		// Liberación de la ventana por defecto al cerrar
 		setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );

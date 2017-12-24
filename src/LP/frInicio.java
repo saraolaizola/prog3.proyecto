@@ -5,7 +5,9 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Logger;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,6 +16,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import LD.BD;
+import LN.clsUsuario;
 
 public class frInicio extends JFrame
 {
@@ -28,6 +31,12 @@ public class frInicio extends JFrame
 		pPrincipal = new JPanel();
 		JPanel pCentral = new JPanel();
 		
+		pPrincipal.setLayout( null );
+		pPrincipal.setBackground( Color.white );
+		getContentPane().add( pPrincipal);
+		getContentPane().add (pCentral, BorderLayout.CENTER);
+		pCentral.setLayout(new BoxLayout(pCentral, BoxLayout.Y_AXIS));
+		
 		JTextField txtUsuario = new JTextField();
 		JPasswordField passwordField = new JPasswordField();
 		
@@ -37,14 +46,9 @@ public class frInicio extends JFrame
 		
 		JButton bIniciar = new JButton( "Iniciar sesión" );
 		JButton bRegistrar = new JButton( "Registrarme" );
-		
-		// Formato y layouts
-		pPrincipal.setLayout( null );
-		pPrincipal.setBackground( Color.white );
-		
+	
 		// Añadido de componentes a contenedores
 		
-		add( pPrincipal, BorderLayout.CENTER );
 		pCentral.add( lblInicia );
 		pCentral.add( lblUsuario );
 		pCentral.add( txtUsuario );
@@ -52,10 +56,9 @@ public class frInicio extends JFrame
 		pCentral.add( passwordField );
 		pCentral.add( bIniciar );
 		pCentral.add( bRegistrar );
-		add (pCentral, BorderLayout.CENTER);
 		
 		// Formato de ventana
-		setSize( 750, 1334 );
+		setSize(375,667);
 		
 		// Escuchadores de botones
 		bIniciar.addActionListener( new ActionListener() {
@@ -70,13 +73,14 @@ public class frInicio extends JFrame
 				{
 					if (BD.inicioSesion(usuario, contrasenya))
 					{
-						frPrincipal ventana = new frPrincipal (usuario);
+						clsUsuario user = BD.getUser(usuario);
+						frPrincipal ventana = new frPrincipal (user);
 						ventana.setVisible(true);
 						dispose();
 					}
 					else
 					{
-						//JOptionPane ERROR
+						System.out.println("no");
 					}
 				} 
 				catch (ClassNotFoundException e1) 
