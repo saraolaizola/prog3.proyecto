@@ -5,34 +5,60 @@ import LD.BD;;
 
 public class clsOpcEntrenamiento 
 {
-	private String codigo, nombre, duracion;
+	private String codigo, nombre, duracion, nivel;
 	private double calxmin;	
 	public enum Nivel {Principiante, Intermedio, Experto}
 	
 	
-	public clsOpcEntrenamiento(String codigo, String nombre, String duracion,double calxmin) 
+	public clsOpcEntrenamiento(String codigo, String nombre, String nivel, String duracion,double calxmin) 
 	{
 		super();
 		this.codigo = codigo;
 		this.nombre = nombre;
 		this.duracion = duracion;
+		this.nivel = nivel;
 		this.calxmin = calxmin;
 	}
 
-	public void meterOpciones()
-	{
-		try 
-		{
-			BD.registrarOpcEntrenamiento("0001", "Abdominales", Nivel.Principiante, 10, "5:00");
-			//https://www.youtube.com/watch?v=1919eTCoESo&list=PL6070A835F843D79F
-			BD.registrarOpcEntrenamiento("002", "Cardio quema grasas", Nivel.Intermedio, 20, "8:00");
-			//https://www.youtube.com/watch?v=fcN37TxBE_s
-			BD.registrarOpcEntrenamiento("003", "Cardio Kick Boxing", Nivel.Experto, 15, "9:00");
-			//https://www.youtube.com/watch?v=Vve4BVTZ0QU
-		} 
-		catch (clsOpcEntrenamientoRepetida e) 
-		{
-			e.printStackTrace();
-		}
+	public String getCodigo() {
+		return codigo;
 	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getDuracion() {
+		return duracion;
+	}
+
+	public void setDuracion(String duracion) {
+		this.duracion = duracion;
+	}
+
+	public String getNivel() {
+		return nivel;
+	}
+
+	public void setNivel(String nivel) {
+		this.nivel = nivel;
+	}
+
+	public double getCalxmin() {
+		return calxmin;
+	}
+
+	public void setCalxmin(double calxmin) {
+		this.calxmin = calxmin;
+	}
+	
+	
 }

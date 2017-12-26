@@ -117,6 +117,7 @@ public class frInicio extends JFrame
 					BD.crearTablaEntrenamiento();
 					BD.crearTablaOpcEntrenamiento();
 					BD.crearTablaUsuarios();
+					BD.meterOpciones();
 					
 					frInicio frame = new frInicio ();
 					frame.setVisible(true);

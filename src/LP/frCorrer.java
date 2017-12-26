@@ -25,7 +25,7 @@ public class frCorrer extends JFrame implements Runnable
 {
 	private static final long serialVersionUID = 1L;
 	
-	private JPanel pPrincipal, pSuperior, pCentral, pTime, pRitmo, pCal, pKM;
+	private JPanel pPrincipal, pInferior, pCentral, pTime, pRitmo, pCal, pKM;
 	private JButton btnPause, btnFin;
 	private JLabel lblMapa,lblTime,lblRitmo,lblCal,lblKm,ritmo,cal,km,time;
 	private Integer minutos=0 , segundos=0, milesimas=0, calorias=0, m=0, s=0;
@@ -42,7 +42,7 @@ public class frCorrer extends JFrame implements Runnable
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		pPrincipal = new JPanel();
-		pSuperior = new JPanel();
+		pInferior = new JPanel();
 		pCentral = new JPanel();
 		pRitmo = new JPanel();
 		pTime = new JPanel();
@@ -98,7 +98,7 @@ public class frCorrer extends JFrame implements Runnable
 		lblMapa.setIcon(new ImageIcon(frCorrer.class.getResource("/img/map.jpeg")));
 		lblMapa.setHorizontalAlignment(SwingConstants.CENTER);
 		pCentral.add(lblMapa, BorderLayout.NORTH);
-		getContentPane().add(pSuperior, BorderLayout.SOUTH);
+		getContentPane().add(pInferior, BorderLayout.SOUTH);
 		
 		btnPause = new JButton("");
 		btnPause.setIcon(new ImageIcon(frCorrer.class.getResource("/img/pause.png")));
@@ -114,10 +114,16 @@ public class frCorrer extends JFrame implements Runnable
 		btnFin.setBorderPainted(false);     // No pintar el borde
 		btnFin.setBorder(null);             // No considerar el borde 
 		
-		pSuperior.add(btnPause);
-		pSuperior.add(btnFin);
+		pInferior.add(btnPause);
+		pInferior.add(btnFin);
 		
 		setSize(375,667);
+		
+		cronometroActivo = true;
+		cronometroPausado = false;
+		hilo = new Thread();
+		hilo.start();
+		setVisible(true);
 		
 		btnFin.addActionListener( new ActionListener() 
 		{
@@ -224,12 +230,4 @@ public class frCorrer extends JFrame implements Runnable
         	km.setText("0");
         }
     }
-	
-	public void main(String[] args) 
-	{
-		cronometroActivo = true;
-		cronometroPausado = false;
-		hilo = new Thread();
-		hilo.start();
-	}
 }

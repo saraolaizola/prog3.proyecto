@@ -18,6 +18,8 @@ import LN.clsUsuario;
 
 public class frCarrera extends JFrame 
 {
+	private static final long serialVersionUID = 1L;
+	
 	JPanel pPrincipal, pMenu, pCentral;
 	JButton bVolver, bEmpezar;
 	JLabel lblMapa;
@@ -67,7 +69,8 @@ public class frCarrera extends JFrame
 				setSize(375,667);
 				
 				
-				bVolver.addActionListener( new ActionListener() {
+				bVolver.addActionListener( new ActionListener() 
+				{
 					@Override
 					public void actionPerformed(ActionEvent e) 
 					{
@@ -76,12 +79,12 @@ public class frCarrera extends JFrame
 						dispose();
 					}
 				});
-				bEmpezar.addActionListener( new ActionListener() {
+				bEmpezar.addActionListener( new ActionListener() 
+				{
 					@Override
 					public void actionPerformed(ActionEvent e) 
 					{
 						frCorrer ventana = new frCorrer (user);
-						ventana.setVisible(true);
 						dispose();
 					}
 				});

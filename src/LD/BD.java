@@ -6,11 +6,15 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import COMUN.clsOpcEntrenamientoRepetida;
 import COMUN.clsUsuarioRepetido;
+import LN.clsEntrenamiento;
+import LN.clsOpcEntrenamiento;
 import LN.clsUsuario;
 
 public class BD 
@@ -18,6 +22,7 @@ public class BD
 	private static Logger logger = Logger.getLogger( BD.class.getName() );
 	private static Connection connection = null;
 	private static Statement statement = null;
+	private static ArrayList <clsOpcEntrenamiento> lista;
 	
 	//init BD y crear tabla juntos 
 	
@@ -273,7 +278,7 @@ public class BD
 	 * @param calxmin
 	 * @throws clsOpcEntrenamientoRepetida 
 	 */
-	public static void registrarOpcEntrenamiento (String codigo, String nombre, LN.clsOpcEntrenamiento.Nivel nivel, int calxmin, String duracion) throws clsOpcEntrenamientoRepetida
+	public static void registrarOpcEntrenamiento (String codigo, String nombre, String nivel, int calxmin, String duracion) throws clsOpcEntrenamientoRepetida
 	{
 		try
 		{	
@@ -284,6 +289,62 @@ public class BD
 			logger.log(Level.WARNING, e.getMessage());
 			throw new clsOpcEntrenamientoRepetida();
 		} 
+	}
+	
+	public static void meterOpciones()
+	{
+		try 
+		{
+			BD.registrarOpcEntrenamiento("001", "Abdominales", "Principiante", 10, "5");
+			//https://www.youtube.com/watch?v=1919eTCoESo&list=PL6070A835F843D79F
+			BD.registrarOpcEntrenamiento("002", "Cardio quema grasas", "Intermedio", 20, "8");
+			//https://www.youtube.com/watch?v=fcN37TxBE_s
+			BD.registrarOpcEntrenamiento("003", "Cardio Kick Boxing", "Experto", 15, "9");
+			//https://www.youtube.com/watch?v=Vve4BVTZ0QU
+		} 
+		catch (clsOpcEntrenamientoRepetida e) 
+		{
+		}
+	}
+	
+	
+	public static ArrayList <clsOpcEntrenamiento> getLista ()
+	{
+		lista = new ArrayList<clsOpcEntrenamiento>();
+		try
+		{
+			statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery("select * from opcionentrenamiento");
+			while(rs.next())
+			{	
+				String codigo = rs.getString("codigo");
+				String nombre = rs.getString("nombre");
+				String nivel = rs.getString("nivel");
+				String duracion = rs.getString("duracion");
+				Double calxmin = rs.getDouble("calxmin");
+				clsOpcEntrenamiento entrenamiento = new clsOpcEntrenamiento(codigo, nombre, nivel, duracion, calxmin);
+				lista.add(entrenamiento);
+			}
+		}	 
+		catch(SQLException e)
+		{
+			logger.log(Level.WARNING, e.getMessage());
+		}
+		return lista;
+	}
+	
+	public static Vector lista()
+	{
+		try {
+			statement = connection.createStatement();
+			Vector lista = (Vector) statement.executeQuery("select * from opcionentrenamiento");
+			return lista;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		
 	}
 	
 }
