@@ -34,6 +34,7 @@ public class frCorrer extends JFrame implements Runnable
 	private static Date d; 
 	
 	boolean cronometroActivo;
+	boolean cronometroPausado;
 	Thread hilo;
 	
 	public frCorrer(clsUsuario user) 
@@ -90,6 +91,8 @@ public class frCorrer extends JFrame implements Runnable
 		time.setHorizontalAlignment(SwingConstants.CENTER);
 		pTime.add(lblTime);
 		pTime.add(time);
+
+        d = new Date();
 		
 		lblMapa = new JLabel();
 		lblMapa.setIcon(new ImageIcon(frCorrer.class.getResource("/img/map.jpeg")));
@@ -141,10 +144,17 @@ public class frCorrer extends JFrame implements Runnable
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-				cronometroActivo = true;
-		        hilo = new Thread();
-		        hilo.start();
-		        d = new Date();
+		        if (cronometroPausado)
+		        {
+		        	cronometroPausado = false;
+		        	btnPause.setIcon(new ImageIcon(frCorrer.class.getResource("/img/pause.png")));
+		        }
+		        else 
+		        {
+		        	cronometroPausado = true;
+		        	btnPause.setIcon(new ImageIcon(frCorrer.class.getResource("/img/play.png")));
+		        }
+				
 			}
 		});
 	}
@@ -160,47 +170,50 @@ public class frCorrer extends JFrame implements Runnable
         {
             while( cronometroActivo )
             {
-                Thread.sleep( 4 );
-                milesimas += 4;
-
-                if( milesimas == 1000 )
+                while (!cronometroPausado)
                 {
-                    milesimas = 0;
-                    segundos += 1;
-                   
-                    if( segundos == 60 )
+                	Thread.sleep( 4 );
+                    milesimas += 4;
+
+                    if( milesimas == 1000 )
                     {
-                        segundos = 0;
-                        minutos++;
-                        calorias=calorias+7;
-                        m = rn.nextInt(5)+2;
-                        s = rn.nextInt(100);
-                        kilometros=minutos/m;
+                        milesimas = 0;
+                        segundos += 1;
+                       
+                        if( segundos == 60 )
+                        {
+                            segundos = 0;
+                            minutos++;
+                            calorias=calorias+7;
+                            m = rn.nextInt(5)+2;
+                            s = rn.nextInt(100);
+                            kilometros=minutos/m;
+                        }
                     }
-                }
 
-                if( minutos < 10 ) 
-                {
-                	min = "0" + minutos;
-                }
-                else 
-                {
-                	min = minutos.toString();
-                }
-                
-                if( segundos < 10 ) 
-                {
-                	seg = "0" + segundos;
-                }
-                else 
-                {
-                	seg = segundos.toString();
-                }
-                
-                time.setText(min + ":" + seg);
-                ritmo.setText(m +"'"+s+"''");
-                cal.setText(calorias.toString());
-                km.setText(Double.toString(kilometros));        
+                    if( minutos < 10 ) 
+                    {
+                    	min = "0" + minutos;
+                    }
+                    else 
+                    {
+                    	min = minutos.toString();
+                    }
+                    
+                    if( segundos < 10 ) 
+                    {
+                    	seg = "0" + segundos;
+                    }
+                    else 
+                    {
+                    	seg = segundos.toString();
+                    }
+                    
+                    time.setText(min + ":" + seg);
+                    ritmo.setText(m +"'"+s+"''");
+                    cal.setText(calorias.toString());
+                    km.setText(Double.toString(kilometros)); 
+                }       
             }
         }
         catch(Exception e)
@@ -211,4 +224,12 @@ public class frCorrer extends JFrame implements Runnable
         	km.setText("0");
         }
     }
+	
+	public void main(String[] args) 
+	{
+		cronometroActivo = true;
+		cronometroPausado = false;
+		hilo = new Thread();
+		hilo.start();
+	}
 }
