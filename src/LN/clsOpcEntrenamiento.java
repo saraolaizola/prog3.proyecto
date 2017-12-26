@@ -5,14 +5,12 @@ import LD.BD;;
 
 public class clsOpcEntrenamiento 
 {
-	private String codigo;
-	private String nombre;
-	private int duracion;
+	private String codigo, nombre, duracion;
 	private double calxmin;	
 	public enum Nivel {Principiante, Intermedio, Experto}
 	
 	
-	public clsOpcEntrenamiento(String codigo, String nombre, int duracion,double calxmin) 
+	public clsOpcEntrenamiento(String codigo, String nombre, String duracion,double calxmin) 
 	{
 		super();
 		this.codigo = codigo;
@@ -21,17 +19,15 @@ public class clsOpcEntrenamiento
 		this.calxmin = calxmin;
 	}
 
-	
-
 	public void meterOpciones()
 	{
 		try 
 		{
-			BD.registrarOpcEntrenamiento("0001", "Abdominales", Nivel.Principiante, 5, 10);
+			BD.registrarOpcEntrenamiento("0001", "Abdominales", Nivel.Principiante, 10, "5:00");
 			//https://www.youtube.com/watch?v=1919eTCoESo&list=PL6070A835F843D79F
-			BD.registrarOpcEntrenamiento("002", "Cardio quema grasas", Nivel.Intermedio, 8, 30);
+			BD.registrarOpcEntrenamiento("002", "Cardio quema grasas", Nivel.Intermedio, 20, "8:00");
 			//https://www.youtube.com/watch?v=fcN37TxBE_s
-			BD.registrarOpcEntrenamiento("003", "Cardio Kick Boxing", Nivel.Experto, 9, 20);
+			BD.registrarOpcEntrenamiento("003", "Cardio Kick Boxing", Nivel.Experto, 15, "9:00");
 			//https://www.youtube.com/watch?v=Vve4BVTZ0QU
 		} 
 		catch (clsOpcEntrenamientoRepetida e) 
@@ -39,8 +35,4 @@ public class clsOpcEntrenamiento
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
 }

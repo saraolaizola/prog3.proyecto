@@ -80,7 +80,7 @@ public class frCarrera extends JFrame
 					@Override
 					public void actionPerformed(ActionEvent e) 
 					{
-						frCorrer ventana = new frCorrer ();
+						frCorrer ventana = new frCorrer (user);
 						ventana.setVisible(true);
 						dispose();
 					}

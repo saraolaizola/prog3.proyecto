@@ -28,13 +28,16 @@ public class BD
 	 */
 	public static Connection initBD( String nombreBD ) 
 	{
-		try {
+		try 
+		{
 		    Class.forName("org.sqlite.JDBC");
 		    connection = DriverManager.getConnection("jdbc:sqlite:" + nombreBD );
 			statement = connection.createStatement();
 			statement.setQueryTimeout(30);  // poner timeout 30 msg
 		    return connection;
-		} catch (ClassNotFoundException | SQLException e) {
+		} 
+		catch (ClassNotFoundException | SQLException e) 
+		{
 			return null;
 		}
 	}
@@ -91,7 +94,7 @@ public class BD
 		try 
 		{
 			statement.executeUpdate("create table if not exists entrenamiento " +
-				"(fecha string, durancion real,  calorias integer, codigo string, usuario string, primary key (fecha))");
+				"(fecha string, durancion string,  calorias integer, codigo string, usuario string, primary key (fecha))");
 		} 
 		catch (SQLException e) 
 		{
@@ -108,7 +111,7 @@ public class BD
 		try 
 		{
 			statement.executeUpdate("create table if not exists carrera " +
-				"(fecha string, duracion real, calorias integer, km real, ritmo real, usuario string, primary key (fecha))");
+				"(fecha string, duracion string, calorias integer, km real, ritmo string, usuario string, primary key (fecha))");
 		} 
 		catch (SQLException e) 
 		{
@@ -125,7 +128,7 @@ public class BD
 		try 
 		{
 			statement.executeUpdate("create table if not exists opcionentrenamiento " +
-				"(codigo string, nombre string, nivel string, calxmin integer, duracion real, primary key (codigo))");
+				"(codigo string, nombre string, nivel string, calxmin integer, duracion string, primary key (codigo))");
 		} 
 		catch (SQLException e) 
 		{
@@ -230,7 +233,7 @@ public class BD
 	 * @param usuario
 	 * @throws ClassNotFoundException
 	 */
-	public static void registrarCarrera (Date fecha, double duracion, int calorias,  double km, double ritmo, String usuario) throws ClassNotFoundException
+	public static void registrarCarrera (String fecha, String duracion, int calorias,  double km, String ritmo, String usuario) throws ClassNotFoundException
 	{
 		try
 		{	
@@ -251,7 +254,7 @@ public class BD
 	 * @param usuario
 	 * @throws ClassNotFoundException
 	 */
-	public static void registrarEntrenamiento (Date fecha, double duracion, int calorias, String codigo, String usuario) throws ClassNotFoundException
+	public static void registrarEntrenamiento (String fecha, String duracion, int calorias, String codigo, String usuario) throws ClassNotFoundException
 	{
 		try
 		{	
@@ -270,7 +273,7 @@ public class BD
 	 * @param calxmin
 	 * @throws clsOpcEntrenamientoRepetida 
 	 */
-	public static void registrarOpcEntrenamiento (String codigo, String nombre, LN.clsOpcEntrenamiento.Nivel nivel, int calxmin, double duracion) throws clsOpcEntrenamientoRepetida
+	public static void registrarOpcEntrenamiento (String codigo, String nombre, LN.clsOpcEntrenamiento.Nivel nivel, int calxmin, String duracion) throws clsOpcEntrenamientoRepetida
 	{
 		try
 		{	

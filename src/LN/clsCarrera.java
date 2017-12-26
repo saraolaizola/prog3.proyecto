@@ -5,10 +5,10 @@ import java.sql.Date;
 public class clsCarrera extends clsActividad
 {
 	private double km;
-	private double ritmo;
+	private String ritmo;
 	
 
-	public clsCarrera (Date fecha, double duracion, int calorias, double km, double ritmo) 
+	public clsCarrera (String fecha, String duracion, int calorias, double km, String ritmo) 
 	{
 		super(fecha, duracion, calorias);
 		this.km = km;
@@ -21,10 +21,10 @@ public class clsCarrera extends clsActividad
 	public void setKm(double km) {
 		this.km = km;
 	}
-	public double getRitmo() {
+	public String getRitmo() {
 		return ritmo;
 	}
-	public void setRitmo(double ritmo) {
+	public void setRitmo(String ritmo) {
 		this.ritmo = ritmo;
 	}
 	
