@@ -2,7 +2,6 @@ package LP;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,9 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
 
 import LN.clsUsuario;
 import java.awt.FlowLayout;
@@ -25,6 +22,8 @@ import java.awt.FlowLayout;
  */
 public class frLista extends JFrame 
 {
+	private static final long serialVersionUID = 1L;
+	
 	JPanel pPrincipal, pMenu, pCentral, pEntrena, pCorrer;
 	JButton bRegistro,bActividad,bPerfil, bEmpezar, bCorrer, bEntrenar;  
 	
@@ -75,6 +74,7 @@ public class frLista extends JFrame
 				
 				// Formato de ventana
 				setSize(375,667);
+				setResizable(false);
 				
 				// Escuchadores de botones
 				bRegistro.addActionListener( new ActionListener() {

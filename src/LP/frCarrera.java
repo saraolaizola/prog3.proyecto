@@ -67,6 +67,7 @@ public class frCarrera extends JFrame
 				
 				// Formato de ventana
 				setSize(375,667);
+				setResizable(false);
 				
 				
 				bVolver.addActionListener( new ActionListener() 

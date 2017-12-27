@@ -59,6 +59,7 @@ public class frInicio extends JFrame
 		
 		// Formato de ventana
 		setSize(375,667);
+		setResizable(false);
 		
 		// Escuchadores de botones
 		bIniciar.addActionListener( new ActionListener() {

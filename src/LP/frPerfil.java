@@ -84,6 +84,7 @@ public class frPerfil extends JFrame
 		
 		// Formato de ventana
 		setSize(375,667);
+		setResizable(false);
 		
 		// Escuchadores de botones
 		bRegistro.addActionListener( new ActionListener() {

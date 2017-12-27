@@ -118,6 +118,7 @@ public class frCorrer extends JFrame implements Runnable
 		pInferior.add(btnFin);
 		
 		setSize(375,667);
+		setResizable(false);
 		
 		cronometroActivo = true;
 		cronometroPausado = false;

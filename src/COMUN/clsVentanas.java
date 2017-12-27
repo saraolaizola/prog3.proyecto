@@ -37,13 +37,13 @@ public class clsVentanas
 	{
 		this.usuario=usuario;
 		carrera = new frCarrera(user);
-		entrena = new frEntrena();
-		elegir = new frElegirEntrena();
+//		entrena = new frEntrena(user);
+		elegir = new frElegirEntrena(user);
 		lista = new frLista(user);
 		perfil = new frPerfil(user);
 		principal = new frPrincipal(user);
-		listaC = new frListaCarrera();
-		listaE = new frListaEntrena();
+		listaC = new frListaCarrera(user);
+		listaE = new frListaEntrena(user);
 	}
 	
 	public void VentanaSiguiente(JFrame ventanaActual,int num, String variable)
@@ -78,12 +78,12 @@ public class clsVentanas
 					listaC.setVisible(true); break;
 				}
 			case "frListaCarrera":
-				detalleC = new frDetalleCarrera(variable);
-				detalleC.setVisible(true);
+//				detalleC = new frDetalleCarrera(variable);
+//				detalleC.setVisible(true);
 				break;
 			case "frListaEntrena":
-				detalleE = new frDetalleEntrena(variable);
-				detalleE.setVisible(true);
+//				detalleE = new frDetalleEntrena(variable);
+//				detalleE.setVisible(true);
 				break;
 		}
 		ventanaActual.dispose();

@@ -1,19 +1,16 @@
 package LD;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import COMUN.clsOpcEntrenamientoRepetida;
 import COMUN.clsUsuarioRepetido;
-import LN.clsEntrenamiento;
 import LN.clsOpcEntrenamiento;
 import LN.clsUsuario;
 
@@ -227,6 +224,33 @@ public class BD
 		return user;
 	}
 	
+	public static clsOpcEntrenamiento getEntrena (String codigo)
+	{
+		clsOpcEntrenamiento entrena = new clsOpcEntrenamiento();
+		try
+		{
+			statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery("select * from opcionentrenamiento");
+			while(rs.next())
+			{
+				if (rs.getString("codigo").equals(codigo))
+		       	{
+					entrena.setCodigo(rs.getString("codigo"));
+					entrena.setNombre(rs.getString("nombre"));
+					entrena.setNivel(rs.getString("nivel"));
+					entrena.setCalxmin(rs.getDouble("calxmin"));
+					entrena.setDuracion(rs.getString("duracion"));
+		       	}
+			}
+		}	 
+		catch(SQLException e)
+		{
+			logger.log(Level.WARNING, e.getMessage());
+		}
+		return entrena;
+	}
+	
+	
 	/**
 	 * Guarda los datos de la carrera en la tabla Carrera
 	 * @param fecha
@@ -302,8 +326,7 @@ public class BD
 			BD.registrarOpcEntrenamiento("003", "Cardio Kick Boxing", "Experto", 15, "9");
 			//https://www.youtube.com/watch?v=Vve4BVTZ0QU
 		} 
-		catch (clsOpcEntrenamientoRepetida e) 
-		{
+		catch (clsOpcEntrenamientoRepetida e){
 		}
 	}
 	

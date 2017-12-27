@@ -1,8 +1,4 @@
 package LN;
-
-import COMUN.clsOpcEntrenamientoRepetida;
-import LD.BD;;
-
 public class clsOpcEntrenamiento 
 {
 	private String codigo, nombre, duracion, nivel;
@@ -18,6 +14,11 @@ public class clsOpcEntrenamiento
 		this.duracion = duracion;
 		this.nivel = nivel;
 		this.calxmin = calxmin;
+	}
+	
+	public clsOpcEntrenamiento()
+	{
+		
 	}
 
 	public String getCodigo() {

@@ -27,6 +27,7 @@ public class frDetalleEntrena extends JFrame
 		setContentPane(pPrincipal);
 		
 		setSize(375,667);
+		setResizable(false);
 		
 		
 	}

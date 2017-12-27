@@ -2,7 +2,6 @@ package LP;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
@@ -13,7 +12,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -26,6 +24,7 @@ import javax.swing.BoxLayout;
 
 public class frRegistro extends JFrame 
 {
+	private static final long serialVersionUID = 1L;
 
 	private JPanel pPrincipal;
 	private JPanel pCentral;
@@ -117,6 +116,7 @@ public class frRegistro extends JFrame
 		
 		// Formato de ventana
 		setSize(375,667);
+		setResizable(false);
 				
 		// Escuchadores de botones
 		bAceptar.addActionListener( new ActionListener() 

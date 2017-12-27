@@ -1,7 +1,6 @@
 package LP;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -11,34 +10,54 @@ import javax.swing.JTable;
 
 import LD.BD;
 import LN.clsOpcEntrenamiento;
+import LN.clsUsuario;
+
 import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
 
 public class frElegirEntrena extends JFrame 
 {
 	private static final long serialVersionUID = 1L;
 	
-	private JPanel pPrincipal,pTabla;
+	private JPanel pPrincipal,pTabla,pSuperior;
+	private JLabel lblSelecciona,lblVolver;
+	private JButton btnEmpezar;
 	private JTable table;
-	private JLabel lblEligaSuEntrenamiento;
 	
-	public frElegirEntrena() 
+	public frElegirEntrena(clsUsuario user) 
 	{
 		setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
 		
 		pPrincipal = new JPanel();
-		getContentPane().add( pPrincipal, BorderLayout.NORTH );
+		pTabla = new JPanel();
+		getContentPane().add( pPrincipal, BorderLayout.CENTER );
 		pPrincipal.setLayout(new BorderLayout(0, 0));
 		
-		lblEligaSuEntrenamiento = new JLabel("Eliga su entrenamiento:");
-		pPrincipal.add(lblEligaSuEntrenamiento);
+		lblSelecciona = new JLabel("Seleccionar:");
+		lblSelecciona.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblSelecciona.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		
-		pTabla = new JPanel();
-		getContentPane().add(pTabla, BorderLayout.CENTER);
+		pPrincipal.add(lblSelecciona, BorderLayout.NORTH);
 		
 		String[] columnNames = {"Código","Nombre","Nivel","CalxMin","Duración"};
 		DefaultTableModel model = new DefaultTableModel(columnNames,0);
+		
+		pPrincipal.add(pTabla, BorderLayout.CENTER);
+		
 		table = new JTable(model);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		pTabla.add(new JScrollPane(table));
+		pTabla.add(table);
 		
 		ArrayList <clsOpcEntrenamiento> lista = BD.getLista();
 		Object [] row = new Object [5];
@@ -54,15 +73,38 @@ public class frElegirEntrena extends JFrame
 				model.addRow(row);
 			}	
 		}
-		catch (NullPointerException e)
-		{
+		catch (NullPointerException e){
 		}
-        table.setPreferredScrollableViewportSize(new Dimension(500, 70));
-        table.setFillsViewportHeight(true);
 		
-		pTabla.add(table);
+		btnEmpezar = new JButton("Empezar");
+		getContentPane().add(btnEmpezar, BorderLayout.SOUTH);
+		
+		pSuperior = new JPanel();
+		getContentPane().add(pSuperior, BorderLayout.NORTH);
+		pSuperior.setLayout(new BorderLayout(0, 0));
+		
+		lblVolver = new JLabel("");
+		lblVolver.setHorizontalAlignment(SwingConstants.LEFT);
+		lblVolver.setIcon(new ImageIcon(frElegirEntrena.class.getResource("/img/back.png")));
+		pSuperior.add(lblVolver);
 		
 		setSize(375,667);
-	}
+		setResizable(false);
 		
+		btnEmpezar.addActionListener( new ActionListener() 
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				int row = table.getSelectedRow();
+				String codigo = (String) table.getValueAt(row, 0);
+				clsOpcEntrenamiento entrena = BD.getEntrena(codigo);
+				
+				frEntrena ventana = new frEntrena (entrena, user);
+				ventana.setVisible(true);
+				dispose();
+			}
+		});
+	}	
 }
+

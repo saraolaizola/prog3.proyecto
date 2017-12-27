@@ -26,6 +26,7 @@ public class frDetalleCarrera extends JFrame
 		setContentPane(pPrincipal);
 		
 		setSize(375,667);
+		setResizable(false);
 		
 		//PANTALLA CON LOS DATOS DE UNA CARRERA DE UN CORREDOR
 	}

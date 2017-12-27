@@ -6,6 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import LN.clsOpcEntrenamiento;
+import LN.clsUsuario;
+
 
 public class frEntrena extends JFrame 
 {
@@ -13,7 +16,7 @@ public class frEntrena extends JFrame
 	private JPanel pPrincipal;
 
 
-	public frEntrena() 
+	public frEntrena(clsOpcEntrenamiento entrena, clsUsuario user) 
 	{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -23,6 +26,7 @@ public class frEntrena extends JFrame
 		setContentPane(pPrincipal);
 		
 		setSize(375,667);
+		setResizable(false);
 		
 		
 		//incluir el reloj de pantalla correr cuando funcione

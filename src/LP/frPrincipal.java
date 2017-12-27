@@ -73,6 +73,7 @@ public class frPrincipal extends JFrame
 		
 		// Formato de ventana
 		setSize(375,667);
+		setResizable(false);
 		
 		// Escuchadores de botones
 		bRegistro.addActionListener( new ActionListener() {
@@ -115,7 +116,7 @@ public class frPrincipal extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-				frElegirEntrena ventana = new frElegirEntrena ();
+				frElegirEntrena ventana = new frElegirEntrena (user);
 				ventana.setVisible(true);
 				dispose();
 			}
