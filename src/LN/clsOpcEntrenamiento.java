@@ -1,12 +1,12 @@
 package LN;
 public class clsOpcEntrenamiento 
 {
-	private String codigo, nombre, duracion, nivel;
-	private double calxmin;	
+	private String codigo, nombre, nivel;
+	private int duracion,calxmin;	
 	public enum Nivel {Principiante, Intermedio, Experto}
 	
 	
-	public clsOpcEntrenamiento(String codigo, String nombre, String nivel, String duracion,double calxmin) 
+	public clsOpcEntrenamiento(String codigo, String nombre, String nivel, int duracion,int calxmin) 
 	{
 		super();
 		this.codigo = codigo;
@@ -37,11 +37,11 @@ public class clsOpcEntrenamiento
 		this.nombre = nombre;
 	}
 
-	public String getDuracion() {
+	public int getDuracion() {
 		return duracion;
 	}
 
-	public void setDuracion(String duracion) {
+	public void setDuracion(int duracion) {
 		this.duracion = duracion;
 	}
 
@@ -53,11 +53,11 @@ public class clsOpcEntrenamiento
 		this.nivel = nivel;
 	}
 
-	public double getCalxmin() {
+	public int getCalxmin() {
 		return calxmin;
 	}
 
-	public void setCalxmin(double calxmin) {
+	public void setCalxmin(int calxmin) {
 		this.calxmin = calxmin;
 	}
 	

@@ -130,7 +130,7 @@ public class BD
 		try 
 		{
 			statement.executeUpdate("create table if not exists opcionentrenamiento " +
-				"(codigo string, nombre string, nivel string, calxmin integer, duracion string, primary key (codigo))");
+				"(codigo string, nombre string, nivel string, calxmin integer, duracion integer, primary key (codigo))");
 		} 
 		catch (SQLException e) 
 		{
@@ -238,8 +238,8 @@ public class BD
 					entrena.setCodigo(rs.getString("codigo"));
 					entrena.setNombre(rs.getString("nombre"));
 					entrena.setNivel(rs.getString("nivel"));
-					entrena.setCalxmin(rs.getDouble("calxmin"));
-					entrena.setDuracion(rs.getString("duracion"));
+					entrena.setCalxmin(rs.getInt("calxmin"));
+					entrena.setDuracion(rs.getInt("duracion"));
 		       	}
 			}
 		}	 
@@ -302,7 +302,7 @@ public class BD
 	 * @param calxmin
 	 * @throws clsOpcEntrenamientoRepetida 
 	 */
-	public static void registrarOpcEntrenamiento (String codigo, String nombre, String nivel, int calxmin, String duracion) throws clsOpcEntrenamientoRepetida
+	public static void registrarOpcEntrenamiento (String codigo, String nombre, String nivel, int calxmin, int duracion) throws clsOpcEntrenamientoRepetida
 	{
 		try
 		{	
@@ -319,11 +319,11 @@ public class BD
 	{
 		try 
 		{
-			BD.registrarOpcEntrenamiento("001", "Abdominales", "Principiante", 10, "5");
+			BD.registrarOpcEntrenamiento("001", "Abdominales", "Principiante", 5,10);
 			//https://www.youtube.com/watch?v=1919eTCoESo&list=PL6070A835F843D79F
-			BD.registrarOpcEntrenamiento("002", "Cardio quema grasas", "Intermedio", 20, "8");
+			BD.registrarOpcEntrenamiento("002", "Cardio quema grasas", "Intermedio", 8, 20);
 			//https://www.youtube.com/watch?v=fcN37TxBE_s
-			BD.registrarOpcEntrenamiento("003", "Cardio Kick Boxing", "Experto", 15, "9");
+			BD.registrarOpcEntrenamiento("003", "Cardio Kick Boxing", "Experto", 9, 15);
 			//https://www.youtube.com/watch?v=Vve4BVTZ0QU
 		} 
 		catch (clsOpcEntrenamientoRepetida e){
@@ -343,8 +343,8 @@ public class BD
 				String codigo = rs.getString("codigo");
 				String nombre = rs.getString("nombre");
 				String nivel = rs.getString("nivel");
-				String duracion = rs.getString("duracion");
-				Double calxmin = rs.getDouble("calxmin");
+				int duracion = rs.getInt("duracion");
+				int calxmin = rs.getInt("calxmin");
 				clsOpcEntrenamiento entrenamiento = new clsOpcEntrenamiento(codigo, nombre, nivel, duracion, calxmin);
 				lista.add(entrenamiento);
 			}

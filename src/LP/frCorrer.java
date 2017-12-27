@@ -28,13 +28,12 @@ public class frCorrer extends JFrame implements Runnable
 	private JPanel pPrincipal, pInferior, pCentral, pTime, pRitmo, pCal, pKM;
 	private JButton btnPause, btnFin;
 	private JLabel lblMapa,lblTime,lblRitmo,lblCal,lblKm,ritmo,cal,km,time;
-	private Integer minutos=0 , segundos=0, milesimas=0, calorias=0, m=0, s=0;
+	private Integer minutos=0, segundos=0,calorias=0, m=0, s=0;
 	private double kilometros=0;
 	private String fecha;
 	private static Date d; 
 	
-	boolean cronometroActivo;
-	boolean cronometroPausado;
+	boolean cronometroActivo, cronometroPlay;
 	Thread hilo;
 	
 	public frCorrer(clsUsuario user) 
@@ -70,7 +69,7 @@ public class frCorrer extends JFrame implements Runnable
 		pRitmo.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		lblRitmo = new JLabel("");
 		lblRitmo.setIcon(new ImageIcon(frCorrer.class.getResource("/img/ritmo.png")));
-		ritmo = new JLabel("0'00\"");
+		ritmo = new JLabel(m+"'"+s+"''");
 		ritmo.setFont(new Font("Tahoma", Font.PLAIN, 40));
 		ritmo.setHorizontalAlignment(SwingConstants.CENTER);
 		pRitmo.add(lblRitmo);
@@ -86,7 +85,7 @@ public class frCorrer extends JFrame implements Runnable
 		
 		lblTime = new JLabel("");
 		lblTime.setIcon(new ImageIcon(frCorrer.class.getResource("/img/time.png")));
-		time = new JLabel("00:00");
+		time = new JLabel(minutos+":"+segundos);
 		time.setFont(new Font("Tahoma", Font.PLAIN, 40));
 		time.setHorizontalAlignment(SwingConstants.CENTER);
 		pTime.add(lblTime);
@@ -121,8 +120,8 @@ public class frCorrer extends JFrame implements Runnable
 		setResizable(false);
 		
 		cronometroActivo = true;
-		cronometroPausado = false;
-		hilo = new Thread();
+		cronometroPlay = true;
+		hilo = new Thread(this);
 		hilo.start();
 		setVisible(true);
 		
@@ -151,15 +150,17 @@ public class frCorrer extends JFrame implements Runnable
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-		        if (cronometroPausado)
+		        if (cronometroPlay)
 		        {
-		        	cronometroPausado = false;
-		        	btnPause.setIcon(new ImageIcon(frCorrer.class.getResource("/img/pause.png")));
+		        	cronometroPlay = false;
+		        	hilo.suspend();
+		        	btnPause.setIcon(new ImageIcon(frCorrer.class.getResource("/img/play.png")));
 		        }
 		        else 
 		        {
-		        	cronometroPausado = true;
-		        	btnPause.setIcon(new ImageIcon(frCorrer.class.getResource("/img/play.png")));
+		        	cronometroPlay = true;
+		        	hilo.resume();
+		        	btnPause.setIcon(new ImageIcon(frCorrer.class.getResource("/img/pause.png")));
 		        }
 				
 			}
@@ -172,55 +173,63 @@ public class frCorrer extends JFrame implements Runnable
 	{
         String min="", seg="";
         Random rn = new Random();
+        int i=10;
         
         try
         {
             while( cronometroActivo )
             {
-                while (!cronometroPausado)
+                if(cronometroPlay)
                 {
-                	Thread.sleep( 4 );
-                    milesimas += 4;
-
-                    if( milesimas == 1000 )
-                    {
-                        milesimas = 0;
-                        segundos += 1;
-                       
-                        if( segundos == 60 )
-                        {
-                            segundos = 0;
-                            minutos++;
-                            calorias=calorias+7;
-                            m = rn.nextInt(5)+2;
-                            s = rn.nextInt(100);
-                            kilometros=minutos/m;
-                        }
-                    }
-
-                    if( minutos < 10 ) 
-                    {
-                    	min = "0" + minutos;
-                    }
-                    else 
-                    {
-                    	min = minutos.toString();
-                    }
+                	Thread.sleep(1000);
                     
-                    if( segundos < 10 ) 
-                    {
-                    	seg = "0" + segundos;
-                    }
-                    else 
-                    {
-                    	seg = segundos.toString();
-                    }
+                	segundos=segundos+1;
                     
-                    time.setText(min + ":" + seg);
-                    ritmo.setText(m +"'"+s+"''");
-                    cal.setText(calorias.toString());
-                    km.setText(Double.toString(kilometros)); 
-                }       
+                	if(segundos==i)
+                	{
+                		calorias=calorias+1;
+                    	m = rn.nextInt(4)+3;
+                    	s = rn.nextInt(100);
+                    	kilometros=minutos/m;
+                    	i=i+10;
+                    	
+                    	if (segundos==60)
+                    	{
+                    		segundos=0;
+                        	minutos= minutos+1;
+                        	i=10;
+                    	}
+                    	
+                	}
+                
+
+                	if( minutos < 10 ) 
+                	{
+                		min = "0" + minutos;
+                	}
+                	else 
+                	{
+                		min = minutos.toString();
+                	}
+                    
+                	if( segundos < 10 ) 
+                	{
+               			seg = "0" + segundos;
+                	}
+                	else 
+                	{
+                		seg = segundos.toString();
+                	}
+                    
+                	time.setText(min + ":" + seg);
+                	time.repaint();
+                	ritmo.setText(m +"'"+s+"''");
+                	ritmo.repaint();
+                	cal.setText(calorias.toString());
+                	cal.repaint();
+                	km.setText(Double.toString(kilometros)); 
+                	km.repaint();
+            	}
             }
         }
         catch(Exception e)
