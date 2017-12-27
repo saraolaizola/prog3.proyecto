@@ -66,7 +66,7 @@ public class frPrincipal extends JFrame
 		
 		pCentral.add(spCentro);
 		
-		bRegistro = new JButton( "Registro" );
+		bRegistro = new JButton( "Registros" );
 		bActividad = new JButton ("Actividad");
 		bPerfil = new JButton( "Perfil");
 		
