@@ -15,6 +15,13 @@ import javax.swing.SwingConstants;
 
 import LN.clsUsuario;
 
+/**
+ * Pantalla principal de la applicación. 
+ * El usuario decide que actividad quiere hacer (entrenar o correr) y le lleva
+ * a lapantalla correspondiente
+ * @author ALUMNO
+ *
+ */
 public class frPrincipal extends JFrame 
 {
 	JPanel pPrincipal, pMenu, pCentral;

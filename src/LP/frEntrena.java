@@ -10,21 +10,22 @@ import javax.swing.border.EmptyBorder;
 public class frEntrena extends JFrame 
 {
 
-	private JPanel contentPane;
+	private JPanel pPrincipal;
 
 
 	public frEntrena() 
 	{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);
+		pPrincipal = new JPanel();
+		pPrincipal.setBorder(new EmptyBorder(5, 5, 5, 5));
+		pPrincipal.setLayout(new BorderLayout(0, 0));
+		setContentPane(pPrincipal);
+		
+		setSize(375,667);
 		
 		
-		
-		
+		//incluir el reloj de pantalla correr cuando funcione
 		
 	}
 

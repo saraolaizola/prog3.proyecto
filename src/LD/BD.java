@@ -333,18 +333,4 @@ public class BD
 		return lista;
 	}
 	
-	public static Vector lista()
-	{
-		try {
-			statement = connection.createStatement();
-			Vector lista = (Vector) statement.executeQuery("select * from opcionentrenamiento");
-			return lista;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
-		
-	}
-	
 }

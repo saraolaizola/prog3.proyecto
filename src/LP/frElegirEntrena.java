@@ -48,6 +48,9 @@ public class frElegirEntrena extends JFrame
 		ArrayList <clsOpcEntrenamiento> lista = BD.getLista();
 		
 		DefaultTableModel model = new DefaultTableModel();
+		
+		//FALTA: AÑADIR COLUMNNAMES A LA TABLA
+		
 		Object [] row = new Object [5];
 		try
 		{
@@ -59,8 +62,7 @@ public class frElegirEntrena extends JFrame
 				row[3]=lista.get(i).getCalxmin();
 				row[4]=lista.get(i).getDuracion();
 				model.addRow(row);
-			}
-			
+			}	
 		}
 		catch (NullPointerException e)
 		{
@@ -76,23 +78,4 @@ public class frElegirEntrena extends JFrame
 		setSize(375,667);
 	}
 		
-//	public void cargarTableModel()
-//	{
-//		Vector filas = BD.lista();
-//		if(filas == null) JOptionPane.showMessageDialog(this,"No existen personas registradas en el sistema","Resultado de la Operacion",JOptionPane.INFORMATION_MESSAGE);
-//		
-//		//identificacion tipoid nombre apellido fecha_nacimiento sexo estado_civil barrio direccion telefono celular email foto info_estudios info_laboral
-//		Vector columnas = new Vector();
-//		columnas.add("Código");
-//		columnas.add("Nombres");
-//		columnas.add("Nivel");
-//		columnas.add("CalxMin");
-//		columnas.add("Duracion");
-//
-//		DefaultTableModel datos = new DefaultTableModel(filas,columnas);
-//		this.table.setModel(datos);
-//		
-//		
-//		
-//	}
 }

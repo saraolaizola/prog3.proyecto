@@ -13,6 +13,12 @@ import javax.swing.border.EmptyBorder;
 
 import LN.clsUsuario;
 
+/**
+ * Pantalla registros. El usuario decide que registros quiere ver (carrera o entrenamiento)
+ * y le lleva a la pantalla correspondiente
+ * @author ALUMNO
+ *
+ */
 public class frLista extends JFrame 
 {
 	JPanel pPrincipal;   
