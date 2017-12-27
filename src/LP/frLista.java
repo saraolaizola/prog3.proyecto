@@ -40,9 +40,7 @@ public class frLista extends JFrame
 				
 				getContentPane().add( pPrincipal );
 				pPrincipal.setBackground( Color.white );
-//				getContentPane().add (pCentral, BorderLayout.CENTER);
 				getContentPane().add(pMenu, BorderLayout.SOUTH);
-//				JSplitPane spCentro = new JSplitPane( JSplitPane.VERTICAL_SPLIT );
 				
 				bEntrenar = new JButton();
 				bEntrenar.setIcon(new ImageIcon(frPrincipal.class.getResource("/img/ientrena.jpg")));
@@ -51,6 +49,7 @@ public class frLista extends JFrame
 				bEntrenar.setContentAreaFilled(false); // No rellenar el área
 				bEntrenar.setBorderPainted(false);     // No pintar el borde
 				bEntrenar.setBorder(null); 
+				
 				pPrincipal.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 				
 				bCorrer = new JButton();
@@ -60,7 +59,6 @@ public class frLista extends JFrame
 				bCorrer.setContentAreaFilled(false); // No rellenar el área
 				bCorrer.setBorderPainted(false);     // No pintar el borde
 				bCorrer.setBorder(null); 
-				
 				
 				pPrincipal.add(bCorrer);
 				pPrincipal.add(bEntrenar);

@@ -2,16 +2,11 @@ package LP;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.util.ArrayList;
-import java.util.Vector;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import LD.BD;
@@ -20,6 +15,8 @@ import javax.swing.JLabel;
 
 public class frElegirEntrena extends JFrame 
 {
+	private static final long serialVersionUID = 1L;
+	
 	private JPanel pPrincipal,pTabla;
 	private JTable table;
 	private JLabel lblEligaSuEntrenamiento;
@@ -35,22 +32,15 @@ public class frElegirEntrena extends JFrame
 		lblEligaSuEntrenamiento = new JLabel("Eliga su entrenamiento:");
 		pPrincipal.add(lblEligaSuEntrenamiento);
 		
+		
 		pTabla = new JPanel();
 		getContentPane().add(pTabla, BorderLayout.CENTER);
 		
-		String[] columnNames = 
-				{"Código",
-                "Nombre",
-                "Nivel",
-                "CalxMin",
-                "Duración"};
+		String[] columnNames = {"Código","Nombre","Nivel","CalxMin","Duración"};
+		DefaultTableModel model = new DefaultTableModel(columnNames,0);
+		table = new JTable(model);
 		
 		ArrayList <clsOpcEntrenamiento> lista = BD.getLista();
-		
-		DefaultTableModel model = new DefaultTableModel();
-		
-		//FALTA: AÑADIR COLUMNNAMES A LA TABLA
-		
 		Object [] row = new Object [5];
 		try
 		{
@@ -67,9 +57,6 @@ public class frElegirEntrena extends JFrame
 		catch (NullPointerException e)
 		{
 		}
-		
-		table = new JTable();
-		table.setModel(model);
         table.setPreferredScrollableViewportSize(new Dimension(500, 70));
         table.setFillsViewportHeight(true);
 		

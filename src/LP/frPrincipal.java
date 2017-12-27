@@ -2,6 +2,7 @@ package LP;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -24,7 +25,7 @@ import LN.clsUsuario;
  */
 public class frPrincipal extends JFrame 
 {
-	JPanel pPrincipal, pMenu, pCentral;
+	JPanel pPrincipal, pMenu;
 	JButton bRegistro,bActividad,bPerfil, bEmpezar, bCorrer, bEntrenar;
 	
 	public frPrincipal(clsUsuario user) 
@@ -35,18 +36,14 @@ public class frPrincipal extends JFrame
 		// Creaci�n contenedores y componentes
 		pPrincipal = new JPanel();
 		pMenu = new JPanel();
-		pCentral = new JPanel();
 		
 		getContentPane().add( pPrincipal );
 		pPrincipal.setLayout( null );
 		pPrincipal.setBackground( Color.white );
-		getContentPane().add (pCentral, BorderLayout.CENTER);
 		getContentPane().add(pMenu, BorderLayout.SOUTH);
 		
-		JSplitPane spCentro = new JSplitPane( JSplitPane.VERTICAL_SPLIT );
-		
 		bEntrenar = new JButton();
-		bEntrenar.setIcon(new ImageIcon(frPrincipal.class.getResource("/img/entrenar.png")));
+		bEntrenar.setIcon(new ImageIcon(frPrincipal.class.getResource("/img/ientrena.jpg")));
 		bEntrenar.setHorizontalAlignment(SwingConstants.CENTER);
 		bEntrenar.setOpaque(false);            // Fondo Transparente (los gráficos son png transparentes)
 		bEntrenar.setContentAreaFilled(false); // No rellenar el área
@@ -54,23 +51,21 @@ public class frPrincipal extends JFrame
 		bEntrenar.setBorder(null);  
 		
 		bCorrer = new JButton();
-		bCorrer.setIcon(new ImageIcon(frPrincipal.class.getResource("/img/correr.png")));
+		bCorrer.setIcon(new ImageIcon(frPrincipal.class.getResource("/img/icorrer.jpg")));
 		bCorrer.setHorizontalAlignment(SwingConstants.CENTER);
 		bCorrer.setOpaque(false);            // Fondo Transparente (los gráficos son png transparentes)
 		bCorrer.setContentAreaFilled(false); // No rellenar el área
 		bCorrer.setBorderPainted(false);     // No pintar el borde
 		bCorrer.setBorder(null);  
 		
-		spCentro.setTopComponent(bCorrer);
-		spCentro.setBottomComponent(bEntrenar);
-		
-		pCentral.add(spCentro);
+		pPrincipal.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		pPrincipal.add(bCorrer);
+		pPrincipal.add(bEntrenar);
 		
 		bRegistro = new JButton( "Registros" );
 		bActividad = new JButton ("Actividad");
 		bPerfil = new JButton( "Perfil");
-		
-		
+	
 		// A�adido de componentes a contenedores
 		pMenu.add(bRegistro);
 		pMenu.add(bActividad);
