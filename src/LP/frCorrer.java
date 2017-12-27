@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.Random;
 
 import LD.BD;
+import LN.clsCarrera;
 import LN.clsUsuario;
 
 public class frCorrer extends JFrame implements Runnable
@@ -137,7 +138,13 @@ public class frCorrer extends JFrame implements Runnable
 				 
 				 try 
 				 {
-					BD.registrarCarrera(fecha, time.getText(),calorias,kilometros,ritmo.getText(),user.getUsuario());
+					BD.registrarCarrera(fecha, time.getText(),calorias.intValue(),kilometros,ritmo.getText(),user.getUsuario());
+					
+					clsCarrera carrera = getCarrera(fecha,time.getText(),calorias.intValue(),kilometros,ritmo.getText());
+					
+					frDetalleCarrera ventana = new frDetalleCarrera(user,carrera);
+					ventana.setVisible(true);
+					dispose();
 				 } 
 				 catch (ClassNotFoundException e1) 
 				 {
@@ -168,6 +175,12 @@ public class frCorrer extends JFrame implements Runnable
 	}
 	
 	
+	public clsCarrera getCarrera(String fecha, String duracion, int calorias, double km, String ritmo)
+	{
+		clsCarrera carrera = new clsCarrera(fecha, duracion, calorias, km, ritmo);
+		return carrera;
+	}
+	
 
 	public void run()
 	{
@@ -190,7 +203,7 @@ public class frCorrer extends JFrame implements Runnable
                 		calorias=calorias+1;
                     	m = rn.nextInt(4)+3;
                     	s = rn.nextInt(100);
-                    	kilometros=minutos/m;
+                    	kilometros=kilometros+0.2;
                     	i=i+10;
                     	
                     	if (segundos==60)
@@ -198,10 +211,8 @@ public class frCorrer extends JFrame implements Runnable
                     		segundos=0;
                         	minutos= minutos+1;
                         	i=10;
-                    	}
-                    	
+                    	}	
                 	}
-                
 
                 	if( minutos < 10 ) 
                 	{
@@ -227,7 +238,7 @@ public class frCorrer extends JFrame implements Runnable
                 	ritmo.repaint();
                 	cal.setText(calorias.toString());
                 	cal.repaint();
-                	km.setText(Double.toString(kilometros)); 
+                	km.setText(""+kilometros); 
                 	km.repaint();
             	}
             }

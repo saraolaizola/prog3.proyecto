@@ -10,6 +10,13 @@ import javax.swing.border.EmptyBorder;
 
 import LN.clsCarrera;
 import LN.clsUsuario;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.ImageIcon;
+import java.awt.Font;
+import javax.swing.BoxLayout;
+import java.awt.FlowLayout;
+import javax.swing.SpringLayout;
 
 public class frDetalleCarrera extends JFrame 
 {
@@ -25,8 +32,52 @@ public class frDetalleCarrera extends JFrame
 		pPrincipal.setLayout(new BorderLayout(0, 0));
 		setContentPane(pPrincipal);
 		
+		JPanel pSuperior = new JPanel();
+		pPrincipal.add(pSuperior, BorderLayout.NORTH);
+		pSuperior.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblVolver = new JLabel("");
+		lblVolver.setIcon(new ImageIcon(frDetalleCarrera.class.getResource("/img/back.png")));
+		lblVolver.setHorizontalAlignment(SwingConstants.LEFT);
+		pSuperior.add(lblVolver);
+		
+		JPanel pCentral = new JPanel();
+		pPrincipal.add(pCentral, BorderLayout.CENTER);
+		pCentral.setLayout(new BorderLayout(0, 0));
+		
+		JPanel pFecha = new JPanel();
+		pCentral.add(pFecha, BorderLayout.NORTH);
+		
+		JLabel lblFecha = new JLabel(carrera.getFecha());
+		lblFecha.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		pFecha.add(lblFecha);
+		
+		JPanel pDatos = new JPanel();
+		pCentral.add(pDatos, BorderLayout.CENTER);
+		pDatos.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblDuracion = new JLabel(carrera.getDuracion());
+		lblDuracion.setHorizontalAlignment(SwingConstants.CENTER);
+		pDatos.add(lblDuracion, BorderLayout.SOUTH);
+		
+		JLabel lblKm = new JLabel(""+carrera.getKm());
+		lblKm.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblKm.setHorizontalAlignment(SwingConstants.CENTER);
+		pDatos.add(lblKm, BorderLayout.CENTER);
+		
+		JLabel lblCalorias = new JLabel(""+carrera.getCalorias());
+		lblCalorias.setVerticalAlignment(SwingConstants.BOTTOM);
+		pDatos.add(lblCalorias, BorderLayout.WEST);
+		
+		JLabel lblRitmo = new JLabel(carrera.getRitmo());
+		lblRitmo.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblRitmo.setHorizontalAlignment(SwingConstants.CENTER);
+		pDatos.add(lblRitmo, BorderLayout.EAST);
+		
 		setSize(375,667);
 		setResizable(false);
+		
+		
 		
 		//PANTALLA CON LOS DATOS DE UNA CARRERA DE UN CORREDOR
 	}
