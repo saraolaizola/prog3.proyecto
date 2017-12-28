@@ -133,14 +133,28 @@ public class frCorrer extends JFrame implements Runnable
 			{
 				 cronometroActivo = false;
 				 
-				 SimpleDateFormat f2 = new SimpleDateFormat( "dd/MM/yyyy HH:mm" );
-				 fecha = f2.format(d);
+//				 SimpleDateFormat f2 = new SimpleDateFormat( "dd-MM-yyyy HH:mm" );
+//				 fecha = f2.format(d);
+				
 				 
 				 try 
 				 {
-					BD.registrarCarrera(fecha, time.getText(),calorias.intValue(),kilometros,ritmo.getText(),user.getUsuario());
-					
-					clsCarrera carrera = getCarrera(fecha,time.getText(),calorias.intValue(),kilometros,ritmo.getText());
+//					 String TIME;
+//					 if (minutos==0) TIME = "00.";
+//					 else if (minutos<10) TIME = "0"+minutos.toString()+".";
+//					 else TIME = minutos.toString()+".";
+//					 
+//					 if (segundos<10) TIME = TIME+"0"+segundos;
+//					 else TIME = TIME + segundos.toString();
+//					 
+//					 String RITMO;
+//					 if (m==0) RITMO = "0.00";
+//					 else if (s<10) RITMO = m+".0"+s;
+//					 else RITMO = m+"."+s;
+					 
+					BD.registrarCarrera("datetime('now')",TIME,calorias.intValue(),kilometros,RITMO,user.getUsuario());
+					clsCarrera carrera = BD.getCarrera(fecha); 
+					System.out.println(fecha);
 					
 					frDetalleCarrera ventana = new frDetalleCarrera(user,carrera);
 					ventana.setVisible(true);
@@ -173,14 +187,6 @@ public class frCorrer extends JFrame implements Runnable
 			}
 		});
 	}
-	
-	
-	public clsCarrera getCarrera(String fecha, String duracion, int calorias, double km, String ritmo)
-	{
-		clsCarrera carrera = new clsCarrera(fecha, duracion, calorias, km, ritmo);
-		return carrera;
-	}
-	
 
 	public void run()
 	{
@@ -202,7 +208,7 @@ public class frCorrer extends JFrame implements Runnable
                 	{
                 		calorias=calorias+1;
                     	m = rn.nextInt(4)+3;
-                    	s = rn.nextInt(100);
+                    	s = rn.nextInt(99);
                     	kilometros=kilometros+0.2;
                     	i=i+10;
                     	

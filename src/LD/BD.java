@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 import COMUN.clsOpcEntrenamientoRepetida;
 import COMUN.clsUsuarioRepetido;
+import LN.clsCarrera;
 import LN.clsOpcEntrenamiento;
 import LN.clsUsuario;
 
@@ -20,6 +21,7 @@ public class BD
 	private static Connection connection = null;
 	private static Statement statement = null;
 	private static ArrayList <clsOpcEntrenamiento> lista;
+	private static ArrayList <clsCarrera> listaCarreras;
 	
 	//init BD y crear tabla juntos 
 	
@@ -250,6 +252,31 @@ public class BD
 		return entrena;
 	}
 	
+	public static clsCarrera getCarrera (String fecha)
+	{
+		clsCarrera carrera = new clsCarrera();
+		try
+		{
+			statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery("select * from carrera");
+			while(rs.next())
+			{
+				if (rs.getString("fecha").equals(fecha))
+		       	{
+					carrera.setFecha(rs.getString("fecha"));
+					carrera.setDuracion(rs.getString("nombre"));
+					carrera.setCalorias(rs.getInt("calorias"));
+					carrera.setKm(rs.getInt("km"));
+					carrera.setRitmo(rs.getString("ritmo"));
+		       	}
+			}
+		}	 
+		catch(SQLException e)
+		{
+			logger.log(Level.WARNING, e.getMessage());
+		}
+		return carrera;
+	}
 	
 	/**
 	 * Guarda los datos de la carrera en la tabla Carrera
@@ -257,7 +284,6 @@ public class BD
 	 * @param duracion
 	 * @param calorias
 	 * @param km
-	 * @param elevacion
 	 * @param ritmo
 	 * @param usuario
 	 * @throws ClassNotFoundException
@@ -354,6 +380,31 @@ public class BD
 			logger.log(Level.WARNING, e.getMessage());
 		}
 		return lista;
+	}
+	
+	public static ArrayList <clsCarrera> getMisCarreras(String usuario)
+	{
+		listaCarreras = new ArrayList<clsCarrera>();
+		try
+		{
+			statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery("select * from carrera where usuario = '"+usuario+"';");
+			while(rs.next())
+			{	
+				String fecha = rs.getString("fecha");
+				String duracion = rs.getString("duracion");
+				int calorias = rs.getInt("calorias");
+				double km = rs.getDouble("km");
+				String ritmo = rs.getString("ritmo");
+				clsCarrera carrera = new clsCarrera(fecha, duracion, calorias, km, ritmo);
+				listaCarreras.add(carrera);
+			}
+		}	 
+		catch(SQLException e)
+		{
+			logger.log(Level.WARNING, e.getMessage());
+		}
+		return listaCarreras;
 	}
 	
 }

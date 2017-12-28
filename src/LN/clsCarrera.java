@@ -5,8 +5,7 @@ import java.sql.Date;
 public class clsCarrera extends clsActividad
 {
 	private double km;
-	private String ritmo;
-	
+	private String ritmo;	
 
 	public clsCarrera (String fecha, String duracion, int calorias, double km, String ritmo) 
 	{
@@ -14,6 +13,12 @@ public class clsCarrera extends clsActividad
 		this.km = km;
 		this.ritmo = ritmo;
 	}
+	
+	public clsCarrera()
+	{
+		
+	}
+	
 	public double getKm() {
 		return km;
 	}

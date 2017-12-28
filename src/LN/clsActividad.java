@@ -15,6 +15,11 @@ public class clsActividad
 		this.calorias = calorias;
 	}
 
+	public clsActividad()
+	{
+		
+	}
+	
 	public String getDuracion() 
 	{
 		return duracion;
