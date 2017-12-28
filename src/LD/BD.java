@@ -264,7 +264,7 @@ public class BD
 				if (rs.getString("fecha").equals(fecha))
 		       	{
 					carrera.setFecha(rs.getString("fecha"));
-					carrera.setDuracion(rs.getString("nombre"));
+					carrera.setDuracion(rs.getString("duracion"));
 					carrera.setCalorias(rs.getInt("calorias"));
 					carrera.setKm(rs.getInt("km"));
 					carrera.setRitmo(rs.getString("ritmo"));

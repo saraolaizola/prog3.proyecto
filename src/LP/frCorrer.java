@@ -152,7 +152,7 @@ public class frCorrer extends JFrame implements Runnable
 //					 else if (s<10) RITMO = m+".0"+s;
 //					 else RITMO = m+"."+s;
 					 
-					BD.registrarCarrera("datetime('now')",TIME,calorias.intValue(),kilometros,RITMO,user.getUsuario());
+					BD.registrarCarrera("datetime('now')",lblTime.getText(),calorias.intValue(),kilometros,lblRitmo.getText(),user.getUsuario());
 					clsCarrera carrera = BD.getCarrera(fecha); 
 					System.out.println(fecha);
 					
