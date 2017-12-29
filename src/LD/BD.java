@@ -292,7 +292,7 @@ public class BD
 	{
 		try
 		{	
-			statement.executeUpdate("insert into carrera values("+fecha+", "+duracion+", "+calorias+", "+km+", "+ritmo+", '"+usuario+"')");
+			statement.executeUpdate("insert into carrera values("+fecha+", '"+duracion+"', "+calorias+", "+km+", '"+ritmo+"', '"+usuario+"')");
 		}	 
 		catch(SQLException e)
 		{

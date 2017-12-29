@@ -238,9 +238,9 @@ public class frCorrer extends JFrame implements Runnable
                 		seg = segundos.toString();
                 	}
                     
-                	time.setText(min + ":" + seg);
+                	time.setText(min + " " + seg);
                 	time.repaint();
-                	ritmo.setText(m +"'"+s+"''");
+                	ritmo.setText(m +" "+s);
                 	ritmo.repaint();
                 	cal.setText(calorias.toString());
                 	cal.repaint();

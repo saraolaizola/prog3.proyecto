@@ -17,6 +17,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import LD.BD;
@@ -69,6 +70,9 @@ public class frListaCarrera extends JFrame
 		String[] columnNames = {"Fecha","Duración"};
 		DefaultTableModel model = new DefaultTableModel(columnNames,0);
 		
+		DefaultTableCellRenderer RendererDerecha = new DefaultTableCellRenderer();
+		RendererDerecha.setHorizontalAlignment(JLabel.RIGHT);
+		
 		pPrincipal.add(spDatos, BorderLayout.CENTER);
 		pTabla.setLayout(new BorderLayout(0, 0));
 		
@@ -92,6 +96,9 @@ public class frListaCarrera extends JFrame
 		}
 		catch (NullPointerException e){
 		}
+		
+		table.getColumnModel().getColumn(0).setCellRenderer(RendererDerecha);
+		table.getColumnModel().getColumn(1).setCellRenderer(RendererDerecha);
 		
 		spDatos.setTopComponent(pTabla);
 		
@@ -121,7 +128,10 @@ public class frListaCarrera extends JFrame
 		rdbtnDistancia = new JRadioButton("Distancia (km)");
 		rdbtnRitmo = new JRadioButton("Ritmo");
 		rdbtnCalorias = new JRadioButton("Calor\u00EDas");
-		rdbtnCalorias.setSelected(true);;
+		
+		rdbtnCalorias.setSelected(true);
+		pCalorias();
+		
 		BG.add(rdbtnDuracion);
 		BG.add(rdbtnDistancia);
 		BG.add(rdbtnRitmo);
