@@ -25,6 +25,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 
 import javax.swing.SwingConstants;
+import java.awt.SystemColor;
 
 
 public class frPerfil extends JFrame 
@@ -32,8 +33,12 @@ public class frPerfil extends JFrame
 	private JButton bRegistro, bActividad, bPerfil;
 	private JPanel pPrincipal, pCentral, pMenu;
 	private JLabel foto,lblUsuario;
+	private JLabel foto_1;
 	private JTextField txtNombre, txtApellido;
 	private Logger logger = Logger.getLogger(this.getClass().getName());
+	private JLabel lblPerfil;
+	private JPanel pDatos;
+	private JPanel pFoto;
 	
 	public frPerfil(clsUsuario user) 
 	{
@@ -41,11 +46,16 @@ public class frPerfil extends JFrame
 		
 		// Creación contenedores y componentes
 		pPrincipal = new JPanel();
+		pPrincipal.setBackground(SystemColor.menu);
 		pCentral = new JPanel();
 		pMenu = new JPanel();
 		
-		getContentPane().add( pPrincipal );
-		pPrincipal.setLayout( null );
+		getContentPane().add( pPrincipal, BorderLayout.NORTH );
+		pPrincipal.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		lblPerfil = new JLabel("Perfil");
+		lblPerfil.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		pPrincipal.add(lblPerfil);
 		getContentPane().add (pCentral, BorderLayout.CENTER);
 		getContentPane().add(pMenu, BorderLayout.SOUTH);
 		pCentral.setBackground( Color.white );
@@ -59,28 +69,35 @@ public class frPerfil extends JFrame
 		pMenu.add( bRegistro );
 		pMenu.add( bActividad );
 		pMenu.add( bPerfil );
-	
-		foto = new JLabel("");
-		foto.setHorizontalAlignment(SwingConstants.CENTER);
-		foto.setFont(new Font("Tahoma", Font.PLAIN, 35));
-		foto.setIcon(new ImageIcon(frPerfil.class.getResource("/img/user.png")));
+		pCentral.setLayout(new BorderLayout(0, 0));
+		
+		pFoto = new JPanel();
+		pFoto.setBackground(Color.WHITE);
+		pCentral.add(pFoto, BorderLayout.NORTH);
+		
+			foto_1 = new JLabel("");
+			pFoto.add(foto_1);
+			foto_1.setHorizontalAlignment(SwingConstants.CENTER);
+			foto_1.setFont(new Font("Tahoma", Font.PLAIN, 35));
+			foto_1.setIcon(new ImageIcon(frPerfil.class.getResource("/img/user.png")));
+		
+		pDatos = new JPanel();
+		pDatos.setBackground(Color.WHITE);
+		pCentral.add(pDatos, BorderLayout.CENTER);
 		
 		lblUsuario = new JLabel(user.getUsuario());
+		pDatos.add(lblUsuario);
 		lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUsuario.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		
 		txtNombre = new JTextField();
+		pDatos.add(txtNombre);
 		txtNombre.setColumns(30);
 		txtNombre.setText(user.getNombre());
 		txtApellido = new JTextField();
+		pDatos.add(txtApellido);
 		txtApellido.setColumns(30);
 		txtApellido.setText(user.getApellido());
-		pCentral.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
-		pCentral.add(foto);
-		pCentral.add(lblUsuario);
-		pCentral.add(txtNombre);
-		pCentral.add(txtApellido);
 		
 		// Formato de ventana
 		setSize(375,667);

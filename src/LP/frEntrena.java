@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -23,6 +24,7 @@ import LN.clsCarrera;
 import LN.clsEntrenamiento;
 import LN.clsOpcEntrenamiento;
 import LN.clsUsuario;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -36,7 +38,8 @@ public class frEntrena extends JFrame implements Runnable
 	private JPanel pPrincipal, pInferior, pCentral, pTime, pCal;
 	private JButton btnPause, btnFin;
 	private JLabel lblVideo,lblTime,lblCal,cal,time;
-	private Integer minutos, segundos=0, calorias=0;
+	private Integer minutos, segundos=59;
+	private Double calorias=0.0;
 	private String fecha;
 	private static Date d; 
 	clsOpcEntrenamiento entrenamiento;
@@ -61,15 +64,13 @@ public class frEntrena extends JFrame implements Runnable
 		pCentral.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		lblVideo = new JLabel();
-		lblVideo.setIcon(new ImageIcon(frCorrer.class.getResource("/img/map.jpeg")));
+		lblVideo.setIcon(new ImageIcon(frCorrer.class.getResource("/img/mapa.jpeg")));
 		lblVideo.setHorizontalAlignment(SwingConstants.CENTER);
 		pCentral.add(lblVideo);
 		pTime = new JPanel();
 		pCentral.add(pTime);
 		
 		minutos = entrena.getDuracion()-1;
-		segundos = 59;
-		calorias = 0;
 		
 		lblTime = new JLabel("");
 		lblTime.setHorizontalAlignment(SwingConstants.CENTER);
@@ -133,24 +134,13 @@ public class frEntrena extends JFrame implements Runnable
 				 fecha = f2.format(d);
 				 
 				 try 
-				 {
-//					 String TIME;
-//					 if (minutos==0) TIME = "00.";
-//					 else if (minutos<10) TIME = "0"+minutos.toString()+".";
-//					 else TIME = minutos.toString()+".";
-//					 
-//					 if (segundos<10) TIME = TIME+"0"+segundos;
-//					 else TIME = TIME + segundos.toString();
-					 
+				 { 
 					BD.registrarEntrenamiento("datetime('now')", time.getText().replace(":", "."), calorias, entrenamiento.getCodigo(), user.getUsuario());
 					clsEntrenamiento entrena = BD.getEntrenamiento(fecha); 
-//					System.out.println(fecha);
 					
 					frDetalleEntrena ventana = new frDetalleEntrena(user,entrena);
 					ventana.setVisible(true);
 					dispose();
-					
-					
 				 } 
 				 catch (ClassNotFoundException e1) 
 				 {
@@ -194,32 +184,25 @@ public class frEntrena extends JFrame implements Runnable
                 {
                 	Thread.sleep( 1000 );
 
+                	DecimalFormat df = new DecimalFormat("#.0");
+                	
                     segundos=segundos-1;
+                    calorias=calorias+entrenamiento.getCalxsec();
                        
                     if( segundos == 00 )
                     {
                     	segundos = 59;
                     	minutos=minutos-1;
-                    	calorias=calorias+entrenamiento.getCalxmin();
-                    	calo=calo+calorias;
-                    }
-                    if(minutos<10) 
-                    {
-                    	min = "0" + minutos;
-                    }
-                    else 
-                    {
-                    	min = minutos.toString();
-                    }
-                    if(segundos<10 ) 
-                    {
-                    	seg = "0" + segundos;
-                    }
-                    else 
-                    {
-                    	seg = segundos.toString();
                     }
                     
+                    if(minutos<10) min = "0" + minutos;
+                    else min = minutos.toString();
+                    
+                    if(segundos<10 ) seg = "0" + segundos;
+                    else seg = segundos.toString();
+                  
+                    if (calorias<1.0) calo="0"+df.format(calorias);
+                	else calo=df.format(calorias);
                     
                     time.setText(min + ":" + seg);
                     time.repaint();
@@ -231,7 +214,7 @@ public class frEntrena extends JFrame implements Runnable
         catch(Exception e)
         {
         	time.setText( "00:00" );
-        	cal.setText("0");
+        	cal.setText("0.0");
         }
     }
 }

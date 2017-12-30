@@ -56,7 +56,7 @@ public class pDibujoRegistrosC extends JPanel
 //	String[] fechas;
 	
 //	ArrayList<Integer>duracion;
-	ArrayList<Integer>cal;
+	ArrayList<Integer>atributo;
 //	ArrayList<Integer>ritmo;
 //	ArrayList<Double>km;
 	
@@ -96,7 +96,7 @@ public class pDibujoRegistrosC extends JPanel
 		iniciarColores();
 		
 //		duracion= new ArrayList<Integer>();
-		cal = new ArrayList<Integer>();
+		atributo = new ArrayList<Integer>();
 //		ritmo = new ArrayList<Integer>();
 //		km = new ArrayList<Double>();
 		
@@ -124,13 +124,13 @@ public class pDibujoRegistrosC extends JPanel
 		
 		
 	// Se dibuja en orden por tamanyos
-	public void dibujarCal ( int numVariable, int numCarrera, String fecha, int valor ) 
+	public void dibujarAtributo ( int numVariable, int numCarrera, String fecha, int valor ) 
 	{
 		if (fechas.size() == numCarrera) fechas.add( fecha );
 		
 		this.numVariable = numVariable;
 		
-		cal.add( valor );
+		atributo.add( valor );
 		if (valor > max) 
 		{
 			max = (int) (valor * 1.1);
@@ -153,14 +153,14 @@ public class pDibujoRegistrosC extends JPanel
 	{
 		g2.setColor(colores.get(numVariable));
 		int x = calcX(numCarrera);
-		int y = calcY(cal.get(numCarrera) );
+		int y = (int) calcY(atributo.get(numCarrera) );
 		if (marcadaFila(numVariable))
 			g2.fillOval( x-RADIO_CIRCULO_PUNTO, y-RADIO_CIRCULO_PUNTO, RADIO_CIRCULO_PUNTO*2, RADIO_CIRCULO_PUNTO*2 );
 		else
 			g2.drawOval( x-RADIO_CIRCULO_PUNTO, y-RADIO_CIRCULO_PUNTO, RADIO_CIRCULO_PUNTO*2, RADIO_CIRCULO_PUNTO*2 );
 		if (numCarrera>0) {  // Dibujar línea
 			int xAnt = calcX( numCarrera-1);
-			int yAnt = calcY( cal.get(numCarrera-1) );
+			int yAnt = calcY( atributo.get(numCarrera-1) );
 			if (marcadaFila(numVariable)) 
 			{
 				g2.setStroke( stroke5 );
@@ -182,11 +182,11 @@ public class pDibujoRegistrosC extends JPanel
 		g2.fillRect( 0, 0, getWidth(), getHeight()/2 );
 		dibujaEjes();
 		// Dibuja primero los tamaños
-		for (int numProc=0; numProc<cal.size(); numProc++) 
+		for (int numProc=0; numProc<atributo.size(); numProc++) 
 		{
 			for (int numTam=0; numTam<fechas.size(); numTam++) 
 			{
-				if (cal.size() > numTam) 
+				if (atributo.size() > numTam) 
 				{   
 					dibujarDato( numProc, numTam );
 				}

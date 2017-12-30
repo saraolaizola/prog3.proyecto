@@ -55,7 +55,7 @@ public class frCarrera extends JFrame
 				bEmpezar.setBorder(null);             // No considerar el borde 
 				 
 				lblMapa = new JLabel();
-				lblMapa.setIcon(new ImageIcon(frCarrera.class.getResource("/img/map.jpeg")));
+				lblMapa.setIcon(new ImageIcon(frCarrera.class.getResource("/img/mapa.jpeg")));
 				
 				lblMapa.setHorizontalAlignment(SwingConstants.CENTER);
 				    	

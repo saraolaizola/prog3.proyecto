@@ -26,6 +26,8 @@ import LN.clsUsuario;
 
 import javax.swing.JRadioButton;
 
+import java.awt.Color;
+
 public class frListaCarrera extends JFrame 
 {
 
@@ -34,14 +36,14 @@ public class frListaCarrera extends JFrame
 	private JPanel pPrincipal,pTabla,pSuperior,pDibujo,pBotones;
 	private JSplitPane spDatos;
 	private JLabel lblSelecciona;
-	private JButton btnVer,btnVolver;
+	private JButton btnVer,bVolver;
 	private JTable table;
 
 	private ArrayList<String> fechas;
 	private ArrayList<clsCarrera>lista;
 	private clsUsuario usuario;
 	
-	private pDibujoRegistrosC Dibujo = new pDibujoRegistrosC(300,200);
+	private pDibujoRegistrosC Dibujo = new pDibujoRegistrosC(300,400);
 	private ButtonGroup BG;
 	private JRadioButton rdbtnDistancia, rdbtnRitmo,rdbtnDuracion, rdbtnCalorias;
 	
@@ -53,15 +55,20 @@ public class frListaCarrera extends JFrame
 		setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
 		
 		pPrincipal = new JPanel();
+		pPrincipal.setBackground(Color.WHITE);
 		pTabla = new JPanel();
+		pTabla.setBackground(Color.WHITE);
 		pDibujo = new JPanel();
+		pDibujo.setBackground(Color.WHITE);
 		spDatos = new JSplitPane( JSplitPane.VERTICAL_SPLIT );
+		spDatos.setBackground(Color.WHITE);
 		getContentPane().add( pPrincipal, BorderLayout.CENTER );
 		pPrincipal.setLayout(new BorderLayout(0, 0));
 	
 		usuario = user;
 		
 		lblSelecciona = new JLabel("Seleccionar:");
+		lblSelecciona.setBackground(Color.WHITE);
 		lblSelecciona.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblSelecciona.setHorizontalAlignment(SwingConstants.CENTER);
 		
@@ -90,7 +97,7 @@ public class frListaCarrera extends JFrame
 			for (int i=0;i<lista.size();i++)
 			{
 				row[0]=lista.get(i).getFecha();
-				row[1]=lista.get(i).getDuracion();
+				row[1]=lista.get(i).getDuracion().replace(".", ":");
 				model.addRow(row);
 			}	
 		}
@@ -130,7 +137,7 @@ public class frListaCarrera extends JFrame
 		rdbtnCalorias = new JRadioButton("Calor\u00EDas");
 		
 		rdbtnCalorias.setSelected(true);
-		pCalorias();
+		pAtributo("cal");
 		
 		BG.add(rdbtnDuracion);
 		BG.add(rdbtnDistancia);
@@ -143,18 +150,20 @@ public class frListaCarrera extends JFrame
 		pDibujo.add(pBotones, BorderLayout.SOUTH);
 		
 		pSuperior = new JPanel();
+		pSuperior.setBackground(Color.WHITE);
 		getContentPane().add(pSuperior, BorderLayout.NORTH);
 		pSuperior.setLayout(new BorderLayout(0, 0));
 		
-		btnVolver = new JButton("");
-		btnVolver.setHorizontalAlignment(SwingConstants.LEFT);
-		btnVolver.setIcon(new ImageIcon(frElegirEntrena.class.getResource("/img/back.png")));
-		btnVolver.setBorderPainted( false );
-		pSuperior.add(btnVolver);
+		bVolver = new JButton();
+		bVolver.setIcon(new ImageIcon(frCarrera.class.getResource("/img/back.png")));
+		bVolver.setOpaque(false);            // Fondo Transparente (los gráficos son png transparentes)
+		bVolver.setContentAreaFilled(false); // No rellenar el área
+		bVolver.setBorderPainted(false);     // No pintar el borde
+		pSuperior.add(bVolver, BorderLayout.WEST);
 		
 		setSize(375,667);
 		setResizable(false);
-		btnVolver.addActionListener( new ActionListener() 
+		bVolver.addActionListener( new ActionListener() 
 		{
 			@Override
 			public void actionPerformed(ActionEvent e) 
@@ -175,14 +184,14 @@ public class frListaCarrera extends JFrame
 		{
 		  public void actionPerformed(ActionEvent e)
 		  {
-		    
+			  pAtributo("km");
 		  }
 		});
 		rdbtnCalorias.addActionListener(new ActionListener()
 		{
 		  public void actionPerformed(ActionEvent e)
 		  {
-			  pCalorias();
+			  pAtributo("cal");
 		  }
 		});
 		
@@ -193,14 +202,22 @@ public class frListaCarrera extends JFrame
 		    
 		  }
 		});
+		bVolver.addActionListener( new ActionListener() 
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				frLista ventana = new frLista (user);
+				ventana.setVisible(true);
+				dispose();
+			}
+		});
 	}
 	
-	private void pCalorias()
+	private void pAtributo(String atributo)
 	{	
 		try
-		{
-			int tamMax=0;
-			
+		{	
 			for (int i=0;i<lista.size();i++)
 			{
 				fechas.add(lista.get(i).getFecha());
@@ -208,24 +225,40 @@ public class frListaCarrera extends JFrame
 			
 			Dibujo.iniciarDibujo(lista.size(), fechas);
 			
-			for (int i=0; i<lista.size(); i++) 
-			{
-				// Realizar prueba
-				int cal = lista.get(i).getCalorias();
-				String fecha = lista.get(i).getFecha();
-				
-				// A�adir dato a dibujo
-				Dibujo.dibujarCal(1, i, fecha, cal);
-				Dibujo.repaint();
-				// Cancelar el hilo si se interrumpe desde fuera
-				if (Thread.interrupted()) return;  
-			}
+			DibujoAtributo(atributo);
 			
 			Dibujo.repaint();
 		}
 		catch(NullPointerException e)
 		{
 			System.out.println("No hay carreras");
+		}
+	}
+	
+	
+	public void DibujoAtributo (String atributo)
+	{
+		switch (atributo)
+		{
+			case "cal":
+				for (int i=0; i<lista.size(); i++) 
+				{
+					double cal = lista.get(i).getCalorias();
+					String fecha = lista.get(i).getFecha();
+					Dibujo.dibujarAtributo(1, i, fecha, (int)cal);
+					Dibujo.repaint();
+				}
+				break;
+				
+			case "km":
+				for (int i=0; i<lista.size(); i++) 
+				{
+					double km = lista.get(i).getKm();
+					String fecha = lista.get(i).getFecha();
+					Dibujo.dibujarAtributo(1, i, fecha, (int)km);
+					Dibujo.repaint();
+				}
+				break;
 		}
 	}
 }

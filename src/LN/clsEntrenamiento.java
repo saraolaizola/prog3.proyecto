@@ -9,7 +9,7 @@ public class clsEntrenamiento extends clsActividad
 
 	String codigo;
 	
-	public clsEntrenamiento(String fecha, String duracion, int calorias, String codigo) 
+	public clsEntrenamiento(String fecha, String duracion, double calorias, String codigo) 
 	{
 		super(fecha, duracion, calorias);
 		this.codigo = codigo;

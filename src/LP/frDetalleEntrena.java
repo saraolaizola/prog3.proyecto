@@ -40,7 +40,7 @@ public class frDetalleEntrena extends JFrame
 		fecha = entrenamiento.getFecha();
 		duracion = entrenamiento.getDuracion().replace(".", ":");
 //		duracion = duracion.charAt(0)+duracion.charAt(1)+":"+duracion.charAt(3)+duracion.charAt(4);
-		calorias = Integer.toString(entrenamiento.getCalorias());
+		calorias = Double.toString(entrenamiento.getCalorias());
 		codigo = entrenamiento.getCodigo();
 		
 		JLabel lblVolver = new JLabel("");

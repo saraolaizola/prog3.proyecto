@@ -15,6 +15,7 @@ import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
 
 import LN.clsUsuario;
+import java.awt.Font;
 
 /**
  * Pantalla principal de la applicación. 
@@ -27,15 +28,26 @@ public class frPrincipal extends JFrame
 {
 	JPanel pPrincipal, pMenu;
 	JButton bRegistro,bActividad,bPerfil, bEmpezar, bCorrer, bEntrenar;
+	private JPanel pSuperior;
+	private JLabel lblActividad;
 	
 	public frPrincipal(clsUsuario user) 
 	{
 		// Liberación de la ventana por defecto al cerrar
 		setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
+		setBackground(Color.white);
 		
 		// Creación contenedores y componentes
 		pPrincipal = new JPanel();
+		pPrincipal.setBackground(Color.white);
 		pMenu = new JPanel();
+		
+		pSuperior = new JPanel();
+		getContentPane().add(pSuperior, BorderLayout.NORTH);
+		
+		lblActividad = new JLabel("Actividad");
+		lblActividad.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		pSuperior.add(lblActividad);
 		
 		getContentPane().add( pPrincipal );
 		pPrincipal.setLayout( null );

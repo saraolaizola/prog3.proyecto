@@ -99,7 +99,7 @@ public class BD
 		try 
 		{
 			statement.executeUpdate("create table if not exists entrenamiento " +
-				"(fecha string, durancion string,  calorias integer, codigo string, usuario string, primary key (fecha))");
+				"(fecha string, durancion string,  calorias real, codigo string, usuario string, primary key (fecha))");
 		} 
 		catch (SQLException e) 
 		{
@@ -116,7 +116,7 @@ public class BD
 		try 
 		{
 			statement.executeUpdate("create table if not exists carrera " +
-				"(fecha string, duracion string, calorias integer, km real, ritmo string, usuario string, primary key (fecha))");
+				"(fecha string, duracion string, calorias real, km real, ritmo string, usuario string, primary key (fecha))");
 		} 
 		catch (SQLException e) 
 		{
@@ -133,7 +133,7 @@ public class BD
 		try 
 		{
 			statement.executeUpdate("create table if not exists opcionentrenamiento " +
-				"(codigo string, nombre string, nivel string, calxmin integer, duracion integer, primary key (codigo))");
+				"(codigo string, nombre string, nivel string, calxsec real, duracion integer, primary key (codigo))");
 		} 
 		catch (SQLException e) 
 		{
@@ -241,7 +241,7 @@ public class BD
 					entrena.setCodigo(rs.getString("codigo"));
 					entrena.setNombre(rs.getString("nombre"));
 					entrena.setNivel(rs.getString("nivel"));
-					entrena.setCalxmin(rs.getInt("calxmin"));
+					entrena.setCalxsec(rs.getDouble("calxsec"));
 					entrena.setDuracion(rs.getInt("duracion"));
 		       	}
 			}
@@ -267,7 +267,7 @@ public class BD
 					entrena.setCodigo(rs.getString("codigo"));
 					entrena.setFecha(rs.getString("fecha"));
 					entrena.setDuracion(rs.getString("duracion"));
-					entrena.setCalorias(rs.getInt("calorias"));
+					entrena.setCalorias(rs.getDouble("calorias"));
 					
 		       	}
 			}
@@ -292,7 +292,7 @@ public class BD
 		       	{
 					carrera.setFecha(rs.getString("fecha"));
 					carrera.setDuracion(rs.getString("duracion"));
-					carrera.setCalorias(rs.getInt("calorias"));
+					carrera.setCalorias(rs.getDouble("calorias"));
 					carrera.setKm(rs.getInt("km"));
 					carrera.setRitmo(rs.getString("ritmo"));
 		       	}
@@ -315,7 +315,7 @@ public class BD
 	 * @param usuario
 	 * @throws ClassNotFoundException
 	 */
-	public static void registrarCarrera (String fecha, String duracion, int calorias,  double km, String ritmo, String usuario) throws ClassNotFoundException
+	public static void registrarCarrera (String fecha, String duracion, double calorias,  double km, String ritmo, String usuario) throws ClassNotFoundException
 	{
 		try
 		{	
@@ -336,7 +336,7 @@ public class BD
 	 * @param usuario
 	 * @throws ClassNotFoundException
 	 */
-	public static void registrarEntrenamiento (String fecha, String duracion, int calorias, String codigo, String usuario) throws ClassNotFoundException
+	public static void registrarEntrenamiento (String fecha, String duracion, double calorias, String codigo, String usuario) throws ClassNotFoundException
 	{
 		try
 		{	
@@ -348,18 +348,12 @@ public class BD
 		} 
 	}
 	
-	/**
-	 * Guarda los datos de las opciones de entrenamiento en la tabla OpcEntrenamiento
-	 * @param codigo
-	 * @param nombre
-	 * @param calxmin
-	 * @throws clsOpcEntrenamientoRepetida 
-	 */
-	public static void registrarOpcEntrenamiento (String codigo, String nombre, String nivel, int calxmin, int duracion) throws clsOpcEntrenamientoRepetida
+	
+	public static void registrarOpcEntrenamiento (String codigo, String nombre, String nivel, double calxsec, int duracion) throws clsOpcEntrenamientoRepetida
 	{
 		try
 		{	
-			statement.executeUpdate("insert into opcionentrenamiento values('"+codigo+"','"+nombre+"','"+nivel+"',"+calxmin+","+duracion+")");
+			statement.executeUpdate("insert into opcionentrenamiento values('"+codigo+"','"+nombre+"','"+nivel+"',"+calxsec+","+duracion+")");
 		}	 
 		catch(SQLException e)
 		{
@@ -372,11 +366,11 @@ public class BD
 	{
 		try 
 		{
-			BD.registrarOpcEntrenamiento("001", "Abdominales", "Principiante", 5,10);
+			BD.registrarOpcEntrenamiento("001", "Abdominales", "Principiante", 0.01,10);
 			//https://www.youtube.com/watch?v=1919eTCoESo&list=PL6070A835F843D79F
-			BD.registrarOpcEntrenamiento("002", "Cardio quema grasas", "Intermedio", 8, 20);
+			BD.registrarOpcEntrenamiento("002", "Cardio quema grasas", "Intermedio", 0.02, 20);
 			//https://www.youtube.com/watch?v=fcN37TxBE_s
-			BD.registrarOpcEntrenamiento("003", "Cardio Kick Boxing", "Experto", 9, 15);
+			BD.registrarOpcEntrenamiento("003", "Cardio Kick Boxing", "Experto", 0.03, 15);
 			//https://www.youtube.com/watch?v=Vve4BVTZ0QU
 		} 
 		catch (clsOpcEntrenamientoRepetida e){
@@ -397,8 +391,8 @@ public class BD
 				String nombre = rs.getString("nombre");
 				String nivel = rs.getString("nivel");
 				int duracion = rs.getInt("duracion");
-				int calxmin = rs.getInt("calxmin");
-				clsOpcEntrenamiento entrenamiento = new clsOpcEntrenamiento(codigo, nombre, nivel, duracion, calxmin);
+				double calxsec = rs.getDouble("calxsec");
+				clsOpcEntrenamiento entrenamiento = new clsOpcEntrenamiento(codigo, nombre, nivel, duracion,calxsec);
 				lista.add(entrenamiento);
 			}
 		}	 
@@ -420,7 +414,7 @@ public class BD
 			{	
 				String fecha = rs.getString("fecha");
 				String duracion = rs.getString("duracion");
-				int calorias = rs.getInt("calorias");
+				double calorias = rs.getDouble("calorias");
 				double km = rs.getDouble("km");
 				String ritmo = rs.getString("ritmo");
 				clsCarrera carrera = new clsCarrera(fecha, duracion, calorias, km, ritmo);

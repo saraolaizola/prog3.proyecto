@@ -5,9 +5,9 @@ import java.sql.Date;
 public class clsActividad 
 {
 	private String fecha,duracion;
-	private int calorias;
+	private double calorias;
 	
-	public clsActividad(String fecha, String duracion, int calorias) 
+	public clsActividad(String fecha, String duracion, double calorias) 
 	{
 		super();
 		this.fecha = fecha;
@@ -30,12 +30,12 @@ public class clsActividad
 		this.duracion = duracion;
 	}
 
-	public int getCalorias() 
+	public double getCalorias() 
 	{
 		return calorias;
 	}
 
-	public void setCalorias(int calorias) 
+	public void setCalorias(double calorias) 
 	{
 		this.calorias = calorias;
 	}

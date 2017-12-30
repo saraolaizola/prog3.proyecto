@@ -13,6 +13,8 @@ import javax.swing.SwingConstants;
 
 import LN.clsUsuario;
 import java.awt.FlowLayout;
+import javax.swing.JLabel;
+import java.awt.Font;
 
 /**
  * Pantalla registros. El usuario decide que registros quiere ver (carrera o entrenamiento)
@@ -26,16 +28,27 @@ public class frLista extends JFrame
 	
 	JPanel pPrincipal, pMenu, pCentral, pEntrena, pCorrer;
 	JButton bRegistro,bActividad,bPerfil, bEmpezar, bCorrer, bEntrenar;  
+	private JPanel pSuperior;
+	private JLabel lblRegistros;
 	
 	public frLista(clsUsuario user) 
 	{
 		// Liberación de la ventana por defecto al cerrar
 				setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
+				setBackground(Color.white);
 				
 				// Creación contenedores y componentes
 				pPrincipal = new JPanel();
+				pPrincipal.setBackground(Color.white);
 				pMenu = new JPanel();
 				pCorrer = new JPanel();
+				
+				pSuperior = new JPanel();
+				getContentPane().add(pSuperior, BorderLayout.NORTH);
+				
+				lblRegistros = new JLabel("Registros");
+				lblRegistros.setFont(new Font("Tahoma", Font.PLAIN, 17));
+				pSuperior.add(lblRegistros);
 				
 				getContentPane().add( pPrincipal );
 				pPrincipal.setBackground( Color.white );

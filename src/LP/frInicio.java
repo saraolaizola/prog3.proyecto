@@ -21,6 +21,8 @@ import javax.swing.SwingConstants;
 
 import LD.BD;
 import LN.clsUsuario;
+import javax.swing.UIManager;
+import java.awt.SystemColor;
 
 public class frInicio extends JFrame
 {
@@ -43,30 +45,36 @@ public class frInicio extends JFrame
 		pCentral.setLayout(new BoxLayout(pCentral, BoxLayout.Y_AXIS));
 		
 		pBotonera = new JPanel();
+		pBotonera.setBackground(Color.BLACK);
 		getContentPane().add(pBotonera, BorderLayout.SOUTH);
 		pBotonera.setLayout(new FlowLayout());
 		
 		pLogo = new JPanel();
+		pLogo.setBackground(Color.BLACK);
 		getContentPane().add(pLogo, BorderLayout.NORTH);
-		pLogo.setLayout(new BoxLayout(pLogo, BoxLayout.Y_AXIS));
 		
 		pDatos = new JPanel();
+		pDatos.setBackground(Color.BLACK);
 		pCentral.add(pDatos, BorderLayout.SOUTH);
 		
 		
 		JTextField txtUsuario = new JTextField();
+		txtUsuario.setForeground(Color.BLACK);
 		txtUsuario.setColumns(30);
 		JPasswordField passwordField = new JPasswordField();
 		passwordField.setColumns(30);
 		
-		JLabel lblInicia = new JLabel ("RUN APP");
-		lblInicia.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		JLabel lblInicia = new JLabel ("RUNTRAINING");
+		lblInicia.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblInicia.setFont(new Font("Levenim MT", Font.PLAIN, 25));
 		lblInicia.setHorizontalAlignment(SwingConstants.CENTER);
-		lblInicia.setForeground(Color.BLUE);
+		lblInicia.setForeground(new Color(0, 102, 255));
 		JLabel lblUsuario = new JLabel ("Usuario:");
+		lblUsuario.setForeground(Color.WHITE);
 		lblUsuario.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
 		JLabel lblContrasenya = new JLabel ("Contraseña:");
+		lblContrasenya.setForeground(Color.WHITE);
 		lblContrasenya.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblContrasenya.setHorizontalAlignment(SwingConstants.CENTER);
 		JLabel lblError = new JLabel("*Usuario y/o contraseña incorrecta*");
@@ -78,16 +86,26 @@ public class frInicio extends JFrame
 		foto = new JLabel("");
 		foto.setHorizontalAlignment(SwingConstants.CENTER);
 		foto.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		foto.setIcon(new ImageIcon(frPerfil.class.getResource("/img/logo.jpg")));
+		foto.setIcon(new ImageIcon(frPerfil.class.getResource("/img/logo.png")));
 		
 		
-		JButton bIniciar = new JButton( "Iniciar sesión" );
+		JButton bIniciar = new JButton( "Iniciar Sesi\u00F3n" );
+		bIniciar.setForeground(SystemColor.text);
+		bIniciar.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		bIniciar.setBackground(SystemColor.desktop);
 		JButton bRegistrar = new JButton( "Registrarme" );
+		bRegistrar.setForeground(SystemColor.text);
+		bRegistrar.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		bRegistrar.setBackground(Color.DARK_GRAY);
+		pLogo.setLayout(new BorderLayout(0, 0));
 	
 		// Añadido de componentes a contenedores
 		
-		pLogo.add( lblInicia );
-		pLogo.add(foto);
+		pLogo.add( lblInicia, BorderLayout.CENTER );
+		pLogo.add(foto, BorderLayout.SOUTH);
+		
+		JLabel label = new JLabel("   ");
+		pLogo.add(label, BorderLayout.NORTH);
 		pDatos.add( lblUsuario );
 		pDatos.add( txtUsuario );
 		pDatos.add( lblContrasenya );
@@ -103,7 +121,8 @@ public class frInicio extends JFrame
 		setVisible(true);
 		
 		// Escuchadores de botones
-		bIniciar.addActionListener( new ActionListener() {
+		bIniciar.addActionListener( new ActionListener() 
+		{
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{

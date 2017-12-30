@@ -68,7 +68,7 @@ public class frElegirEntrena extends JFrame
 				row[0]=lista.get(i).getCodigo();
 				row[1]=lista.get(i).getNombre();
 				row[2]=lista.get(i).getNivel();
-				row[3]=lista.get(i).getCalxmin();
+				row[3]=lista.get(i).getCalxsec();
 				row[4]=lista.get(i).getDuracion();
 				model.addRow(row);
 			}	
