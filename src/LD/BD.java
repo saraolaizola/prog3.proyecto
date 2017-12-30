@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import COMUN.clsOpcEntrenamientoRepetida;
 import COMUN.clsUsuarioRepetido;
 import LN.clsCarrera;
+import LN.clsEntrenamiento;
 import LN.clsOpcEntrenamiento;
 import LN.clsUsuario;
 
@@ -242,6 +243,32 @@ public class BD
 					entrena.setNivel(rs.getString("nivel"));
 					entrena.setCalxmin(rs.getInt("calxmin"));
 					entrena.setDuracion(rs.getInt("duracion"));
+		       	}
+			}
+		}	 
+		catch(SQLException e)
+		{
+			logger.log(Level.WARNING, e.getMessage());
+		}
+		return entrena;
+	}
+	
+	public static clsEntrenamiento getEntrenamiento (String codigo)
+	{
+		clsEntrenamiento entrena = new clsEntrenamiento();
+		try
+		{
+			statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery("select * from entrenamiento");
+			while(rs.next())
+			{
+				if (rs.getString("codigo").equals(codigo))
+		       	{
+					entrena.setCodigo(rs.getString("codigo"));
+					entrena.setFecha(rs.getString("fecha"));
+					entrena.setDuracion(rs.getString("duracion"));
+					entrena.setCalorias(rs.getInt("calorias"));
+					
 		       	}
 			}
 		}	 

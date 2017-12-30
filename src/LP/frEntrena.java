@@ -19,6 +19,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import LD.BD;
+import LN.clsCarrera;
+import LN.clsEntrenamiento;
 import LN.clsOpcEntrenamiento;
 import LN.clsUsuario;
 import java.awt.GridBagLayout;
@@ -127,12 +129,28 @@ public class frEntrena extends JFrame implements Runnable
 			{
 				 cronometroActivo = false;
 				 
-				 SimpleDateFormat f2 = new SimpleDateFormat( "dd/MM/yyyy HH:mm" );
+				 SimpleDateFormat f2 = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss" );
 				 fecha = f2.format(d);
 				 
 				 try 
 				 {
-					BD.registrarEntrenamiento(fecha, time.getText(), calorias, entrenamiento.getCodigo(), user.getUsuario());
+//					 String TIME;
+//					 if (minutos==0) TIME = "00.";
+//					 else if (minutos<10) TIME = "0"+minutos.toString()+".";
+//					 else TIME = minutos.toString()+".";
+//					 
+//					 if (segundos<10) TIME = TIME+"0"+segundos;
+//					 else TIME = TIME + segundos.toString();
+					 
+					BD.registrarEntrenamiento("datetime('now')", time.getText().replace(":", "."), calorias, entrenamiento.getCodigo(), user.getUsuario());
+					clsEntrenamiento entrena = BD.getEntrenamiento(fecha); 
+//					System.out.println(fecha);
+					
+					frDetalleEntrena ventana = new frDetalleEntrena(user,entrena);
+					ventana.setVisible(true);
+					dispose();
+					
+					
 				 } 
 				 catch (ClassNotFoundException e1) 
 				 {

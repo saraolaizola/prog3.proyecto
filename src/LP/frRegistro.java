@@ -8,13 +8,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerListModel;
+import javax.swing.SwingConstants;
 
 import COMUN.clsUsuarioRepetido;
 import LD.BD;
@@ -26,15 +30,16 @@ public class frRegistro extends JFrame
 {
 	private static final long serialVersionUID = 1L;
 
-	private JPanel pPrincipal;
+	private JPanel pPrincipal, pSuperior, pVolver;
 	private JPanel pCentral;
 	private JPanel pInferior;
 	
 	private JButton bAceptar, bVolver;
 	private JLabel lblPeso, lblAltura, lblSexo, lblContrasenya, lblNombre, lblApellido, lblUsuario;
-	private JComboBox comboPeso, comboAltura, comboSexo;
+	private JComboBox  comboSexo;
+	private JSpinner spinPeso, spinAltura;
 	private JTextField txtUsuario, txtNombre, txtContrasenya, txtApellido;  
-	private DefaultComboBoxModel dmc1, dmc2;
+	private SpinnerListModel slm1, slm2;
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 	
 	
@@ -52,6 +57,7 @@ public class frRegistro extends JFrame
 		pPrincipal = new JPanel();
 		pCentral = new JPanel();
 		pInferior = new JPanel();
+		pSuperior= new JPanel();
 		
 		// Formato y layouts
 		
@@ -62,6 +68,7 @@ public class frRegistro extends JFrame
 		getContentPane().add (pCentral, BorderLayout.CENTER);
 		pCentral.setLayout(new BoxLayout(pCentral, BoxLayout.Y_AXIS));
 		getContentPane().add(pInferior, BorderLayout.SOUTH);
+		getContentPane().add(pSuperior, BorderLayout.NORTH);
 		
 		bAceptar = new JButton( "Aceptar" );
 		bVolver = new JButton( "Volver" );
@@ -75,26 +82,35 @@ public class frRegistro extends JFrame
 		lblApellido = new JLabel ("Apellido:");
 		txtApellido = new JTextField();
 		
-		lblSexo = new JLabel ("Sexo:");	
-		comboPeso = new JComboBox();
-		String[] pesos = {"45","46","47","48","49","50","51","52","55","56","57","59","60"};
-		dmc1 = new DefaultComboBoxModel(pesos);
-		comboPeso = new JComboBox(dmc1);
+		lblPeso = new JLabel ("Peso:");	
+		spinPeso = new JSpinner();
+		String[] pesos = {"45","46","47","48","49","50","51","52","55","56","57","59","60",
+						  "61","62","63","64","65","66","67","68","69", "70","71","72","73",
+						  "74","75","76","77","78","79","80","81","82","83","84","85","86",
+						  "87","88","89","90","91","92","93","94","95","96","97","98","99 o más"};
+		slm1 = new SpinnerListModel(pesos);
+		spinPeso = new JSpinner(slm1);
+		spinPeso.setValue("65");
 		
 		lblAltura = new JLabel ("Altura:");
-		comboAltura = new JComboBox();
-		String[] alturas = {"145","146","147","148","149","150","151","152","155","156","157","159","160"};
-		dmc2= new DefaultComboBoxModel(alturas);
-		comboAltura = new JComboBox(dmc2);
+		spinAltura = new JSpinner();
+		String[] alturas = {"145","146","147","148","149","150","151","152","155","156","157","159","160",
+							"161","162","163","164","165","166","167","168","169","170","171","172","173",
+							"174","175","176","177","178","179","180","181","182","183","184","185","186",
+							"187","188","189","190","191","192","193","194","195","196","197","198","199 o más"};
+		slm2= new SpinnerListModel(alturas);
+		spinAltura = new JSpinner(slm2);
+		spinAltura.setValue("170");
 		
 		lblSexo = new JLabel ("Sexo:");
 		comboSexo = new JComboBox();
 		comboSexo.addItem("Femenino");
 		comboSexo.addItem("Masculino");
 		
-		lblPeso = new JLabel ("Peso:");
-		lblAltura = new JLabel ("Sexo:");
-		lblSexo = new JLabel ("Contraseña:");
+		
+//		lblPeso = new JLabel ("Peso:");
+//		lblAltura = new JLabel ("Altura:");
+//		lblSexo = new JLabel ("Contraseña:");
 		
 		pCentral.add(lblUsuario);
 		pCentral.add(txtUsuario);
@@ -107,9 +123,9 @@ public class frRegistro extends JFrame
 		pCentral.add(lblSexo);
 		pCentral.add(comboSexo);
 		pCentral.add(lblAltura);
-		pCentral.add(comboAltura);
+		pCentral.add(spinAltura);
 		pCentral.add(lblPeso);
-		pCentral.add(comboPeso);
+		pCentral.add(spinPeso);
 		
 		pInferior.add(bAceptar);
 		pInferior.add(bVolver);
@@ -134,8 +150,8 @@ public class frRegistro extends JFrame
 					nombre = nombre.toUpperCase();
 					String apellido = txtApellido.getText();
 					apellido = apellido.toUpperCase();
-					double peso = Double.parseDouble((String) comboPeso.getSelectedItem()); 
-					double altura = Double.parseDouble((String) comboAltura.getSelectedItem());
+					double peso = Double.parseDouble((String) spinPeso.getValue()); 
+					double altura = Double.parseDouble((String) spinAltura.getValue());
 					String sexo = String.valueOf(comboSexo.getSelectedItem());
 					
 					BD.altaUsuario(usuario,contrasenya,nombre,apellido,peso,altura,sexo);
@@ -172,5 +188,8 @@ public class frRegistro extends JFrame
 				dispose();
 			}
 		});
+		
+		
+		
 	}
 }

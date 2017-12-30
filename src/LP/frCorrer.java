@@ -133,8 +133,8 @@ public class frCorrer extends JFrame implements Runnable
 			{
 				 cronometroActivo = false;
 				 
-//				 SimpleDateFormat f2 = new SimpleDateFormat( "dd-MM-yyyy HH:mm" );
-//				 fecha = f2.format(d);
+				 SimpleDateFormat f2 = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" );
+				 fecha = f2.format(d);
 				
 				 
 				 try 
@@ -152,9 +152,8 @@ public class frCorrer extends JFrame implements Runnable
 //					 else if (s<10) RITMO = m+".0"+s;
 //					 else RITMO = m+"."+s;
 					 
-					BD.registrarCarrera("datetime('now')",lblTime.getText(),calorias.intValue(),kilometros,lblRitmo.getText(),user.getUsuario());
+					BD.registrarCarrera("datetime('now')",lblTime.getText().replace(":", "."),calorias.intValue(),kilometros,lblRitmo.getText().replace("'", "."),user.getUsuario());
 					clsCarrera carrera = BD.getCarrera(fecha); 
-					System.out.println(fecha);
 					
 					frDetalleCarrera ventana = new frDetalleCarrera(user,carrera);
 					ventana.setVisible(true);
@@ -238,9 +237,9 @@ public class frCorrer extends JFrame implements Runnable
                 		seg = segundos.toString();
                 	}
                     
-                	time.setText(min + " " + seg);
+                	time.setText(min + ":" + seg);
                 	time.repaint();
-                	ritmo.setText(m +" "+s);
+                	ritmo.setText(m +"'"+s);
                 	ritmo.repaint();
                 	cal.setText(calorias.toString());
                 	cal.repaint();
