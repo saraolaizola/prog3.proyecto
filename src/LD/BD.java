@@ -428,4 +428,27 @@ public class BD
 		return listaCarreras;
 	}
 	
+	public static ArrayList <clsEntrenamiento> getMisEntrenamientos(String usuario)
+	{
+		ArrayList <clsEntrenamiento> listaEntrenas = new ArrayList<clsEntrenamiento>();
+		try
+		{
+			statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery("select * from entrenamiento where usuario = '"+usuario+"';");
+			while(rs.next())
+			{	
+				clsEntrenamiento entrena = new clsEntrenamiento ();
+				entrena.setCodigo(rs.getString("codigo"));
+				entrena.setFecha(rs.getString("fecha"));
+				entrena.setDuracion(rs.getString("duracion"));
+				entrena.setCalorias(rs.getDouble("calorias"));
+				listaEntrenas.add(entrena);
+			}
+		}	 
+		catch(SQLException e)
+		{
+			logger.log(Level.WARNING, e.getMessage());
+		}
+		return listaEntrenas;
+	}
 }

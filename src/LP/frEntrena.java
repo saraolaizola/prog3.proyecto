@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
@@ -40,8 +41,6 @@ public class frEntrena extends JFrame implements Runnable
 	private JLabel lblVideo,lblTime,lblCal,cal,time;
 	private Integer minutos, segundos=59;
 	private Double calorias=0.0;
-	private String fecha;
-	private static Date d; 
 	clsOpcEntrenamiento entrenamiento;
 
 	boolean cronometroActivo, cronometroPlay;
@@ -94,7 +93,6 @@ public class frEntrena extends JFrame implements Runnable
 		pCal.add(lblCal, BorderLayout.NORTH);
 		pCal.add(cal, BorderLayout.SOUTH);
 
-        d = new Date();
 		getContentPane().add(pInferior, BorderLayout.SOUTH);
 		
 		btnPause = new JButton("");
@@ -130,13 +128,11 @@ public class frEntrena extends JFrame implements Runnable
 			{
 				 cronometroActivo = false;
 				 
-				 SimpleDateFormat f2 = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss" );
-				 fecha = f2.format(d);
-				 
 				 try 
 				 { 
 					BD.registrarEntrenamiento("datetime('now')", time.getText().replace(":", "."), calorias, entrenamiento.getCodigo(), user.getUsuario());
-					clsEntrenamiento entrena = BD.getEntrenamiento(fecha); 
+					ArrayList <clsEntrenamiento> entrenas = BD.getMisEntrenamientos(user.getUsuario());
+					clsEntrenamiento entrena = entrenas.get(entrenas.size()-1);
 					
 					frDetalleEntrena ventana = new frDetalleEntrena(user,entrena);
 					ventana.setVisible(true);
@@ -145,6 +141,13 @@ public class frEntrena extends JFrame implements Runnable
 				 catch (ClassNotFoundException e1) 
 				 {
 					e1.printStackTrace();
+				 }
+				 catch (ArrayIndexOutOfBoundsException e2)
+				 {
+					 clsEntrenamiento entrena = BD.getMisEntrenamientos(user.getUsuario()).get(0);
+					 frDetalleEntrena ventana = new frDetalleEntrena(user,entrena);
+					 ventana.setVisible(true);
+					 dispose();
 				 }
 			}
 		});

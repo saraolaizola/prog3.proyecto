@@ -16,12 +16,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
 import LD.BD;
 import LN.clsCarrera;
 import LN.clsUsuario;
+
 import java.awt.GridLayout;
 
 public class frCorrer extends JFrame implements Runnable
@@ -33,8 +35,6 @@ public class frCorrer extends JFrame implements Runnable
 	private JLabel lblMapa,lblTime,lblRitmo,lblCal,lblKm,ritmo,cal,km,time;
 	private Integer minutos=0, segundos=0, m=0, s=0;
 	private double kilometros=0.0,calorias=0.0;
-	private String fecha;
-	private static Date d; 
 	
 	boolean cronometroActivo, cronometroPlay;
 	Thread hilo;
@@ -58,7 +58,7 @@ public class frCorrer extends JFrame implements Runnable
 		
 		lblMapa = new JLabel();
 		pPrincipal.add(lblMapa);
-		lblMapa.setIcon(new ImageIcon(frCorrer.class.getResource("/img/mapa.jpeg")));
+		lblMapa.setIcon(new ImageIcon(frCorrer.class.getResource("/img/map.jpeg")));
 		lblMapa.setHorizontalAlignment(SwingConstants.CENTER);
 		getContentPane().add (pCentral, BorderLayout.CENTER);
 		pCentral.setLayout(new GridLayout(0, 3, 0, 0));
@@ -123,7 +123,6 @@ public class frCorrer extends JFrame implements Runnable
 		label_3 = new JLabel("");
 		pCentral.add(label_3);
 
-        d = new Date();
 		getContentPane().add(pInferior, BorderLayout.SOUTH);
 		
 		btnPause = new JButton("");
@@ -159,16 +158,12 @@ public class frCorrer extends JFrame implements Runnable
 			public void actionPerformed(ActionEvent e) 
 			{
 				 cronometroActivo = false;
-				 
-				 SimpleDateFormat f2 = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" );
-				 fecha = f2.format(d);
-	
+				
 				 try 
 				 { 
 					BD.registrarCarrera("datetime('now')",minutos+"."+segundos,calorias,kilometros,m+"."+s,user.getUsuario());
-					System.out.println(minutos+"."+segundos);
-					System.out.println(m+"."+s);
-					clsCarrera carrera = BD.getCarrera(fecha); 
+					ArrayList <clsCarrera> carreras = BD.getMisCarreras(user.getUsuario());
+					clsCarrera carrera = carreras.get(carreras.size()-1);
 					
 					frDetalleCarrera ventana = new frDetalleCarrera(user,carrera);
 					ventana.setVisible(true);
