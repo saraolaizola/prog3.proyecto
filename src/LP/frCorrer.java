@@ -201,7 +201,7 @@ public class frCorrer extends JFrame implements Runnable
 	{
         String min="", seg="",calori="",kilom="";
         Random rn = new Random();
-        int i=10;
+        int i=5;
         
         try
         {
@@ -214,14 +214,14 @@ public class frCorrer extends JFrame implements Runnable
                 	DecimalFormat df = new DecimalFormat("#.0");
                 	
                 	segundos=segundos+1;
-                    calorias=calorias+0.1;
-                	if(segundos==i)
+                    calorias=calorias+0.2;
+                    kilometros=kilometros+0.005;
+                
+                    if(segundos==i)
                 	{
                     	m = rn.nextInt(4)+3;
                     	s = rn.nextInt(99);
-                    	kilometros=kilometros+0.2;
-                    	kilom=df.format(kilometros);
-                    	i=i+10;
+                    	i=i+5;
                     	
                     	if (segundos==60)
                     	{

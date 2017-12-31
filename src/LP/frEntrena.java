@@ -29,6 +29,7 @@ import LN.clsUsuario;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.GridLayout;
 
 
 public class frEntrena extends JFrame implements Runnable
@@ -45,6 +46,7 @@ public class frEntrena extends JFrame implements Runnable
 
 	boolean cronometroActivo, cronometroPlay;
 	Thread hilo;
+	private JPanel pDatos;
 
 	public frEntrena(clsOpcEntrenamiento entrena, clsUsuario user) 
 	{
@@ -55,21 +57,26 @@ public class frEntrena extends JFrame implements Runnable
 		pPrincipal = new JPanel();
 		pInferior = new JPanel();
 		pCentral = new JPanel();
+		pCentral.setBackground(Color.WHITE);
 		
 		getContentPane().add( pPrincipal );
 		pPrincipal.setLayout( null );
 		pPrincipal.setBackground( Color.white );
 		getContentPane().add (pCentral, BorderLayout.CENTER);
-		pCentral.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		pCentral.setLayout(new BorderLayout(0, 0));
 		
 		lblVideo = new JLabel();
-		lblVideo.setIcon(new ImageIcon(frCorrer.class.getResource("/img/mapa.jpeg")));
+		lblVideo.setIcon(new ImageIcon(frCorrer.class.getResource("/img/abdominal.gif")));
 		lblVideo.setHorizontalAlignment(SwingConstants.CENTER);
-		pCentral.add(lblVideo);
-		pTime = new JPanel();
-		pCentral.add(pTime);
+		pCentral.add(lblVideo, BorderLayout.CENTER);
 		
-		minutos = entrena.getDuracion()-1;
+		pDatos = new JPanel();
+		pDatos.setBackground(Color.WHITE);
+		pCentral.add(pDatos, BorderLayout.SOUTH);
+		pDatos.setLayout(new GridLayout(0, 2, 0, 0));
+		pTime = new JPanel();
+		pDatos.add(pTime);
+		pTime.setBackground(Color.WHITE);
 		
 		lblTime = new JLabel("");
 		lblTime.setHorizontalAlignment(SwingConstants.CENTER);
@@ -77,11 +84,12 @@ public class frEntrena extends JFrame implements Runnable
 		time = new JLabel(minutos+":"+segundos);
 		time.setFont(new Font("Tahoma", Font.PLAIN, 40));
 		time.setHorizontalAlignment(SwingConstants.CENTER);
-		pTime.setLayout(new BorderLayout(0, 0));
-		pTime.add(lblTime, BorderLayout.NORTH);
-		pTime.add(time, BorderLayout.SOUTH);
+		pTime.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		pTime.add(lblTime);
+		pTime.add(time);
 		pCal = new JPanel();
-		pCentral.add(pCal);
+		pDatos.add(pCal);
+		pCal.setBackground(Color.WHITE);
 		
 		lblCal = new JLabel("");
 		lblCal.setHorizontalAlignment(SwingConstants.CENTER);
@@ -89,9 +97,11 @@ public class frEntrena extends JFrame implements Runnable
 		cal = new JLabel(""+calorias);
 		cal.setHorizontalAlignment(SwingConstants.CENTER);
 		cal.setFont(new Font("Tahoma", Font.PLAIN, 40));
-		pCal.setLayout(new BorderLayout(0, 0));
-		pCal.add(lblCal, BorderLayout.NORTH);
-		pCal.add(cal, BorderLayout.SOUTH);
+		pCal.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		pCal.add(lblCal);
+		pCal.add(cal);
+		
+		minutos = entrena.getDuracion()-1;
 
 		getContentPane().add(pInferior, BorderLayout.SOUTH);
 		
@@ -130,7 +140,9 @@ public class frEntrena extends JFrame implements Runnable
 				 
 				 try 
 				 { 
-					BD.registrarEntrenamiento("datetime('now')", time.getText().replace(":", "."), calorias, entrenamiento.getCodigo(), user.getUsuario());
+					String tiempo = (entrena.getDuracion()-minutos)+"."+(60-segundos);
+					 
+					BD.registrarEntrenamiento("datetime('now')",tiempo, calorias, entrenamiento.getCodigo(), user.getUsuario());
 					ArrayList <clsEntrenamiento> entrenas = BD.getMisEntrenamientos(user.getUsuario());
 					clsEntrenamiento entrena = entrenas.get(entrenas.size()-1);
 					

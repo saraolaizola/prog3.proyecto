@@ -12,6 +12,7 @@ import javax.swing.border.EmptyBorder;
 import LN.clsCarrera;
 import LN.clsUsuario;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
@@ -27,6 +28,8 @@ import javax.swing.SpringLayout;
 import java.awt.Color;
 import java.awt.SystemColor;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class frDetalleCarrera extends JFrame 
 {
@@ -52,24 +55,32 @@ public class frDetalleCarrera extends JFrame
 		
 		DecimalFormat df = new DecimalFormat("#.0");
 		
-		String texto;
+		Double dato;
 		
 		fecha = carrera.getFecha();
+		//poner la fecha en otro formato ej: 31 DIC 2017
 		
 		duracion = carrera.getDuracion().replace(".", ":");
+		//si minutos menor de 10 añadirle un 0
 		
-		ritmo = carrera.getRitmo().replace(".", "'");
+		ritmo = carrera.getRitmo().replace(".", "'")+"''";
+		//si segundos menor de 10 añadirle un 0
 		
-		km = df.format(carrera.getKm());
+		dato=carrera.getKm();
+		if (dato<1.0) km = "0"+df.format(carrera.getKm())+" km";
+		else km = df.format(carrera.getKm())+" km";
 		
-		cal =df.format(carrera.getCalorias());
+		dato = carrera.getCalorias();
+		if (dato<1.0) cal = "0"+df.format(carrera.getCalorias())+" cal"; 
+		else cal = df.format(carrera.getCalorias())+" cal";
 		
-		
-		JLabel lblVolver = new JLabel("");
-		lblVolver.setBackground(Color.WHITE);
-		lblVolver.setIcon(new ImageIcon(frDetalleCarrera.class.getResource("/img/back.png")));
-		lblVolver.setHorizontalAlignment(SwingConstants.LEFT);
-		pSuperior.add(lblVolver, BorderLayout.WEST);
+		JButton bVolver = new JButton();
+		bVolver.setIcon(new ImageIcon(frCarrera.class.getResource("/img/back.png")));
+		bVolver.setOpaque(false);            // Fondo Transparente (los grÃ¡ficos son png transparentes)
+		bVolver.setContentAreaFilled(false); // No rellenar el Ã¡rea
+		bVolver.setBorderPainted(false);     // No pintar el borde
+		bVolver.setBorder(null);    
+		pSuperior.add(bVolver, BorderLayout.WEST);
 		
 		JLabel lblFecha = new JLabel(fecha);
 		pSuperior.add(lblFecha, BorderLayout.CENTER);
@@ -131,6 +142,16 @@ public class frDetalleCarrera extends JFrame
 		setSize(375,667);
 		setResizable(false);
 		
+		bVolver.addActionListener( new ActionListener() 
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				frListaCarrera ventana = new frListaCarrera (user);
+				ventana.setVisible(true);
+				dispose();
+			}
+		});
 		
 		
 		//PANTALLA CON LOS DATOS DE UNA CARRERA DE UN CORREDOR

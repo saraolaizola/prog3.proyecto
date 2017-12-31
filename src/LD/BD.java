@@ -99,7 +99,7 @@ public class BD
 		try 
 		{
 			statement.executeUpdate("create table if not exists entrenamiento " +
-				"(fecha string, durancion string,  calorias real, codigo string, usuario string, primary key (fecha))");
+				"(fecha string, duracion string,  calorias real, codigo string, usuario string, primary key (fecha))");
 		} 
 		catch (SQLException e) 
 		{
@@ -253,7 +253,7 @@ public class BD
 		return entrena;
 	}
 	
-	public static clsEntrenamiento getEntrenamiento (String codigo)
+	public static clsEntrenamiento getEntrenamiento (String fecha)
 	{
 		clsEntrenamiento entrena = new clsEntrenamiento();
 		try
@@ -262,7 +262,7 @@ public class BD
 			ResultSet rs = statement.executeQuery("select * from entrenamiento");
 			while(rs.next())
 			{
-				if (rs.getString("codigo").equals(codigo))
+				if (rs.getString("fecha").equals(fecha))
 		       	{
 					entrena.setCodigo(rs.getString("codigo"));
 					entrena.setFecha(rs.getString("fecha"));
