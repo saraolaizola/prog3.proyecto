@@ -7,6 +7,9 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.logging.Logger;
 
 import javax.swing.BoxLayout;
@@ -21,106 +24,136 @@ import javax.swing.SwingConstants;
 
 import LD.BD;
 import LN.clsUsuario;
+
 import javax.swing.UIManager;
+
 import java.awt.SystemColor;
+import java.awt.GridLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class frInicio extends JFrame
 {
-	JPanel pPrincipal, pBotonera, pLogo, pDatos;
-	JLabel foto;
+	JPanel pPrincipal;
+	JLabel foto,lblInicia,lblUsuario,lblContrasenya,lblError;
+	JButton bIniciar,bRegistrar;
+	JTextField txtUsuario;
+	JPasswordField passwordField;
 	
 	public frInicio () 
 	{
+		getContentPane().setBackground(Color.BLACK);
 		// Liberación de la ventana por defecto al cerrar
 		setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
 		
-		// Creación contenedores y componentes
 		pPrincipal = new JPanel();
-		JPanel pCentral = new JPanel();
+		pPrincipal.setBackground(Color.BLACK);
+		getContentPane().add(pPrincipal, BorderLayout.CENTER);
 		
-		pPrincipal.setLayout( null );
-		pPrincipal.setBackground( Color.white );
-		getContentPane().add( pPrincipal);
-		getContentPane().add (pCentral, BorderLayout.CENTER);
-		pCentral.setLayout(new BoxLayout(pCentral, BoxLayout.Y_AXIS));
+		foto = new JLabel("");
+		foto.setHorizontalAlignment(SwingConstants.CENTER);
+		foto.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		foto.setIcon(new ImageIcon(frInicio.class.getResource("/img/logo.png")));
 		
-		pBotonera = new JPanel();
-		pBotonera.setBackground(Color.BLACK);
-		getContentPane().add(pBotonera, BorderLayout.SOUTH);
-		pBotonera.setLayout(new FlowLayout());
-		
-		pLogo = new JPanel();
-		pLogo.setBackground(Color.BLACK);
-		getContentPane().add(pLogo, BorderLayout.NORTH);
-		
-		pDatos = new JPanel();
-		pDatos.setBackground(Color.BLACK);
-		pCentral.add(pDatos, BorderLayout.SOUTH);
-		
-		
-		JTextField txtUsuario = new JTextField();
-		txtUsuario.setForeground(Color.BLACK);
-		txtUsuario.setColumns(30);
-		JPasswordField passwordField = new JPasswordField();
-		passwordField.setColumns(30);
-		
-		JLabel lblInicia = new JLabel ("RUNTRAINING");
+		lblInicia = new JLabel ("RUN APP");
 		lblInicia.setVerticalAlignment(SwingConstants.BOTTOM);
-		lblInicia.setFont(new Font("Levenim MT", Font.PLAIN, 25));
+		lblInicia.setFont(new Font("Arial Black", Font.BOLD, 25));
 		lblInicia.setHorizontalAlignment(SwingConstants.CENTER);
-		lblInicia.setForeground(new Color(0, 102, 255));
-		JLabel lblUsuario = new JLabel ("Usuario:");
+		lblInicia.setForeground(Color.WHITE);
+		
+		lblUsuario = new JLabel ("Usuario:");
+		lblUsuario.setBackground(Color.WHITE);
 		lblUsuario.setForeground(Color.WHITE);
 		lblUsuario.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
-		JLabel lblContrasenya = new JLabel ("Contraseña:");
+		txtUsuario = new JTextField();
+		txtUsuario.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		txtUsuario.setForeground(Color.BLACK);
+		txtUsuario.setColumns(25);
+		txtUsuario.setBorder(null);
+		
+		lblContrasenya = new JLabel ("Contrase\u00F1a:");
 		lblContrasenya.setForeground(Color.WHITE);
 		lblContrasenya.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblContrasenya.setHorizontalAlignment(SwingConstants.CENTER);
-		JLabel lblError = new JLabel("*Usuario y/o contraseña incorrecta*");
+		passwordField = new JPasswordField();
+		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		passwordField.setForeground(Color.BLACK);
+		passwordField.setColumns(25);
+		passwordField.setBorder(null);
+		
+		lblError = new JLabel("*Usuario y/o contraseña incorrecta*");
 		lblError.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblError.setHorizontalAlignment(SwingConstants.CENTER);
 		lblError.setVisible(false);
 		lblError.setForeground(Color.red);
 		
-		foto = new JLabel("");
-		foto.setHorizontalAlignment(SwingConstants.CENTER);
-		foto.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		foto.setIcon(new ImageIcon(frPerfil.class.getResource("/img/logo.png")));
-		
-		
-		JButton bIniciar = new JButton( "Iniciar Sesi\u00F3n" );
+		bIniciar = new JButton( "Iniciar Sesi\u00F3n" );
 		bIniciar.setForeground(SystemColor.text);
-		bIniciar.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		bIniciar.setFont(new Font("Tahoma", Font.BOLD, 15));
 		bIniciar.setBackground(SystemColor.desktop);
-		JButton bRegistrar = new JButton( "Registrarme" );
+		bIniciar.setBorder(null);
+		
+		bRegistrar = new JButton( "Registrarte" );
 		bRegistrar.setForeground(SystemColor.text);
-		bRegistrar.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		bRegistrar.setFont(new Font("Tahoma", Font.BOLD, 15));
 		bRegistrar.setBackground(Color.DARK_GRAY);
-		pLogo.setLayout(new BorderLayout(0, 0));
-	
-		// Añadido de componentes a contenedores
+		bRegistrar.setBorder(null);
 		
-		pLogo.add( lblInicia, BorderLayout.CENTER );
-		pLogo.add(foto, BorderLayout.SOUTH);
+		getRootPane().setDefaultButton(bIniciar);
+		bIniciar.requestFocus();
 		
-		JLabel label = new JLabel("   ");
-		pLogo.add(label, BorderLayout.NORTH);
-		pDatos.add( lblUsuario );
-		pDatos.add( txtUsuario );
-		pDatos.add( lblContrasenya );
-		pDatos.add( passwordField );
-		pDatos.add(lblError);
-		pBotonera.add( bIniciar );
-		pBotonera.add( bRegistrar );
+		GroupLayout gl_pPrincipal = new GroupLayout(pPrincipal);
+		gl_pPrincipal.setHorizontalGroup(
+			gl_pPrincipal.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pPrincipal.createSequentialGroup()
+					.addGroup(gl_pPrincipal.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblInicia, GroupLayout.PREFERRED_SIZE, 369, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_pPrincipal.createSequentialGroup()
+							.addGap(70)
+							.addComponent(lblError))
+						.addGroup(gl_pPrincipal.createSequentialGroup()
+							.addGap(30)
+							.addGroup(gl_pPrincipal.createParallelGroup(Alignment.TRAILING, false)
+								.addComponent(lblContrasenya, Alignment.LEADING)
+								.addComponent(lblUsuario, Alignment.LEADING)
+								.addComponent(passwordField, Alignment.LEADING)
+								.addComponent(txtUsuario, Alignment.LEADING)
+								.addComponent(bRegistrar, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(bIniciar, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+						.addComponent(foto, GroupLayout.PREFERRED_SIZE, 369, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
+		);
+		gl_pPrincipal.setVerticalGroup(
+			gl_pPrincipal.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pPrincipal.createSequentialGroup()
+					.addGap(78)
+					.addComponent(foto)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblInicia)
+					.addGap(40)
+					.addComponent(lblUsuario)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(txtUsuario, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblContrasenya)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(lblError)
+					.addGap(64)
+					.addComponent(bIniciar, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(bRegistrar, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(161, Short.MAX_VALUE))
+		);
+		pPrincipal.setLayout(gl_pPrincipal);
 		
-		// Formato de ventana
-		setSize(375,667);
-		setResizable(false);
-		
-		setVisible(true);
-		
-		// Escuchadores de botones
 		bIniciar.addActionListener( new ActionListener() 
 		{
 			@Override
@@ -162,9 +195,14 @@ public class frInicio extends JFrame
 				dispose();
 			}
 		});
+		
+		// Formato de ventana
+		setSize(375,667);
+		setResizable(false);
+		
+		setVisible(true);
 	}
 	
-	 
 	/**
 	 * Launch the application.
 	 */

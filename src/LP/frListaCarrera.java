@@ -27,6 +27,7 @@ import LN.clsUsuario;
 import javax.swing.JRadioButton;
 
 import java.awt.Color;
+import java.awt.SystemColor;
 
 public class frListaCarrera extends JFrame 
 {
@@ -49,6 +50,8 @@ public class frListaCarrera extends JFrame
 	private ButtonGroup BG;
 	private JRadioButton rdbtnDistancia, rdbtnRitmo,rdbtnDuracion, rdbtnCalorias;
 	private JLabel lblCarreras;
+	private JPanel panel;
+	private JPanel panel_1;
 	
 	/**
 	 * Create the frame.
@@ -162,8 +165,16 @@ public class frListaCarrera extends JFrame
 		
 		lblCarreras = new JLabel("Carreras      ");
 		lblCarreras.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCarreras.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblCarreras.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		pSuperior.add(lblCarreras, BorderLayout.CENTER);
+		
+		panel = new JPanel();
+		panel.setBackground(Color.WHITE);
+		pSuperior.add(panel, BorderLayout.NORTH);
+		
+		panel_1 = new JPanel();
+		panel_1.setBackground(Color.WHITE);
+		pSuperior.add(panel_1, BorderLayout.SOUTH);
 		
 		setSize(375,667);
 		setResizable(false);
@@ -233,11 +244,11 @@ public class frListaCarrera extends JFrame
 				fechas.add(lista.get(i).getFecha());
 			}
 			
-			Dibujo.iniciarDibujo(lista.size(), fechas);
-			
-			DibujoAtributo(atributo);
-			
-			Dibujo.repaint();
+//			Dibujo.iniciarDibujo(lista.size(), fechas);
+//			
+//			DibujoAtributo(atributo);
+//			
+//			Dibujo.repaint();
 		}
 		catch(NullPointerException e)
 		{

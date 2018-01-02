@@ -2,6 +2,8 @@ package LP;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,8 +14,11 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import LN.clsUsuario;
+
 import java.awt.FlowLayout;
+
 import javax.swing.JLabel;
+
 import java.awt.Font;
 
 /**
@@ -30,6 +35,8 @@ public class frLista extends JFrame
 	JButton bRegistro,bActividad,bPerfil, bEmpezar, bCorrer, bEntrenar;  
 	private JPanel pSuperior;
 	private JLabel lblRegistros;
+	private JPanel panel;
+	private JPanel panel_1;
 	
 	public frLista(clsUsuario user) 
 	{
@@ -45,10 +52,18 @@ public class frLista extends JFrame
 				
 				pSuperior = new JPanel();
 				getContentPane().add(pSuperior, BorderLayout.NORTH);
+				pSuperior.setLayout(new BorderLayout(0, 0));
 				
 				lblRegistros = new JLabel("Registros");
+				lblRegistros.setHorizontalAlignment(SwingConstants.CENTER);
 				lblRegistros.setFont(new Font("Tahoma", Font.PLAIN, 17));
 				pSuperior.add(lblRegistros);
+				
+				panel = new JPanel();
+				pSuperior.add(panel, BorderLayout.NORTH);
+				
+				panel_1 = new JPanel();
+				pSuperior.add(panel_1, BorderLayout.SOUTH);
 				
 				getContentPane().add( pPrincipal );
 				pPrincipal.setBackground( Color.white );
@@ -76,14 +91,34 @@ public class frLista extends JFrame
 				pPrincipal.add(bEntrenar);
 				
 				bRegistro = new JButton( "Registros" );
+				bRegistro.setBackground(SystemColor.menu);
+				bRegistro.setFont(new Font("Tahoma", Font.BOLD, 9));
+				bRegistro.setIcon(new ImageIcon(frPrincipal.class.getResource("/img/registro.png")));
+				bRegistro.setVerticalTextPosition(SwingConstants.BOTTOM);
+				bRegistro.setHorizontalTextPosition(SwingConstants.CENTER);
+				bRegistro.setBorderPainted(false);
+				
 				bActividad = new JButton ("Actividad");
+				bActividad.setBackground(new Color(240, 240, 240));
+				bActividad.setFont(new Font("Tahoma", Font.PLAIN, 9));
+				bActividad.setIcon(new ImageIcon(frPrincipal.class.getResource("/img/actividad.png")));
+				bActividad.setVerticalTextPosition(SwingConstants.BOTTOM);
+				bActividad.setHorizontalTextPosition(SwingConstants.CENTER);
+				bActividad.setBorderPainted(false);
+				
 				bPerfil = new JButton( "Perfil");
+				bPerfil.setBackground(SystemColor.menu);
+				bPerfil.setFont(new Font("Tahoma", Font.PLAIN, 9));
+				bPerfil.setIcon(new ImageIcon(frPrincipal.class.getResource("/img/perfil.png")));
+				bPerfil.setVerticalTextPosition(SwingConstants.BOTTOM);
+				bPerfil.setHorizontalTextPosition(SwingConstants.CENTER);
+				bPerfil.setBorderPainted(false); 
 				
-				
-				// Añadido de componentes a contenedores
 				pMenu.add(bRegistro);
 				pMenu.add(bActividad);
 				pMenu.add(bPerfil);
+				
+				pMenu.setLayout(new GridLayout(0, 3, 0, 0));
 				
 				// Formato de ventana
 				setSize(375,667);

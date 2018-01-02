@@ -1,5 +1,5 @@
 package LP;
-	import java.awt.BorderLayout;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
@@ -7,10 +7,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -18,17 +15,16 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
 
+import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+import uk.co.caprica.vlcj.player.embedded.FullScreenStrategy;
+import uk.co.caprica.vlcj.player.embedded.windows.Win32FullScreenStrategy;
 import LD.BD;
-import LN.clsCarrera;
 import LN.clsEntrenamiento;
 import LN.clsOpcEntrenamiento;
 import LN.clsUsuario;
 
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.awt.GridLayout;
 
 
@@ -37,13 +33,17 @@ public class frEntrena extends JFrame implements Runnable
 
 	private static final long serialVersionUID = 1L;
 	
-	private JPanel pPrincipal, pInferior, pCentral, pTime, pCal;
+	private JPanel pSuperior, pInferior, pCentral, pTime, pCal;
 	private JButton btnPause, btnFin;
-	private JLabel lblVideo,lblTime,lblCal,cal,time;
+	private JLabel lblTime,lblCal,cal,time; //lblVideo
 	private Integer minutos, segundos=59;
 	private Double calorias=0.0;
 	clsOpcEntrenamiento entrenamiento;
 
+	EmbeddedMediaPlayerComponent mediaPlayerComponent;
+	EmbeddedMediaPlayer mediaPlayer;
+	public static String path;
+	
 	boolean cronometroActivo, cronometroPlay;
 	Thread hilo;
 	private JPanel pDatos;
@@ -53,22 +53,32 @@ public class frEntrena extends JFrame implements Runnable
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		entrenamiento = entrena;
+		path = entrena.getFile().getAbsolutePath();
 		
-		pPrincipal = new JPanel();
+		String vlcPath = System.getenv().get( "vlc" );
+		
+    	if (vlcPath==null)
+			// Poner VLC a mano
+			System.setProperty("jna.library.path", "c:\\Archivos de programa\\videolan\\vlc-2.1.5");
+		else
+			// Poner VLC desde la variable de entorno
+			System.setProperty( "jna.library.path", vlcPath );
+		
+//		pSuperior = new JPanel();
 		pInferior = new JPanel();
 		pCentral = new JPanel();
 		pCentral.setBackground(Color.WHITE);
 		
-		getContentPane().add( pPrincipal );
-		pPrincipal.setLayout( null );
-		pPrincipal.setBackground( Color.white );
+//		getContentPane().add( pSuperior, BorderLayout.NORTH );
+//		pSuperior.setLayout( null );
+//		pSuperior.setBackground( Color.white );
 		getContentPane().add (pCentral, BorderLayout.CENTER);
 		pCentral.setLayout(new BorderLayout(0, 0));
 		
-		lblVideo = new JLabel();
-		lblVideo.setIcon(new ImageIcon(frCorrer.class.getResource("/img/abdominal.gif")));
-		lblVideo.setHorizontalAlignment(SwingConstants.CENTER);
-		pCentral.add(lblVideo, BorderLayout.CENTER);
+//		lblVideo = new JLabel();
+//		lblVideo.setIcon(new ImageIcon(frCorrer.class.getResource("/img/abdominal.gif")));
+//		lblVideo.setHorizontalAlignment(SwingConstants.CENTER);
+//		pCentral.add(lblVideo, BorderLayout.CENTER);
 		
 		pDatos = new JPanel();
 		pDatos.setBackground(Color.WHITE);
@@ -87,10 +97,10 @@ public class frEntrena extends JFrame implements Runnable
 		pTime.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		pTime.add(lblTime);
 		pTime.add(time);
+		
 		pCal = new JPanel();
 		pDatos.add(pCal);
 		pCal.setBackground(Color.WHITE);
-		
 		lblCal = new JLabel("");
 		lblCal.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCal.setIcon(new ImageIcon(frCorrer.class.getResource("/img/cal.png")));
@@ -122,14 +132,30 @@ public class frEntrena extends JFrame implements Runnable
 		pInferior.add(btnPause);
 		pInferior.add(btnFin);
 		
-		setSize(375,667);
+		mediaPlayerComponent = new EmbeddedMediaPlayerComponent() 
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+            protected FullScreenStrategy onGetFullScreenStrategy() 
+			{
+                return new Win32FullScreenStrategy(frEntrena.this);
+            }
+        };
+        mediaPlayer = mediaPlayerComponent.getMediaPlayer();
+        
+//        pSuperior.add(mediaPlayerComponent);
+		
+        pCentral.add(mediaPlayerComponent, BorderLayout.CENTER);
+        
+        setSize(375,667);
 		setResizable(false);
 		
+		setVisible(true);
 		cronometroActivo = true;
 		cronometroPlay = true;
 		hilo = new Thread(this);
 		hilo.start();
-		setVisible(true);
 		
 		btnFin.addActionListener( new ActionListener() 
 		{
@@ -193,6 +219,31 @@ public class frEntrena extends JFrame implements Runnable
         
         try
         {
+        	if(mediaPlayer.isPlayable())
+        	{
+        		mediaPlayer.play();
+        	}
+        	else
+        	{
+        		if (mediaPlayer!=null) 
+        		{
+        			mediaPlayer.playMedia(path);
+        		}
+        	}
+        	
+//        	if (mediaPlayer.isPlayable()) 
+//        	{
+//				if (mediaPlayer.isPlaying())
+//					mediaPlayer.pause();
+//				else
+//					mediaPlayer.play();
+//			} 
+//        	else 
+//        	{
+//				lanzaVideo();
+//			}
+        	
+        	
             while( cronometroActivo )
             {
                 if (cronometroPlay)
@@ -228,8 +279,8 @@ public class frEntrena extends JFrame implements Runnable
         }
         catch(Exception e)
         {
-        	time.setText( "00:00" );
-        	cal.setText("0.0");
+        	e.printStackTrace();
+        	System.out.println("problema");
         }
     }
 }

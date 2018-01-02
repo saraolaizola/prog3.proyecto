@@ -1,5 +1,6 @@
 package LD;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -133,7 +134,7 @@ public class BD
 		try 
 		{
 			statement.executeUpdate("create table if not exists opcionentrenamiento " +
-				"(codigo string, nombre string, nivel string, calxsec real, duracion integer, primary key (codigo))");
+				"(fichero string, codigo string, nombre string, nivel string, calxsec real, duracion integer, primary key (codigo))");
 		} 
 		catch (SQLException e) 
 		{
@@ -166,6 +167,18 @@ public class BD
 		} 
 	}
 	 
+
+	public static void editarUsuario (String usuario, String nombre, String apellido)
+	{
+		try
+		{		    
+			statement.executeUpdate("update usuarios set nombre = '"+nombre+"', apellido = '"+apellido+"' where (usuario = '"+usuario+"');");
+		}	 
+		catch(SQLException e)
+		{
+			logger.log(Level.WARNING, e.getMessage());
+		} 
+	}
 
 	 /**
 	  * Comprueba que el usuario y la contraseña son correctas
@@ -238,6 +251,8 @@ public class BD
 			{
 				if (rs.getString("codigo").equals(codigo))
 		       	{
+					File f = new File ((rs.getString("fichero")));
+					entrena.setFile(f);
 					entrena.setCodigo(rs.getString("codigo"));
 					entrena.setNombre(rs.getString("nombre"));
 					entrena.setNivel(rs.getString("nivel"));
@@ -349,11 +364,11 @@ public class BD
 	}
 	
 	
-	public static void registrarOpcEntrenamiento (String codigo, String nombre, String nivel, double calxsec, int duracion) throws clsOpcEntrenamientoRepetida
+	public static void registrarOpcEntrenamiento (File file, String codigo, String nombre, String nivel, double calxsec, int duracion) throws clsOpcEntrenamientoRepetida
 	{
 		try
 		{	
-			statement.executeUpdate("insert into opcionentrenamiento values('"+codigo+"','"+nombre+"','"+nivel+"',"+calxsec+","+duracion+")");
+			statement.executeUpdate("insert into opcionentrenamiento values('"+file.getAbsolutePath()+"','"+codigo+"','"+nombre+"','"+nivel+"',"+calxsec+","+duracion+")");
 		}	 
 		catch(SQLException e)
 		{
@@ -366,14 +381,17 @@ public class BD
 	{
 		try 
 		{
-			BD.registrarOpcEntrenamiento("001", "Abdominales", "Principiante", 0.01,10);
+			File f = new File ("C:\\Users\\ALUMNO\\workspace\\prog3.proyecto\\videos\\Wildlife.wmv");
+			BD.registrarOpcEntrenamiento(f,"001", "Abdominales", "Principiante", 0.01,10);
 			//https://www.youtube.com/watch?v=1919eTCoESo&list=PL6070A835F843D79F
-			BD.registrarOpcEntrenamiento("002", "Cardio quema grasas", "Intermedio", 0.02, 20);
+			BD.registrarOpcEntrenamiento(f,"002", "Cardio quema grasas", "Intermedio", 0.02, 20);
 			//https://www.youtube.com/watch?v=fcN37TxBE_s
-			BD.registrarOpcEntrenamiento("003", "Cardio Kick Boxing", "Experto", 0.03, 15);
+			BD.registrarOpcEntrenamiento(f,"003", "Cardio Kick Boxing", "Experto", 0.03, 15);
 			//https://www.youtube.com/watch?v=Vve4BVTZ0QU
 		} 
-		catch (clsOpcEntrenamientoRepetida e){
+		catch (clsOpcEntrenamientoRepetida e)
+		{
+			
 		}
 	}
 	
@@ -387,12 +405,13 @@ public class BD
 			ResultSet rs = statement.executeQuery("select * from opcionentrenamiento");
 			while(rs.next())
 			{	
+				File fichero = new File (rs.getString("fichero"));
 				String codigo = rs.getString("codigo");
 				String nombre = rs.getString("nombre");
 				String nivel = rs.getString("nivel");
 				int duracion = rs.getInt("duracion");
 				double calxsec = rs.getDouble("calxsec");
-				clsOpcEntrenamiento entrenamiento = new clsOpcEntrenamiento(codigo, nombre, nivel, duracion,calxsec);
+				clsOpcEntrenamiento entrenamiento = new clsOpcEntrenamiento(fichero,codigo, nombre, nivel, duracion,calxsec);
 				lista.add(entrenamiento);
 			}
 		}	 

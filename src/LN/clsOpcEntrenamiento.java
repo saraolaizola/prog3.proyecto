@@ -1,13 +1,17 @@
 package LN;
+
+import java.io.File;
+
 public class clsOpcEntrenamiento 
 {
 	private String codigo, nombre, nivel;
+	private File file;
 	private int duracion;
 	private double calxsec;	
 	public enum Nivel {Principiante, Intermedio, Experto}
 	
 	
-	public clsOpcEntrenamiento(String codigo, String nombre, String nivel, int duracion,double calxsec) 
+	public clsOpcEntrenamiento(File file, String codigo, String nombre, String nivel, int duracion,double calxsec) 
 	{
 		super();
 		this.codigo = codigo;
@@ -15,6 +19,7 @@ public class clsOpcEntrenamiento
 		this.duracion = duracion;
 		this.nivel = nivel;
 		this.calxsec = calxsec;
+		this.file = file;
 	}
 	
 	public clsOpcEntrenamiento()
@@ -60,6 +65,14 @@ public class clsOpcEntrenamiento
 
 	public void setCalxsec(double calxsec) {
 		this.calxsec = calxsec;
+	}
+
+	public File getFile() {
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
 	}
 	
 	

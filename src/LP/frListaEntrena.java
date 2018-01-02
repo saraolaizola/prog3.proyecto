@@ -35,6 +35,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
+import java.awt.FlowLayout;
 
 public class frListaEntrena extends JFrame {
 
@@ -51,6 +52,9 @@ public class frListaEntrena extends JFrame {
 	private JLabel lblNumTime;
 	private JLabel lblDuracion;
 	private JLabel lblEntrenamientos_1;
+	private JPanel panel;
+	private JPanel panel_1;
+	private JLabel label_1;
 
 	/**
 	 * Create the frame.
@@ -63,7 +67,6 @@ public class frListaEntrena extends JFrame {
 		pPrincipal.setBackground(Color.WHITE);
 		
 		getContentPane().add( pPrincipal, BorderLayout.CENTER );
-		pPrincipal.setLayout(new BorderLayout(0, 0));
 	
 		usuario = user;
 		
@@ -102,16 +105,24 @@ public class frListaEntrena extends JFrame {
 		}
 		catch (NullPointerException e){
 		}
+		pPrincipal.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		pDatos = new JPanel();
-		pPrincipal.add(pDatos, BorderLayout.CENTER);
+		pPrincipal.add(pDatos);
 		pDatos.setBackground(Color.BLACK);
 		GridBagLayout gbl_pDatos = new GridBagLayout();
 		gbl_pDatos.columnWidths = new int[]{367, 0};
-		gbl_pDatos.rowHeights = new int[]{65, 13, 24, 13, 0};
+		gbl_pDatos.rowHeights = new int[]{0, 65, 13, 24, 13, 0, 0, 0, 0};
 		gbl_pDatos.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gbl_pDatos.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_pDatos.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		pDatos.setLayout(gbl_pDatos);
+		
+		label_1 = new JLabel("    ");
+		GridBagConstraints gbc_label_1 = new GridBagConstraints();
+		gbc_label_1.insets = new Insets(0, 0, 5, 0);
+		gbc_label_1.gridx = 0;
+		gbc_label_1.gridy = 0;
+		pDatos.add(label_1, gbc_label_1);
 		
 		lblNument = new JLabel(lista.size()+"");
 		lblNument.setForeground(Color.WHITE);
@@ -122,7 +133,7 @@ public class frListaEntrena extends JFrame {
 		gbc_lblNument.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblNument.insets = new Insets(0, 0, 5, 0);
 		gbc_lblNument.gridx = 0;
-		gbc_lblNument.gridy = 0;
+		gbc_lblNument.gridy = 1;
 		pDatos.add(lblNument, gbc_lblNument);
 		
 		lblEntrenamientos = new JLabel("Entrenamientos totales");
@@ -133,7 +144,7 @@ public class frListaEntrena extends JFrame {
 		gbc_lblEntrenamientos.fill = GridBagConstraints.BOTH;
 		gbc_lblEntrenamientos.insets = new Insets(0, 0, 5, 0);
 		gbc_lblEntrenamientos.gridx = 0;
-		gbc_lblEntrenamientos.gridy = 1;
+		gbc_lblEntrenamientos.gridy = 2;
 		pDatos.add(lblEntrenamientos, gbc_lblEntrenamientos);
 		
 		lblNumTime = new JLabel(totalMin+"");
@@ -143,20 +154,21 @@ public class frListaEntrena extends JFrame {
 		gbc_lblNumTime.fill = GridBagConstraints.VERTICAL;
 		gbc_lblNumTime.insets = new Insets(0, 0, 5, 0);
 		gbc_lblNumTime.gridx = 0;
-		gbc_lblNumTime.gridy = 2;
+		gbc_lblNumTime.gridy = 4;
 		pDatos.add(lblNumTime, gbc_lblNumTime);
 		
 		lblDuracion = new JLabel("Minutos totales");
 		lblDuracion.setForeground(Color.WHITE);
 		lblDuracion.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		GridBagConstraints gbc_lblDuracion = new GridBagConstraints();
+		gbc_lblDuracion.insets = new Insets(0, 0, 5, 0);
 		gbc_lblDuracion.fill = GridBagConstraints.VERTICAL;
 		gbc_lblDuracion.gridx = 0;
-		gbc_lblDuracion.gridy = 3;
+		gbc_lblDuracion.gridy = 5;
 		pDatos.add(lblDuracion, gbc_lblDuracion);
 		
 		pTabla = new JPanel();
-		pPrincipal.add(pTabla, BorderLayout.SOUTH);
+		pPrincipal.add(pTabla);
 		pTabla.setBackground(Color.WHITE);
 		pTabla.setLayout(new BorderLayout(0, 0));
 		
@@ -186,8 +198,16 @@ public class frListaEntrena extends JFrame {
 		
 		lblEntrenamientos_1 = new JLabel("Entrenamientos         ");
 		lblEntrenamientos_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEntrenamientos_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblEntrenamientos_1.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		pSuperior.add(lblEntrenamientos_1, BorderLayout.CENTER);
+		
+		panel = new JPanel();
+		panel.setBackground(Color.WHITE);
+		pSuperior.add(panel, BorderLayout.NORTH);
+		
+		panel_1 = new JPanel();
+		panel_1.setBackground(Color.WHITE);
+		pSuperior.add(panel_1, BorderLayout.SOUTH);
 		
 		setSize(375,667);
 		setResizable(false);

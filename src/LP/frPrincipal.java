@@ -32,6 +32,8 @@ public class frPrincipal extends JFrame
 	JButton bRegistro,bActividad,bPerfil, bEmpezar, bCorrer, bEntrenar;
 	private JPanel pSuperior;
 	private JLabel lblActividad;
+	private JPanel panel;
+	private JPanel panel_1;
 	
 	public frPrincipal(clsUsuario user) 
 	{
@@ -46,10 +48,18 @@ public class frPrincipal extends JFrame
 		
 		pSuperior = new JPanel();
 		getContentPane().add(pSuperior, BorderLayout.NORTH);
+		pSuperior.setLayout(new BorderLayout(0, 0));
 		
 		lblActividad = new JLabel("Actividad");
+		lblActividad.setHorizontalAlignment(SwingConstants.CENTER);
 		lblActividad.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		pSuperior.add(lblActividad);
+		
+		panel = new JPanel();
+		pSuperior.add(panel, BorderLayout.NORTH);
+		
+		panel_1 = new JPanel();
+		pSuperior.add(panel_1, BorderLayout.SOUTH);
 		
 		getContentPane().add( pPrincipal );
 		pPrincipal.setLayout( null );
@@ -86,7 +96,7 @@ public class frPrincipal extends JFrame
 		
 		bActividad = new JButton ("Actividad");
 		bActividad.setBackground(new Color(240, 240, 240));
-		bActividad.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		bActividad.setFont(new Font("Tahoma", Font.BOLD, 9));
 		bActividad.setIcon(new ImageIcon(frPrincipal.class.getResource("/img/actividad.png")));
 		bActividad.setVerticalTextPosition(SwingConstants.BOTTOM);
 		bActividad.setHorizontalTextPosition(SwingConstants.CENTER);

@@ -177,7 +177,7 @@ public class frDetalleEntrena extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-				frListaCarrera ventana = new frListaCarrera (user);
+				frListaEntrena ventana = new frListaEntrena (user);
 				ventana.setVisible(true);
 				dispose();
 			}
