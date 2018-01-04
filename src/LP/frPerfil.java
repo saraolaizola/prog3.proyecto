@@ -45,14 +45,11 @@ public class frPerfil extends JFrame
 	private JPanel pDatos, pFoto;
 	
 	private clsUsuario usuario;
-	private JPanel panel;
-	private JPanel panel_1;
-	private JPanel panel_2;
+	private JPanel panel, panel_1,panel_2;
 	
 	public frPerfil(clsUsuario user) 
 	{
 		setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
-		
 		usuario = user;
 		
 		// Creación contenedores y componentes
@@ -183,7 +180,7 @@ public class frPerfil extends JFrame
 			public void actionPerformed(ActionEvent e) 
 			{
 				guardar();
-				frLista ventana = new frLista (user);
+				frLista ventana = new frLista (usuario);
 				ventana.setVisible(true);
 				dispose();
 			}
@@ -194,7 +191,7 @@ public class frPerfil extends JFrame
 			public void actionPerformed(ActionEvent e) 
 			{
 				guardar();
-				frPrincipal ventana = new frPrincipal (user);
+				frPrincipal ventana = new frPrincipal (usuario);
 				ventana.setVisible(true);
 				dispose();
 			}
@@ -205,7 +202,7 @@ public class frPerfil extends JFrame
 			public void actionPerformed(ActionEvent e) 
 			{
 				guardar();
-				frPerfil ventana = new frPerfil (user);
+				frPerfil ventana = new frPerfil (usuario);
 				ventana.setVisible(true);
 				dispose();
 			}
@@ -225,7 +222,8 @@ public class frPerfil extends JFrame
 	
 	public void guardar()
 	{
-		BD.editarUsuario(usuario.getUsuario(),txtNombre.getText(), txtApellido.getText());
+		BD.editarUsuario(usuario.getUsuario(),txtNombre.getText().toUpperCase(), txtApellido.getText().toUpperCase());
+		usuario=BD.getUser(usuario.getUsuario());
 	}
 	
 	public ImageIcon createImageIcon(String path) 

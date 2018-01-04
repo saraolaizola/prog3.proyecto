@@ -3,7 +3,6 @@ package LP;
 import java.awt.BorderLayout;
 import java.awt.Color;
 
-import javax.print.attribute.standard.Media;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
@@ -11,27 +10,32 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
 
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
-import uk.co.caprica.vlcj.player.MediaPlayer;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import uk.co.caprica.vlcj.player.embedded.FullScreenStrategy;
 import uk.co.caprica.vlcj.player.embedded.windows.Win32FullScreenStrategy;
-import uk.co.caprica.vlcj.player.media.*;
 
 import java.awt.Font;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 
 import LD.BD;
 import LN.clsCarrera;
+import LN.clsReproductor;
 import LN.clsUsuario;
 
 import java.awt.GridLayout;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class frCorrer extends JFrame implements Runnable
 {
@@ -44,20 +48,26 @@ public class frCorrer extends JFrame implements Runnable
 	private double kilometros=0.0,calorias=0.0;
 	
 	Thread hilo;
+	Thread hiloMusica;
 	boolean cronometroActivo, cronometroPlay;
 	
 	private ArrayList<File>lista;
-	private int cancionEnCurso=0;
+//	private int cancionEnCurso=0;
 	EmbeddedMediaPlayerComponent mediaPlayerComponent;
 	EmbeddedMediaPlayer mediaPlayer;
 	public static String path;
+	File cancion;
+
+	private clsReproductor reproductor;
 	
 	
-	public frCorrer(clsUsuario user,ArrayList<File>ficheros) 
+	public frCorrer(clsUsuario user,ArrayList<File>list) 
 	{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		lista = ficheros;
+		lista = list;
+		
+//		cancion = song;
 		
 		String vlcPath = System.getenv().get( "vlc" );
 		if (vlcPath==null)
@@ -200,7 +210,22 @@ public class frCorrer extends JFrame implements Runnable
 		cronometroPlay = true;
 		hilo = new Thread(this);
 		hilo.start();
+		
 		setVisible(true);
+		
+//		reproductor = new clsReproductor(lista);		
+		
+		// PROBLEMA: reproducir y que funcione el reloj a la vez
+		// PROBLEMA: cuando acaba una cancion reproducir la siguiente
+		
+//		Player apl;
+//		try {
+//			apl = new Player(new FileInputStream(list.get(0).getAbsolutePath()));
+//			apl.play();
+//		} catch (FileNotFoundException | JavaLayerException e2) {
+//			// TODO Auto-generated catch block
+//			e2.printStackTrace();
+//		}
 		
 		btnPause.addActionListener( new ActionListener() 
 		{
@@ -212,14 +237,14 @@ public class frCorrer extends JFrame implements Runnable
 		        	cronometroPlay = false;
 		        	hilo.suspend();
 		        	btnPause.setIcon(new ImageIcon(frCorrer.class.getResource("/img/play.png")));
-		        	mediaPlayer.pause();
+//		        	mediaPlayer.pause();
 		        }
 		        else 
 		        {
 		        	cronometroPlay = true;
 		        	hilo.resume();
 		        	btnPause.setIcon(new ImageIcon(frCorrer.class.getResource("/img/pause.png")));
-		        	mediaPlayer.play();
+//		        	mediaPlayer.play();
 		        }
 				
 			}
@@ -230,13 +255,16 @@ public class frCorrer extends JFrame implements Runnable
 			public void actionPerformed(ActionEvent e) 
 			{
 				 cronometroActivo = false;
-				
+				 
 				 try 
 				 { 
+					Date d = new Date();
+					SimpleDateFormat f = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss" );
+					String fecha = f.format(d);
+					 
 					BD.registrarCarrera("datetime('now')",minutos+"."+segundos,calorias,kilometros,m+"."+s,user.getUsuario());
-					ArrayList <clsCarrera> carreras = BD.getMisCarreras(user.getUsuario());
-					clsCarrera carrera = carreras.get(carreras.size()-1);
-					
+					clsCarrera carrera = new clsCarrera(fecha,minutos+"."+segundos,calorias,kilometros,m+"."+s);
+				
 					frDetalleCarrera ventana = new frDetalleCarrera(user,carrera);
 					ventana.setVisible(true);
 					dispose();
@@ -257,35 +285,9 @@ public class frCorrer extends JFrame implements Runnable
         
         try
         {
-        	if (lista!=null)
-        	{	
-        		if (cancionEnCurso<lista.size())
-        		{	
-//        			Media hit = new Media(new File(cancion).toURI().toString());
-//        			MediaPlayer mediaPlayer = new MediaPlayer(hit);
-//        			mediaPlayer.play();
-        			
-        			path = lista.get(cancionEnCurso).getAbsolutePath();
-        			System.out.println(path);
-        			if(mediaPlayer.isPlayable())
-                	{
-                		mediaPlayer.play();
-                	}
-                	else
-                	{
-                		if (mediaPlayer!=null) 
-                		{
-                			mediaPlayer.playMedia(path);
-                		}
-                	}
-        			
-        			//CUANDO ACABE REPRODUCIR SIGUIENTE
-        			cancionEnCurso++;
-        		}
-        	}
             while( cronometroActivo )
-            {
-                if(cronometroPlay)
+            {	
+            	if(cronometroPlay)
                 {
                 	Thread.sleep(1000);
                     

@@ -71,7 +71,7 @@ public class frElegirEntrena extends JFrame
 		pTabla.setBackground(Color.WHITE);
 		getContentPane().add( spCentral, BorderLayout.CENTER );
 		
-		String[] columnNames = {"Nombre","Nivel","CalxMin","Duración"};
+		String[] columnNames = {"Código","Nombre","Nivel","CalxMin","Duración"};
 		DefaultTableModel model = new DefaultTableModel(columnNames,0)
 		{
 			private static final long serialVersionUID = 1L;
@@ -86,8 +86,8 @@ public class frElegirEntrena extends JFrame
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		int [] ancho = {128,98,64,64};
-		for (int i=0;i<4;i++)
+		int [] ancho = {40,128,88,54,54};
+		for (int i=0;i<5;i++)
 		{
 			table.getColumnModel().getColumn(i).setPreferredWidth(ancho[i]);
 		}
@@ -95,15 +95,16 @@ public class frElegirEntrena extends JFrame
 		pTabla.add(new JScrollPane(table), BorderLayout.CENTER);
 		
 		lista = BD.getLista();
-		Object [] row = new Object [4];
+		Object [] row = new Object [5];
 		try
 		{
 			for (int i=0;i<lista.size();i++)
 			{
-				row[0]=lista.get(i).getNombre();
-				row[1]=lista.get(i).getNivel();
-				row[2]=lista.get(i).getCalxsec();
-				row[3]=lista.get(i).getDuracion();
+				row[0]=lista.get(i).getCodigo();
+				row[1]=lista.get(i).getNombre();
+				row[2]=lista.get(i).getNivel();
+				row[3]=lista.get(i).getCalxsec();
+				row[4]=lista.get(i).getDuracion();
 				model.addRow(row);
 			}	
 		}
@@ -283,7 +284,6 @@ public class frElegirEntrena extends JFrame
 						txtNombre.setText("");
 						txtCal.setText("");
 						fichero=null;
-						
 					}
 					else
 					{

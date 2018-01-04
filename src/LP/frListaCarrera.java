@@ -26,6 +26,15 @@ import LN.clsUsuario;
 
 import javax.swing.JRadioButton;
 
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+
 import java.awt.Color;
 import java.awt.SystemColor;
 
@@ -42,6 +51,7 @@ public class frListaCarrera extends JFrame
 	private ArrayList<String> fechas;
 	private ArrayList<clsCarrera>lista;
 	private clsUsuario usuario;
+	private ChartPanel dibujo;
 	
 	
 	//NO FUNCIONA EL DIBUJO
@@ -51,7 +61,7 @@ public class frListaCarrera extends JFrame
 	private JRadioButton rdbtnDistancia, rdbtnRitmo,rdbtnDuracion, rdbtnCalorias;
 	private JLabel lblCarreras;
 	private JPanel panel,panel_1;
-	
+
 	/**
 	 * Create the frame.
 	 */
@@ -140,8 +150,9 @@ public class frListaCarrera extends JFrame
 		rdbtnRitmo = new JRadioButton("Ritmo");
 		rdbtnCalorias = new JRadioButton("Calor\u00EDas");
 		
-		rdbtnCalorias.setSelected(true);
-		pAtributo("cal");
+		rdbtnDistancia.setSelected(true);
+		dibujo = pintarKm();
+		pDibujo.add(dibujo,BorderLayout.CENTER);
 		
 		BG.add(rdbtnDuracion);
 		BG.add(rdbtnDistancia);
@@ -181,6 +192,8 @@ public class frListaCarrera extends JFrame
 		panel_1 = new JPanel();
 		panel_1.setBackground(Color.WHITE);
 		pSuperior.add(panel_1, BorderLayout.SOUTH);
+	
+		spDatos.setResizeWeight(.5d);
 		
 		setSize(375,667);
 		setResizable(false);
@@ -214,21 +227,25 @@ public class frListaCarrera extends JFrame
 		{
 		  public void actionPerformed(ActionEvent e)
 		  {
-		    
+			 //PROBLEMA: no se redibuja
+			  dibujo=pintarMin();
+			  dibujo.repaint();
 		  }
 		});
 		rdbtnDistancia.addActionListener(new ActionListener()
 		{
 		  public void actionPerformed(ActionEvent e)
 		  {
-			  pAtributo("km");
+			  dibujo=pintarKm();
+			  dibujo.repaint();
 		  }
 		});
 		rdbtnCalorias.addActionListener(new ActionListener()
 		{
 		  public void actionPerformed(ActionEvent e)
 		  {
-			  pAtributo("cal");
+			  dibujo=pintarCal();
+			  dibujo.repaint();
 		  }
 		});
 		
@@ -236,56 +253,142 @@ public class frListaCarrera extends JFrame
 		{
 		  public void actionPerformed(ActionEvent e)
 		  {
-		    
+			  dibujo=pintarRitmo();
+			  dibujo.repaint();
 		  }
 		});
 	}
-	
-	private void pAtributo(String atributo)
-	{	
-		try
-		{	
-			for (int i=0;i<lista.size();i++)
-			{
-				fechas.add(lista.get(i).getFecha());
-			}
-			
+	public ChartPanel pintarKm()
+	{
+		XYSeries series = new XYSeries("Distancia");
+		for (int i=0; i<lista.size(); i++)
+		{
+			series.add(i+1, lista.get(i).getKm());
+		}
+				
+		XYSeriesCollection dataset = new XYSeriesCollection();
+		dataset.addSeries(series);
+		        
+		JFreeChart chart = ChartFactory.createXYLineChart("Distancia","Nºcarrera","Km",  dataset, PlotOrientation.VERTICAL, true, false,false);       		
+		
+		ChartPanel dibujo = new ChartPanel(chart);
+//		pDibujo.add(dibujo);
+//		pDibujo.repaint();
+		
+		return dibujo;
+	}
+	public ChartPanel pintarMin()
+	{
+		XYSeries series = new XYSeries("Duración");
+		for (int i=0; i<lista.size(); i++)
+		{
+			String minutos = lista.get(i).getDuracion().split("\\.")[0];
+			String segundos = lista.get(i).getDuracion().split("\\.")[1];
+			int min = Integer.parseInt(minutos);
+			int seg = Integer.parseInt(segundos);
+			double duracion = min + ((seg*100)/60);
+			series.add(i+1, duracion);
+		}
+				
+		XYSeriesCollection dataset = new XYSeriesCollection();
+		dataset.addSeries(series);
+		        
+		JFreeChart chart = ChartFactory.createXYLineChart("Duración","Nºcarrera","Min",  dataset, PlotOrientation.VERTICAL, true, false,false);       		
+		
+		ChartPanel dibujo = new ChartPanel(chart);
+//		pDibujo.add(dibujo);
+//		pDibujo.repaint();
+		return dibujo;
+	}
+	public ChartPanel pintarCal()
+	{
+		XYSeries series = new XYSeries("Calorías");
+		for (int i=0; i<lista.size(); i++)
+		{
+			series.add(i+1, lista.get(i).getCalorias());
+		}
+				
+		XYSeriesCollection dataset = new XYSeriesCollection();
+		dataset.addSeries(series);
+		        
+		JFreeChart chart = ChartFactory.createXYLineChart("Calorías","Nºcarrera","Cal",  dataset, PlotOrientation.VERTICAL, true, false,false);       		
+		
+		ChartPanel dibujo = new ChartPanel(chart);
+//		pDibujo.add(dibujo);
+//		pDibujo.repaint();
+		return dibujo;
+	}
+	public ChartPanel pintarRitmo()
+	{
+		XYSeries series = new XYSeries("Ritmo");
+		for (int i=0; i<lista.size(); i++)
+		{
+			String minutos = lista.get(i).getRitmo().split("\\.")[0];
+			String segundos = lista.get(i).getRitmo().split("\\.")[1];
+			int min = Integer.parseInt(minutos);
+			int seg = Integer.parseInt(segundos);
+			double ritmo = min + ((seg*100)/60);
+			series.add(i+1, ritmo);
+		}
+				
+		XYSeriesCollection dataset = new XYSeriesCollection();
+		dataset.addSeries(series);
+		        
+		JFreeChart chart = ChartFactory.createXYLineChart("Ritmo","Nºcarrera","Min/Km",  dataset, PlotOrientation.VERTICAL, true, false,false);       		
+		
+		ChartPanel dibujo = new ChartPanel(chart);
+//		pDibujo.add(dibujo);
+//		pDibujo.repaint();
+		return dibujo;
+	}
+
+
+//	private void pAtributo(String atributo)
+//	{	
+//		try
+//		{	
+//			for (int i=0;i<lista.size();i++)
+//			{
+//				fechas.add(lista.get(i).getFecha());
+//			}
 //			Dibujo.iniciarDibujo(lista.size(), fechas);
 //			
 //			DibujoAtributo(atributo);
 //			
 //			Dibujo.repaint();
-		}
-		catch(NullPointerException e)
-		{
-			System.out.println("No hay carreras");
-		}
-	}
+//		}
+//		catch(NullPointerException e)
+//		{
+//			System.out.println("No hay carreras");
+//		}
+//	}
 	
 	
-	public void DibujoAtributo (String atributo)
-	{
-		switch (atributo)
-		{
-			case "cal":
-				for (int i=0; i<lista.size(); i++) 
-				{
-					double cal = lista.get(i).getCalorias();
-					String fecha = lista.get(i).getFecha();
-					Dibujo.dibujarAtributo(1, i, fecha, (int)cal);
-					Dibujo.repaint();
-				}
-				break;
-				
-			case "km":
-				for (int i=0; i<lista.size(); i++) 
-				{
-					double km = lista.get(i).getKm();
-					String fecha = lista.get(i).getFecha();
-					Dibujo.dibujarAtributo(1, i, fecha, (int)km);
-					Dibujo.repaint();
-				}
-				break;
-		}
-	}
+//	public void DibujoAtributo (String atributo)
+//	{
+//		switch (atributo)
+//		{
+//			case "cal":
+//				for (int i=0; i<lista.size(); i++) 
+//				{
+//					double cal = lista.get(i).getCalorias();
+//					String fecha = lista.get(i).getFecha();
+//					Dibujo.dibujarAtributo(1, i, fecha, (int)cal);
+//					Dibujo.repaint();
+//				}
+//				break;
+//				
+//			case "km":
+//				for (int i=0; i<lista.size(); i++) 
+//				{
+//					double km = lista.get(i).getKm();
+//					String fecha = lista.get(i).getFecha();
+//					Dibujo.dibujarAtributo(1, i, fecha, (int)km);
+//					Dibujo.repaint();
+//				}
+//				break;
+//		}
+//	}
+
+
 }

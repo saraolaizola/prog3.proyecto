@@ -39,11 +39,12 @@ public class frCarrera extends JFrame
 	private JButton bVolver, bEmpezar,bMusic,bVolumen;
 	private JLabel lblMapa, lblRealizarCarrera;
 	private File fichero;
+	private File cancion;
 	private boolean volumen=true;
 	private static String path, ficheros;
 	private static String ultimaCarpeta = null;
 	private Properties misProperties;
-	ArrayList<File> ficherosLista=null;
+	ArrayList<File> ficherosLista= new ArrayList<File>();
 	
 	public frCarrera(clsUsuario user)
 	{
@@ -154,7 +155,7 @@ public class frCarrera extends JFrame
 				        else 
 				        {
 				        	volumen = true;
-				        	bVolumen.setIcon(new ImageIcon(frCorrer.class.getResource("/img/volumenOnn.png")));
+				        	bVolumen.setIcon(new ImageIcon(frCorrer.class.getResource("/img/volumenOn.png")));
 				        }
 					}
 				});
@@ -163,48 +164,18 @@ public class frCarrera extends JFrame
 					@Override
 					public void actionPerformed(ActionEvent e) 
 					{
-						File fPath = pedirCarpeta();
-						if (fPath==null) return;
-						path = fPath.getAbsolutePath();
-						ultimaCarpeta = path;					
-						add( path, true );	
+//						cancion = pedirFichero();
+						
+						File fichero = pedirCarpeta();
+						if (fichero==null) return;
+						else
+						{
+							path = fichero.getAbsolutePath();
+							ultimaCarpeta = path;					
+							procesaCarpeta(fichero);
+						}	
 					}
 				});
-	}
-	
-	public void add(String carpetaFicheros, boolean cargarDeBD ) 
-	{
-		if (carpetaFicheros!=null) 
-		{
-			try 
-			{
-				Pattern pFics = Pattern.compile( "mp3", Pattern.CASE_INSENSITIVE );
-				File fInic = new File(carpetaFicheros); 
-				procesaCarpeta(fInic, pFics);
-			} 
-			catch (PatternSyntaxException e) 
-			{
-				System.out.println("Error en patrón de expresión regular ");
-			}
-		}
-	}
-	
-	private void procesaCarpeta( File fic, Pattern pFics) 
-	{
-		if (fic.isDirectory()) 
-		{
-			for( File f : fic.listFiles() ) 
-			{
-				procesaCarpeta(f,pFics);
-			}
-		} 
-		else 
-		{
-			if (pFics.matcher(fic.getName()).matches() ) 
-			{
-				ficherosLista.add( fic );
-			} 
-		}
 	}
 	
 	private static File pedirCarpeta() 
@@ -222,18 +193,60 @@ public class frCarrera extends JFrame
 			return null;
 	}
 	
-	private File pedirFicheroMP3() 
+	private void procesaCarpeta( File fic) 
+	{
+		if (fic.isDirectory()) 
+		{
+			for( File f : fic.listFiles() ) {
+				procesaCarpeta(f);
+			}
+		} 
+		else if(fic.getAbsolutePath().endsWith(".mp3")) ficherosLista.add( fic ); 
+	}
+	
+	private File pedirFichero() 
 	{
 		File dirActual = new File( System.getProperty("user.dir") );
 		JFileChooser chooser = new JFileChooser( dirActual );
 		chooser.setFileSelectionMode( JFileChooser.FILES_ONLY );
-		chooser.setFileFilter( new FileNameExtensionFilter("mp3"));
+		chooser.setFileFilter( new FileNameExtensionFilter("MP3 File","mp3"));
 		int returnVal = chooser.showOpenDialog( null );
 		if (returnVal == JFileChooser.APPROVE_OPTION)
 			return chooser.getSelectedFile();
 		else 
 			return null;
 	}
+	
+	public void add(String carpetaFicheros) 
+	{
+		if (carpetaFicheros!=null) 
+		{
+			try 
+			{
+				File fInic = new File(carpetaFicheros); 
+				procesaCarpeta(fInic);
+			} 
+			catch (PatternSyntaxException e) 
+			{
+				System.out.println("Error en patrón de expresión regular ");
+			}
+		}
+	}
+	
+//	private File pedirFicheroMP3() 
+//	{
+//		File dirActual = new File( System.getProperty("user.dir") );
+//		JFileChooser chooser = new JFileChooser( dirActual );
+//		chooser.setFileSelectionMode( JFileChooser.FILES_ONLY );
+//		chooser.setFileFilter( new FileNameExtensionFilter("mp3"));
+//		int returnVal = chooser.showOpenDialog( null );
+//		if (returnVal == JFileChooser.APPROVE_OPTION)
+//			return chooser.getSelectedFile();
+//		else 
+//			return null;
+//	}
+	
+	
 	
 	@SuppressWarnings("unused")
 	private void cargaProperties() 

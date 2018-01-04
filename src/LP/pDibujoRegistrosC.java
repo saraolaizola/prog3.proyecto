@@ -95,33 +95,19 @@ public class pDibujoRegistrosC extends JPanel
 		colores = new ArrayList<Color>();
 		iniciarColores();
 		
-//		duracion= new ArrayList<Integer>();
 		atributo = new ArrayList<Integer>();
-//		ritmo = new ArrayList<Integer>();
-//		km = new ArrayList<Double>();
-		
-		max = 10;  // Empezamos en 10 (luego se irá redimensionando)
+
+		max = 10;  //luego se redimensiona
 		this.total = total;
 		origenX = ESPACIO_IZQDA_X;
 		g2.setFont( new Font("Arial", Font.PLAIN, 10) );
-		reiniciarDibujo();
-	}
-
-	/** Reinicia el dibujo con distinto tamaño de lienzo (llamar cuando cambie el tamaño del panel),
-	* pero el resto de datos siguen como estuvieran.
-	*/
-	public void reiniciarDibujo() 
-	{
-		if (colores!=null)// Si ya está inicializado el dibujo
-		{
-			alto = (getHeight() - ESPACIO_ABAJO_Y*2) / 2;
-			origenY = getHeight() - ESPACIO_ABAJO_Y*2 - alto;
-			ancho = getWidth() - origenX - ESPACIO_DCHA_X;
-			redibujaTodo();
-			repaint();
-		}
-	}
 		
+		alto = (getHeight() - ESPACIO_ABAJO_Y*2) / 2;
+		origenY = getHeight() - ESPACIO_ABAJO_Y*2 - alto;
+		ancho = getWidth() - origenX - ESPACIO_DCHA_X;
+		redibujaTodo();
+		repaint();
+	}		
 		
 	// Se dibuja en orden por tamanyos
 	public void dibujarAtributo ( int numVariable, int numCarrera, String fecha, int valor ) 
@@ -158,7 +144,8 @@ public class pDibujoRegistrosC extends JPanel
 			g2.fillOval( x-RADIO_CIRCULO_PUNTO, y-RADIO_CIRCULO_PUNTO, RADIO_CIRCULO_PUNTO*2, RADIO_CIRCULO_PUNTO*2 );
 		else
 			g2.drawOval( x-RADIO_CIRCULO_PUNTO, y-RADIO_CIRCULO_PUNTO, RADIO_CIRCULO_PUNTO*2, RADIO_CIRCULO_PUNTO*2 );
-		if (numCarrera>0) {  // Dibujar línea
+		if (numCarrera>0) 
+		{  
 			int xAnt = calcX( numCarrera-1);
 			int yAnt = calcY( atributo.get(numCarrera-1) );
 			if (marcadaFila(numVariable)) 
@@ -195,23 +182,7 @@ public class pDibujoRegistrosC extends JPanel
 		repaint();
 	}
 
-	// true si acercar, false si alejar
-	public void cambiarZoom( boolean acercar ) 
-	{
-		if (acercar) 
-		{
-			if (max>=2) 
-			{
-				max /= 2;;
-			}
-		} 
-		else 
-		{
-			max *= 2;
-		}
-		redibujaTodo();
-	}
-		
+	
 	public Color getColor( int numProc ) {
 		return colores.get(numProc);
 	}
@@ -231,6 +202,7 @@ public class pDibujoRegistrosC extends JPanel
 		
 	// Métodos utilitarios
 	private static Random r = new Random();
+	
 	private void iniciarColores() 
 	{
 		colores.add( Color.blue );

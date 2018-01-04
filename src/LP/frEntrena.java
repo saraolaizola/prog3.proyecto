@@ -53,7 +53,7 @@ public class frEntrena extends JFrame implements Runnable
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		entrenamiento = entrena;
-		path = entrena.getFile().getAbsolutePath();
+		path = entrenamiento.getFile().getAbsolutePath();
 		
 		String vlcPath = System.getenv().get( "vlc" );
     	if (vlcPath==null)
