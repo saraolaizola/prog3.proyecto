@@ -389,10 +389,9 @@ public class BD
 			BD.registrarOpcEntrenamiento(f,"003", "Cardio Kick Boxing", "Experto", 0.03, 15);
 			//https://www.youtube.com/watch?v=Vve4BVTZ0QU
 		} 
-		catch (clsOpcEntrenamientoRepetida e)
-		{
-			
+		catch (clsOpcEntrenamientoRepetida e){
 		}
+		
 	}
 	
 	

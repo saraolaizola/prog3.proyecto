@@ -71,8 +71,14 @@ public class frListaEntrena extends JFrame {
 		usuario = user;
 		
 		String[] columnNames = {"Fecha","Duración"};
-		DefaultTableModel model = new DefaultTableModel(columnNames,0);
-		
+		DefaultTableModel model = new DefaultTableModel(columnNames,0)
+		{
+			private static final long serialVersionUID = 1L;
+			public boolean isCellEditable(int row, int column)
+			{
+				return false;
+			}	
+		};
 		DefaultTableCellRenderer RendererCentro = new DefaultTableCellRenderer();
 		RendererCentro.setHorizontalAlignment(JLabel.CENTER);
 		

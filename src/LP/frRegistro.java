@@ -42,8 +42,6 @@ public class frRegistro extends JFrame
 	private SpinnerListModel slm1, slm2;
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 	
-	
-	
 	/**
 	 * Create the frame.
 	 */

@@ -33,9 +33,9 @@ public class frEntrena extends JFrame implements Runnable
 
 	private static final long serialVersionUID = 1L;
 	
-	private JPanel pSuperior, pInferior, pCentral, pTime, pCal;
+	private JPanel pSuperior, pInferior, pCentral;
 	private JButton btnPause, btnFin;
-	private JLabel lblTime,lblCal,cal,time; //lblVideo
+	private JLabel cal,time,nombre; //lblVideo
 	private Integer minutos, segundos=59;
 	private Double calorias=0.0;
 	clsOpcEntrenamiento entrenamiento;
@@ -56,60 +56,50 @@ public class frEntrena extends JFrame implements Runnable
 		path = entrena.getFile().getAbsolutePath();
 		
 		String vlcPath = System.getenv().get( "vlc" );
-		
     	if (vlcPath==null)
-			// Poner VLC a mano
+			// Poner VLC a mano <<
 			System.setProperty("jna.library.path", "c:\\Archivos de programa\\videolan\\vlc-2.1.5");
 		else
-			// Poner VLC desde la variable de entorno
 			System.setProperty( "jna.library.path", vlcPath );
 		
-//		pSuperior = new JPanel();
 		pInferior = new JPanel();
 		pCentral = new JPanel();
-		pCentral.setBackground(Color.WHITE);
-		
-//		getContentPane().add( pSuperior, BorderLayout.NORTH );
-//		pSuperior.setLayout( null );
-//		pSuperior.setBackground( Color.white );
-		getContentPane().add (pCentral, BorderLayout.CENTER);
-		pCentral.setLayout(new BorderLayout(0, 0));
-		
-//		lblVideo = new JLabel();
-//		lblVideo.setIcon(new ImageIcon(frCorrer.class.getResource("/img/abdominal.gif")));
-//		lblVideo.setHorizontalAlignment(SwingConstants.CENTER);
-//		pCentral.add(lblVideo, BorderLayout.CENTER);
-		
+		pSuperior = new JPanel();
 		pDatos = new JPanel();
-		pDatos.setBackground(Color.WHITE);
-		pCentral.add(pDatos, BorderLayout.SOUTH);
-		pDatos.setLayout(new GridLayout(0, 2, 0, 0));
-		pTime = new JPanel();
-		pDatos.add(pTime);
-		pTime.setBackground(Color.WHITE);
 		
-		lblTime = new JLabel("");
-		lblTime.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTime.setIcon(new ImageIcon(frCorrer.class.getResource("/img/time.png")));
+		pCentral.setBackground(Color.WHITE);
+		pCentral.setLayout(new BorderLayout(0, 0));
+		pCentral.add(pDatos, BorderLayout.SOUTH);
+		
+		getContentPane().add (pCentral, BorderLayout.CENTER);	
+		
+		pDatos.setBackground(Color.WHITE);
+		pDatos.setLayout(new GridLayout(0, 2, 0, 0));
+		
+		getContentPane().add(pSuperior, BorderLayout.NORTH);
+		
+		nombre = new JLabel (entrena.getNombre());
+		nombre.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		
+		pSuperior.add(nombre);
+		
 		time = new JLabel(minutos+":"+segundos);
 		time.setFont(new Font("Tahoma", Font.PLAIN, 40));
 		time.setHorizontalAlignment(SwingConstants.CENTER);
-		pTime.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		pTime.add(lblTime);
-		pTime.add(time);
+		time.setIcon(new ImageIcon(frCorrer.class.getResource("/img/time.png")));
+		time.setVerticalTextPosition(SwingConstants.BOTTOM);
+		time.setHorizontalTextPosition(SwingConstants.CENTER);
+		time.setBackground(Color.WHITE);
+		pDatos.add(time);
 		
-		pCal = new JPanel();
-		pDatos.add(pCal);
-		pCal.setBackground(Color.WHITE);
-		lblCal = new JLabel("");
-		lblCal.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCal.setIcon(new ImageIcon(frCorrer.class.getResource("/img/cal.png")));
 		cal = new JLabel(""+calorias);
 		cal.setHorizontalAlignment(SwingConstants.CENTER);
 		cal.setFont(new Font("Tahoma", Font.PLAIN, 40));
-		pCal.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		pCal.add(lblCal);
-		pCal.add(cal);
+		cal.setIcon(new ImageIcon(frCorrer.class.getResource("/img/cal.png")));
+		cal.setVerticalTextPosition(SwingConstants.BOTTOM);
+		cal.setHorizontalTextPosition(SwingConstants.CENTER);
+		cal.setBackground(Color.WHITE);
+		pDatos.add(cal);
 		
 		minutos = entrena.getDuracion()-1;
 
@@ -143,9 +133,6 @@ public class frEntrena extends JFrame implements Runnable
             }
         };
         mediaPlayer = mediaPlayerComponent.getMediaPlayer();
-        
-//        pSuperior.add(mediaPlayerComponent);
-		
         pCentral.add(mediaPlayerComponent, BorderLayout.CENTER);
         
         setSize(375,667);
@@ -198,12 +185,14 @@ public class frEntrena extends JFrame implements Runnable
 		        {
 		        	cronometroPlay = false;
 		        	hilo.suspend();
+		        	mediaPlayer.pause();
 		        	btnPause.setIcon(new ImageIcon(frCorrer.class.getResource("/img/play.png")));
 		        }
 		        else 
 		        {
 		        	cronometroPlay = true;
 		        	hilo.resume();
+		        	mediaPlayer.play();
 		        	btnPause.setIcon(new ImageIcon(frCorrer.class.getResource("/img/pause.png")));
 		        }
 				
@@ -249,7 +238,7 @@ public class frEntrena extends JFrame implements Runnable
                 if (cronometroPlay)
                 {
                 	Thread.sleep( 1000 );
-
+                	
                 	DecimalFormat df = new DecimalFormat("#.0");
                 	
                     segundos=segundos-1;

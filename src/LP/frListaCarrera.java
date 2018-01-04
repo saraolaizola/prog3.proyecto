@@ -50,8 +50,7 @@ public class frListaCarrera extends JFrame
 	private ButtonGroup BG;
 	private JRadioButton rdbtnDistancia, rdbtnRitmo,rdbtnDuracion, rdbtnCalorias;
 	private JLabel lblCarreras;
-	private JPanel panel;
-	private JPanel panel_1;
+	private JPanel panel,panel_1;
 	
 	/**
 	 * Create the frame.
@@ -78,7 +77,14 @@ public class frListaCarrera extends JFrame
 		usuario = user;
 		
 		String[] columnNames = {"Fecha","Duración"};
-		DefaultTableModel model = new DefaultTableModel(columnNames,0);
+		DefaultTableModel model = new DefaultTableModel(columnNames,0)
+		{
+			private static final long serialVersionUID = 1L;
+			public boolean isCellEditable(int row, int column)
+			{
+				return false;
+			}	
+		};
 		
 		DefaultTableCellRenderer RendererCentro = new DefaultTableCellRenderer();
 		RendererCentro.setHorizontalAlignment(JLabel.CENTER);

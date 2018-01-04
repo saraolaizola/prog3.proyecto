@@ -3,6 +3,7 @@ package LP;
 import java.awt.BorderLayout;
 import java.awt.Color;
 
+import javax.print.attribute.standard.Media;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
@@ -10,14 +11,19 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
 
+import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
+import uk.co.caprica.vlcj.player.MediaPlayer;
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+import uk.co.caprica.vlcj.player.embedded.FullScreenStrategy;
+import uk.co.caprica.vlcj.player.embedded.windows.Win32FullScreenStrategy;
+import uk.co.caprica.vlcj.player.media.*;
+
 import java.awt.Font;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Random;
 
 import LD.BD;
@@ -25,25 +31,52 @@ import LN.clsCarrera;
 import LN.clsUsuario;
 
 import java.awt.GridLayout;
+import java.io.File;
 
 public class frCorrer extends JFrame implements Runnable
 {
 	private static final long serialVersionUID = 1L;
 	
-	private JPanel pPrincipal, pInferior, pCentral, pTime, pRitmo, pCal, pKM;
+	private JPanel pPrincipal, pInferior, pCentral, pTime, pRitmo, pCal, pKM,pOtros,panel;
 	private JButton btnPause, btnFin;
 	private JLabel lblMapa,lblTime,lblRitmo,lblCal,lblKm,ritmo,cal,km,time;
 	private Integer minutos=0, segundos=0, m=0, s=0;
 	private double kilometros=0.0,calorias=0.0;
 	
-	boolean cronometroActivo, cronometroPlay;
 	Thread hilo;
-	private JPanel pOtros;
-	private JPanel panel;
+	boolean cronometroActivo, cronometroPlay;
 	
-	public frCorrer(clsUsuario user) 
+	private ArrayList<File>lista;
+	private int cancionEnCurso=0;
+	EmbeddedMediaPlayerComponent mediaPlayerComponent;
+	EmbeddedMediaPlayer mediaPlayer;
+	public static String path;
+	
+	
+	public frCorrer(clsUsuario user,ArrayList<File>ficheros) 
 	{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		lista = ficheros;
+		
+		String vlcPath = System.getenv().get( "vlc" );
+		if (vlcPath==null)
+			// Poner VLC a mano <<
+			System.setProperty("jna.library.path", "c:\\Archivos de programa\\videolan\\vlc-2.1.5");
+		else
+			System.setProperty( "jna.library.path", vlcPath );
+		
+		mediaPlayerComponent = new EmbeddedMediaPlayerComponent() 
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+            protected FullScreenStrategy onGetFullScreenStrategy() 
+			{
+                return new Win32FullScreenStrategy(frCorrer.this);
+            }
+        };
+        mediaPlayer = mediaPlayerComponent.getMediaPlayer();
 		
 		pPrincipal = new JPanel();
 		pInferior = new JPanel();
@@ -149,8 +182,26 @@ public class frCorrer extends JFrame implements Runnable
 		btnPause.setContentAreaFilled(false); // No rellenar el área
 		btnPause.setBorderPainted(false);     // No pintar el borde
 		btnPause.setBorder(null);             // No considerar el borde 
+			
+		btnFin = new JButton("");
+		btnFin.setIcon(new ImageIcon(frCorrer.class.getResource("/img/stop.png")));
+		btnFin.setOpaque(false);            // Fondo Transparente (los gráficos son png transparentes)
+		btnFin.setContentAreaFilled(false); // No rellenar el área
+		btnFin.setBorderPainted(false);     // No pintar el borde
+		btnFin.setBorder(null);             // No considerar el borde 
 		
 		pInferior.add(btnPause);
+		pInferior.add(btnFin);
+		
+		setSize(375,667);
+		setResizable(false);
+		
+		cronometroActivo = true;
+		cronometroPlay = true;
+		hilo = new Thread(this);
+		hilo.start();
+		setVisible(true);
+		
 		btnPause.addActionListener( new ActionListener() 
 		{
 			@Override
@@ -161,25 +212,18 @@ public class frCorrer extends JFrame implements Runnable
 		        	cronometroPlay = false;
 		        	hilo.suspend();
 		        	btnPause.setIcon(new ImageIcon(frCorrer.class.getResource("/img/play.png")));
+		        	mediaPlayer.pause();
 		        }
 		        else 
 		        {
 		        	cronometroPlay = true;
 		        	hilo.resume();
 		        	btnPause.setIcon(new ImageIcon(frCorrer.class.getResource("/img/pause.png")));
+		        	mediaPlayer.play();
 		        }
 				
 			}
 		});
-		
-		btnFin = new JButton("");
-		btnFin.setIcon(new ImageIcon(frCorrer.class.getResource("/img/stop.png")));
-		btnFin.setOpaque(false);            // Fondo Transparente (los gráficos son png transparentes)
-		btnFin.setContentAreaFilled(false); // No rellenar el área
-		btnFin.setBorderPainted(false);     // No pintar el borde
-		btnFin.setBorder(null);             // No considerar el borde 
-		pInferior.add(btnFin);
-		
 		btnFin.addActionListener( new ActionListener() 
 		{
 			@Override
@@ -203,15 +247,6 @@ public class frCorrer extends JFrame implements Runnable
 				 }
 			}
 		});
-		
-		setSize(375,667);
-		setResizable(false);
-		
-		cronometroActivo = true;
-		cronometroPlay = true;
-		hilo = new Thread(this);
-		hilo.start();
-		setVisible(true);
 	}
 
 	public void run()
@@ -222,6 +257,32 @@ public class frCorrer extends JFrame implements Runnable
         
         try
         {
+        	if (lista!=null)
+        	{	
+        		if (cancionEnCurso<lista.size())
+        		{	
+//        			Media hit = new Media(new File(cancion).toURI().toString());
+//        			MediaPlayer mediaPlayer = new MediaPlayer(hit);
+//        			mediaPlayer.play();
+        			
+        			path = lista.get(cancionEnCurso).getAbsolutePath();
+        			System.out.println(path);
+        			if(mediaPlayer.isPlayable())
+                	{
+                		mediaPlayer.play();
+                	}
+                	else
+                	{
+                		if (mediaPlayer!=null) 
+                		{
+                			mediaPlayer.playMedia(path);
+                		}
+                	}
+        			
+        			//CUANDO ACABE REPRODUCIR SIGUIENTE
+        			cancionEnCurso++;
+        		}
+        	}
             while( cronometroActivo )
             {
                 if(cronometroPlay)
@@ -276,10 +337,7 @@ public class frCorrer extends JFrame implements Runnable
         }
         catch(Exception e)
         {
-        	time.setText( "00:00" );
-        	ritmo.setText("0'00''");
-        	cal.setText("0");
-        	km.setText("0");
+        	
         }
     }
 }
