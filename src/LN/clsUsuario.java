@@ -1,5 +1,12 @@
 package LN;
 
+/**
+ * Clase para guardar la información de los usuarios 
+ * Tendrá los siguientes atributos: usuario y contraseña,
+ * nombre, apellido, peso, altura y sexo 
+ * @author ALUMNO
+ *
+ */
 public class clsUsuario 
 {
 	private String usuario;
@@ -10,8 +17,6 @@ public class clsUsuario
 	private double peso;
 	private double altura;
 	private String sexo;
-		
-	
 
 	public clsUsuario(String usuario, String contraseña, String nombre, String apellido, double peso, double altura, String sexo) 
 	{

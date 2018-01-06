@@ -10,9 +10,11 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import COMUN.clsSinActividad;
 import LN.clsUsuario;
 
 import java.awt.FlowLayout;
@@ -70,7 +72,7 @@ public class frLista extends JFrame
 				getContentPane().add(pMenu, BorderLayout.SOUTH);
 				
 				bEntrenar = new JButton();
-				bEntrenar.setIcon(new ImageIcon(frPrincipal.class.getResource("/img/ientrena.jpg")));
+				bEntrenar.setIcon(new ImageIcon(frLista.class.getResource("/img/registroE.jpg")));
 				bEntrenar.setHorizontalAlignment(SwingConstants.CENTER);
 				bEntrenar.setOpaque(false);            // Fondo Transparente (los gráficos son png transparentes)
 				bEntrenar.setContentAreaFilled(false); // No rellenar el área
@@ -80,7 +82,7 @@ public class frLista extends JFrame
 				pPrincipal.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 				
 				bCorrer = new JButton();
-				bCorrer.setIcon(new ImageIcon(frPrincipal.class.getResource("/img/icorrer.jpg")));
+				bCorrer.setIcon(new ImageIcon(frLista.class.getResource("/img/registroC.jpg")));
 				bCorrer.setHorizontalAlignment(SwingConstants.CENTER);
 				bCorrer.setOpaque(false);            // Fondo Transparente (los gráficos son png transparentes)
 				bCorrer.setContentAreaFilled(false); // No rellenar el área
@@ -156,20 +158,38 @@ public class frLista extends JFrame
 					@Override
 					public void actionPerformed(ActionEvent e) 
 					{
-						frListaCarrera ventana = new frListaCarrera (user);
-						ventana.setVisible(true);
-						dispose();
+						try
+						{
+							frListaCarrera ventana = new frListaCarrera (user);
+							ventana.setVisible(true);
+							dispose();
+						}
+						catch (clsSinActividad a)
+						{
+							Error(a);
+						}
 					}
 				});
 				bEntrenar.addActionListener( new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) 
 					{
-						frListaEntrena ventana = new frListaEntrena (user);
-						ventana.setVisible(true);
-						dispose();
+						try
+						{
+							frListaEntrena ventana = new frListaEntrena (user);
+							ventana.setVisible(true);
+							dispose();
+						}
+						catch (clsSinActividad a)
+						{
+							Error(a);
+						}
 					}
 				});
 	}
-
+	
+	protected void Error(clsSinActividad a)
+	{
+		JOptionPane.showMessageDialog(this, a.getMessage());
+	}
 }

@@ -2,6 +2,12 @@ package LN;
 
 import java.io.File;
 
+/**
+ * Clase para guardar la información de las opciones de entrenamiento 
+ * Tendrá los siguientes atributos: código, nombre, nivel, duración, calorías por segundo y el fichero con el vídeo
+ * @author ALUMNO
+ *
+ */
 public class clsOpcEntrenamiento 
 {
 	private String codigo, nombre, nivel;

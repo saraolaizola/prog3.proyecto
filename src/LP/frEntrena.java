@@ -1,8 +1,6 @@
 package LP;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +18,7 @@ import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import uk.co.caprica.vlcj.player.embedded.FullScreenStrategy;
 import uk.co.caprica.vlcj.player.embedded.windows.Win32FullScreenStrategy;
+import COMUN.clsSinActividad;
 import LD.BD;
 import LN.clsEntrenamiento;
 import LN.clsOpcEntrenamiento;
@@ -106,14 +105,14 @@ public class frEntrena extends JFrame implements Runnable
 		getContentPane().add(pInferior, BorderLayout.SOUTH);
 		
 		btnPause = new JButton("");
-		btnPause.setIcon(new ImageIcon(frCorrer.class.getResource("/img/pause.png")));
+		btnPause.setIcon(new ImageIcon(frCorrer.class.getResource("/img/pause2.png")));
 		btnPause.setOpaque(false);            // Fondo Transparente (los gráficos son png transparentes)
 		btnPause.setContentAreaFilled(false); // No rellenar el área
 		btnPause.setBorderPainted(false);     // No pintar el borde
 		btnPause.setBorder(null);             // No considerar el borde 
 		
 		btnFin = new JButton("");
-		btnFin.setIcon(new ImageIcon(frCorrer.class.getResource("/img/stop.png")));
+		btnFin.setIcon(new ImageIcon(frCorrer.class.getResource("/img/stop2.png")));
 		btnFin.setOpaque(false);            // Fondo Transparente (los gráficos son png transparentes)
 		btnFin.setContentAreaFilled(false); // No rellenar el área
 		btnFin.setBorderPainted(false);     // No pintar el borde
@@ -150,29 +149,34 @@ public class frEntrena extends JFrame implements Runnable
 			public void actionPerformed(ActionEvent e) 
 			{
 				 cronometroActivo = false;
-				 
-				 try 
-				 { 
-					String tiempo = (entrena.getDuracion()-minutos)+"."+(60-segundos);
-					 
-					BD.registrarEntrenamiento("datetime('now')",tiempo, calorias, entrenamiento.getCodigo(), user.getUsuario());
-					ArrayList <clsEntrenamiento> entrenas = BD.getMisEntrenamientos(user.getUsuario());
-					clsEntrenamiento entrena = entrenas.get(entrenas.size()-1);
-					
-					frDetalleEntrena ventana = new frDetalleEntrena(user,entrena);
-					ventana.setVisible(true);
-					dispose();
-				 } 
-				 catch (ClassNotFoundException e1) 
+				 clsEntrenamiento entrena = new clsEntrenamiento();
+				 try
 				 {
-					e1.printStackTrace();
+					 try 
+					 { 
+						String tiempo = (entrenamiento.getDuracion()-minutos)+"."+(60-segundos);
+						 
+						BD.registrarEntrenamiento("datetime('now')",tiempo, calorias, entrenamiento.getCodigo(), user.getUsuario());
+						ArrayList <clsEntrenamiento> entrenas = BD.getMisEntrenamientos(user.getUsuario());
+						entrena = entrenas.get(entrenas.size()-1);
+					 } 
+					 catch (ClassNotFoundException e1){
+					 }
+					 catch (ArrayIndexOutOfBoundsException e2)
+					 {
+						 entrena = BD.getMisEntrenamientos(user.getUsuario()).get(0);
+					 }
+					 finally
+					 {
+						 hilo.stop();
+						 mediaPlayer.stop();
+						 
+						 frDetalleEntrena ventana = new frDetalleEntrena(user,entrena);
+						 ventana.setVisible(true);
+						 dispose();
+					 }
 				 }
-				 catch (ArrayIndexOutOfBoundsException e2)
-				 {
-					 clsEntrenamiento entrena = BD.getMisEntrenamientos(user.getUsuario()).get(0);
-					 frDetalleEntrena ventana = new frDetalleEntrena(user,entrena);
-					 ventana.setVisible(true);
-					 dispose();
+				 catch (clsSinActividad a){
 				 }
 			}
 		});
@@ -186,14 +190,14 @@ public class frEntrena extends JFrame implements Runnable
 		        	cronometroPlay = false;
 		        	hilo.suspend();
 		        	mediaPlayer.pause();
-		        	btnPause.setIcon(new ImageIcon(frCorrer.class.getResource("/img/play.png")));
+		        	btnPause.setIcon(new ImageIcon(frCorrer.class.getResource("/img/play2.png")));
 		        }
 		        else 
 		        {
 		        	cronometroPlay = true;
 		        	hilo.resume();
 		        	mediaPlayer.play();
-		        	btnPause.setIcon(new ImageIcon(frCorrer.class.getResource("/img/pause.png")));
+		        	btnPause.setIcon(new ImageIcon(frCorrer.class.getResource("/img/pause2.png")));
 		        }
 				
 			}
@@ -219,19 +223,6 @@ public class frEntrena extends JFrame implements Runnable
         			mediaPlayer.playMedia(path);
         		}
         	}
-        	
-//        	if (mediaPlayer.isPlayable()) 
-//        	{
-//				if (mediaPlayer.isPlaying())
-//					mediaPlayer.pause();
-//				else
-//					mediaPlayer.play();
-//			} 
-//        	else 
-//        	{
-//				lanzaVideo();
-//			}
-        	
         	
             while( cronometroActivo )
             {

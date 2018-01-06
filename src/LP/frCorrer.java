@@ -10,15 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
 
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.Player;
-import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
-import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
-import uk.co.caprica.vlcj.player.embedded.FullScreenStrategy;
-import uk.co.caprica.vlcj.player.embedded.windows.Win32FullScreenStrategy;
-
 import java.awt.Font;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
@@ -34,39 +26,38 @@ import LN.clsUsuario;
 
 import java.awt.GridLayout;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 
 public class frCorrer extends JFrame implements Runnable
 {
 	private static final long serialVersionUID = 1L;
 	
-	private JPanel pPrincipal, pInferior, pCentral, pTime, pRitmo, pCal, pKM,pOtros,panel;
+	private JPanel pInferior, pTime, pRitmo, pCal, pKM;
 	private JButton btnPause, btnFin;
-	private JLabel lblMapa,lblTime,lblRitmo,lblCal,lblKm,ritmo,cal,km,time;
+	private JLabel lblTime,lblRitmo,lblCal,lblKm,ritmo,cal,km,time;
 	private Integer minutos=0, segundos=0, m=0, s=0;
-	private double kilometros=0.0,calorias=0.0;
+	private double kilometros=0,calorias=0;
 	
-	Thread hilo;
-	Thread hiloMusica;
+	Thread hilo,musica;
 	boolean cronometroActivo, cronometroPlay;
 	
 	private ArrayList<File>lista;
 //	private int cancionEnCurso=0;
-	EmbeddedMediaPlayerComponent mediaPlayerComponent;
-	EmbeddedMediaPlayer mediaPlayer;
+//	EmbeddedMediaPlayerComponent mediaPlayerComponent;
+//	EmbeddedMediaPlayer mediaPlayer;
 	public static String path;
 	File cancion;
-
-	private clsReproductor reproductor;
-	
+	private JPanel pDatos;
+	private JLabel label_2;
 	
 	public frCorrer(clsUsuario user,ArrayList<File>list) 
 	{
+		getContentPane().setBackground(Color.YELLOW);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		lista = list;
-		
 //		cancion = song;
 		
 		String vlcPath = System.getenv().get( "vlc" );
@@ -75,61 +66,34 @@ public class frCorrer extends JFrame implements Runnable
 			System.setProperty("jna.library.path", "c:\\Archivos de programa\\videolan\\vlc-2.1.5");
 		else
 			System.setProperty( "jna.library.path", vlcPath );
+		getContentPane().setLayout(new GridLayout(0, 1, 0, 0));
 		
-		mediaPlayerComponent = new EmbeddedMediaPlayerComponent() 
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-            protected FullScreenStrategy onGetFullScreenStrategy() 
-			{
-                return new Win32FullScreenStrategy(frCorrer.this);
-            }
-        };
-        mediaPlayer = mediaPlayerComponent.getMediaPlayer();
-		
-		pPrincipal = new JPanel();
-		pInferior = new JPanel();
-		pInferior.setBackground(Color.YELLOW);
-		pCentral = new JPanel();
-		pCentral.setBackground(Color.YELLOW);
-		
-		getContentPane().add( pPrincipal, BorderLayout.NORTH );
-		pPrincipal.setBackground( Color.white );
-		pPrincipal.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
-		lblMapa = new JLabel();
-		pPrincipal.add(lblMapa);
-		lblMapa.setIcon(new ImageIcon(frCorrer.class.getResource("/img/map.jpeg")));
-		lblMapa.setHorizontalAlignment(SwingConstants.CENTER);
-		getContentPane().add (pCentral, BorderLayout.CENTER);
-		pCentral.setLayout(new BorderLayout(0, 0));
+		label_2 = new JLabel("");
+		label_2.setBackground(Color.YELLOW);
+		getContentPane().add(label_2);
 		pTime = new JPanel();
+		getContentPane().add(pTime);
 		pTime.setBackground(Color.YELLOW);
-		pCentral.add(pTime, BorderLayout.CENTER);
 		
 		lblTime = new JLabel("DURACI\u00D3N");
+		lblTime.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblTime.setHorizontalAlignment(SwingConstants.CENTER);
-		pTime.setLayout(new GridLayout(0, 1, 0, 0));
-		
-		panel = new JPanel();
-		panel.setBackground(Color.YELLOW);
-		pTime.add(panel);
+		pTime.setLayout(new BorderLayout(0, 0));
 		
 		time = new JLabel("00:00");
+		time.setVerticalAlignment(SwingConstants.TOP);
 		time.setVerticalTextPosition(SwingConstants.TOP);
-		time.setFont(new Font("Tahoma", Font.PLAIN, 70));
+		time.setFont(new Font("Tahoma", Font.BOLD, 90));
 		time.setHorizontalAlignment(SwingConstants.CENTER);
 		time.setHorizontalTextPosition(SwingConstants.CENTER);
-		pTime.add(time);
-		pTime.add(lblTime);
+		pTime.add(time, BorderLayout.CENTER);
+		pTime.add(lblTime, BorderLayout.NORTH);
 		
-		pOtros = new JPanel();
-		pOtros.setBackground(Color.YELLOW);
-		pCentral.add(pOtros, BorderLayout.SOUTH);
-		pOtros.setLayout(new GridLayout(0, 3, 0, 0));
+		pDatos = new JPanel();
+		getContentPane().add(pDatos);
+		pDatos.setLayout(new GridLayout(1, 0, 0, 0));
 		pCal = new JPanel();
-		pOtros.add(pCal);
+		pDatos.add(pCal);
 		pCal.setBackground(Color.YELLOW);
 		
 		lblCal = new JLabel("CAL");
@@ -139,18 +103,17 @@ public class frCorrer extends JFrame implements Runnable
 		lblCal.setVerticalTextPosition(SwingConstants.BOTTOM);
 		lblCal.setHorizontalTextPosition(SwingConstants.CENTER);
 		
-		cal = new JLabel("0.0");
+		cal = new JLabel("0");
 		cal.setHorizontalAlignment(SwingConstants.CENTER);
 		cal.setFont(new Font("Tahoma", Font.PLAIN, 40));
-		
-		pCal.setLayout(new BorderLayout(0, 0));
-		pCal.add(lblCal, BorderLayout.CENTER);
-		pCal.add(cal, BorderLayout.SOUTH);
+		pCal.setLayout(new GridLayout(0, 1, 0, 0));
+		pCal.add(lblCal);
+		pCal.add(cal);
 		
 		pKM = new JPanel();
-		pOtros.add(pKM);
+		pDatos.add(pKM);
 		pKM.setBackground(Color.YELLOW);
-		pKM.setLayout(new BorderLayout(0, 0));
+		pKM.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		lblKm = new JLabel("KM");
 		lblKm.setVerticalAlignment(SwingConstants.BOTTOM);
@@ -159,14 +122,14 @@ public class frCorrer extends JFrame implements Runnable
 		lblKm.setVerticalTextPosition(SwingConstants.BOTTOM);
 		lblKm.setHorizontalTextPosition(SwingConstants.CENTER);
 		
-		pKM.add(lblKm, BorderLayout.CENTER);
+		pKM.add(lblKm);
 		
-		km = new JLabel("0.0");
+		km = new JLabel("0");
 		km.setFont(new Font("Tahoma", Font.PLAIN, 40));
 		km.setHorizontalAlignment(SwingConstants.CENTER);
-		pKM.add(km, BorderLayout.SOUTH);
+		pKM.add(km);
 		pRitmo = new JPanel();
-		pOtros.add(pRitmo);
+		pDatos.add(pRitmo);
 		pRitmo.setBackground(Color.YELLOW);
 		
 		lblRitmo = new JLabel("RITMO");
@@ -179,44 +142,51 @@ public class frCorrer extends JFrame implements Runnable
 		ritmo = new JLabel(m+"'"+s+"''");
 		ritmo.setFont(new Font("Tahoma", Font.PLAIN, 40));
 		ritmo.setHorizontalAlignment(SwingConstants.CENTER);
-		pRitmo.setLayout(new BorderLayout(0, 0));
-		pRitmo.add(lblRitmo, BorderLayout.CENTER);
-		pRitmo.add(ritmo, BorderLayout.SOUTH);
-
-		getContentPane().add(pInferior, BorderLayout.SOUTH);
-		pInferior.setLayout(new GridLayout(0, 2, 0, 0));
+		pRitmo.setLayout(new GridLayout(0, 1, 0, 0));
+		pRitmo.add(lblRitmo);
+		pRitmo.add(ritmo);
+		pInferior = new JPanel();
+		getContentPane().add(pInferior);
+		pInferior.setBackground(Color.YELLOW);
 		
 		btnPause = new JButton("");
-		btnPause.setIcon(new ImageIcon(frCorrer.class.getResource("/img/pause.png")));
-		btnPause.setOpaque(false);            // Fondo Transparente (los gráficos son png transparentes)
-		btnPause.setContentAreaFilled(false); // No rellenar el área
-		btnPause.setBorderPainted(false);     // No pintar el borde
-		btnPause.setBorder(null);             // No considerar el borde 
-			
+		btnPause.setHorizontalAlignment(SwingConstants.RIGHT);
+		btnPause.setIcon(new ImageIcon(frCorrer.class.getResource("/img/pause2.png")));
+		btnPause.setOpaque(false);            
+		btnPause.setContentAreaFilled(false); 
+		btnPause.setBorderPainted(false);     
+		btnPause.setBorder(null);             
+		
 		btnFin = new JButton("");
-		btnFin.setIcon(new ImageIcon(frCorrer.class.getResource("/img/stop.png")));
-		btnFin.setOpaque(false);            // Fondo Transparente (los gráficos son png transparentes)
-		btnFin.setContentAreaFilled(false); // No rellenar el área
-		btnFin.setBorderPainted(false);     // No pintar el borde
-		btnFin.setBorder(null);             // No considerar el borde 
+		btnFin.setHorizontalAlignment(SwingConstants.LEFT);
+		btnFin.setIcon(new ImageIcon(frCorrer.class.getResource("/img/stop2.png")));
+		btnFin.setOpaque(false);           
+		btnFin.setContentAreaFilled(false); 
+		btnFin.setBorderPainted(false);     
+		btnFin.setBorder(null);
 		
-		pInferior.add(btnPause);
-		pInferior.add(btnFin);
-		
-		setSize(375,667);
-		setResizable(false);
-		
-		cronometroActivo = true;
-		cronometroPlay = true;
-		hilo = new Thread(this);
-		hilo.start();
-		
-		setVisible(true);
+		GroupLayout gl_pInferior = new GroupLayout(pInferior);
+		gl_pInferior.setHorizontalGroup(
+			gl_pInferior.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pInferior.createSequentialGroup()
+					.addGap(94)
+					.addComponent(btnPause, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGap(56)
+					.addComponent(btnFin, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGap(97))
+		);
+		gl_pInferior.setVerticalGroup(
+			gl_pInferior.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pInferior.createSequentialGroup()
+					.addGap(36)
+					.addGroup(gl_pInferior.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnFin)
+						.addComponent(btnPause))
+					.addContainerGap(62, Short.MAX_VALUE))
+		);
+		pInferior.setLayout(gl_pInferior);
 		
 //		reproductor = new clsReproductor(lista);		
-		
-		// PROBLEMA: reproducir y que funcione el reloj a la vez
-		// PROBLEMA: cuando acaba una cancion reproducir la siguiente
 		
 //		Player apl;
 //		try {
@@ -227,6 +197,22 @@ public class frCorrer extends JFrame implements Runnable
 //			e2.printStackTrace();
 //		}
 		
+
+		setSize(375,667);
+		setResizable(false);
+		
+		cronometroActivo = true;
+		cronometroPlay = true;
+		
+		hilo = new Thread(this);
+		hilo.start();
+		
+		clsReproductor reproductor = new clsReproductor(lista);
+		musica = new Thread(reproductor);
+		musica.start();
+		
+		setVisible(true);
+		
 		btnPause.addActionListener( new ActionListener() 
 		{
 			@Override
@@ -236,15 +222,15 @@ public class frCorrer extends JFrame implements Runnable
 		        {
 		        	cronometroPlay = false;
 		        	hilo.suspend();
-		        	btnPause.setIcon(new ImageIcon(frCorrer.class.getResource("/img/play.png")));
-//		        	mediaPlayer.pause();
+		        	musica.suspend();
+		        	btnPause.setIcon(new ImageIcon(frCorrer.class.getResource("/img/play2.png")));
 		        }
 		        else 
 		        {
 		        	cronometroPlay = true;
 		        	hilo.resume();
-		        	btnPause.setIcon(new ImageIcon(frCorrer.class.getResource("/img/pause.png")));
-//		        	mediaPlayer.play();
+		        	musica.resume();
+		        	btnPause.setIcon(new ImageIcon(frCorrer.class.getResource("/img/pause2.png")));
 		        }
 				
 			}
@@ -255,7 +241,6 @@ public class frCorrer extends JFrame implements Runnable
 			public void actionPerformed(ActionEvent e) 
 			{
 				 cronometroActivo = false;
-				 
 				 try 
 				 { 
 					Date d = new Date();
@@ -265,6 +250,9 @@ public class frCorrer extends JFrame implements Runnable
 					BD.registrarCarrera("datetime('now')",minutos+"."+segundos,calorias,kilometros,m+"."+s,user.getUsuario());
 					clsCarrera carrera = new clsCarrera(fecha,minutos+"."+segundos,calorias,kilometros,m+"."+s);
 				
+					hilo.stop();
+					musica.stop();
+					
 					frDetalleCarrera ventana = new frDetalleCarrera(user,carrera);
 					ventana.setVisible(true);
 					dispose();
@@ -291,18 +279,18 @@ public class frCorrer extends JFrame implements Runnable
                 {
                 	Thread.sleep(1000);
                     
-                	DecimalFormat df = new DecimalFormat("#.0");
+                	DecimalFormat df = new DecimalFormat("#.##");
                 	
                 	segundos=segundos+1;
                     calorias=calorias+0.2;
-                    kilometros=kilometros+0.005;
-                
+                    kilometros=kilometros+0.0033;
+                    
                     if(segundos==i)
                 	{
                     	m = rn.nextInt(4)+3;
                     	s = rn.nextInt(99);
                     	i=i+5;
-                    	
+                                       	
                     	if (segundos==60)
                     	{
                     		segundos=0;
@@ -317,11 +305,9 @@ public class frCorrer extends JFrame implements Runnable
                 	if( segundos < 10 ) seg = "0" + segundos;
                 	else seg = segundos.toString();
                 	
-                	if (calorias<1.0) calori="0"+df.format(calorias);
-                	else calori=df.format(calorias);
+                	calori=df.format(calorias);
                 		
-                	if (kilometros<1.0) kilom="0"+df.format(kilometros);           		
-                	else kilom=df.format(kilometros);   
+                	kilom=df.format(kilometros);   
                 	
                 	time.setText(min + ":" + seg);
                 	time.repaint();
@@ -337,9 +323,7 @@ public class frCorrer extends JFrame implements Runnable
             	}
             }
         }
-        catch(Exception e)
-        {
-        	
+        catch(Exception e){
         }
     }
 }

@@ -1,7 +1,11 @@
 package LN;
 
-import java.sql.Date;
-
+/**
+ * Clase padre para guardar la información de carreras y entrenamientos
+ * Tendrá los siguientes atributos: fecha, duración y calorías
+ * @author ALUMNO
+ *
+ */
 public class clsActividad 
 {
 	private String fecha,duracion;
@@ -15,9 +19,7 @@ public class clsActividad
 		this.calorias = calorias;
 	}
 
-	public clsActividad()
-	{
-		
+	public clsActividad(){
 	}
 	
 	public String getDuracion() 

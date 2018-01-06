@@ -38,8 +38,7 @@ public class frCarrera extends JFrame
 	private JPanel pInferior, pMenu, pCentral,panel,panel_1;
 	private JButton bVolver, bEmpezar,bMusic,bVolumen;
 	private JLabel lblMapa, lblRealizarCarrera;
-	private File fichero;
-	private File cancion;
+	private File fichero, cancion;
 	private boolean volumen=true;
 	private static String path, ficheros;
 	private static String ultimaCarpeta = null;
@@ -49,133 +48,133 @@ public class frCarrera extends JFrame
 	public frCarrera(clsUsuario user)
 	{
 		// Liberaci�n de la ventana por defecto al cerrar
-				setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
+		setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
 				
-				// Creaci�n contenedores y componentes
-				pInferior = new JPanel();
-				pMenu = new JPanel();
-				pCentral = new JPanel();
-				pCentral.setBackground(Color.WHITE);
-				
-				getContentPane().add( pInferior, BorderLayout.SOUTH );
-				pInferior.setBackground( Color.white );
-				pInferior.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-				
-				bVolumen = new JButton("");
-				bVolumen.setIcon(new ImageIcon(frCarrera.class.getResource("/img/volumenOn.png")));
-				pInferior.add(bVolumen);
-				bVolumen.setOpaque(false);            // Fondo Transparente (los gráficos son png transparentes)
-				bVolumen.setContentAreaFilled(false); // No rellenar el área
-				bVolumen.setBorderPainted(false);     // No pintar el borde
-				bVolumen.setBorder(null);
-				
-				
-				bEmpezar = new JButton();
-				pInferior.add(bEmpezar);
-				bEmpezar.setIcon(new ImageIcon(frCarrera.class.getResource("/img/play.png")));
-				bEmpezar.setOpaque(false);            // Fondo Transparente (los gráficos son png transparentes)
-				bEmpezar.setContentAreaFilled(false); // No rellenar el área
-				bEmpezar.setBorderPainted(false);     // No pintar el borde
-				bEmpezar.setBorder(null);
-				
-				bMusic = new JButton("");
-				bMusic.setIcon(new ImageIcon(frCarrera.class.getResource("/img/music.png")));
-				pInferior.add(bMusic);
-				bMusic.setOpaque(false);            // Fondo Transparente (los gráficos son png transparentes)
-				bMusic.setContentAreaFilled(false); // No rellenar el área
-				bMusic.setBorderPainted(false);     // No pintar el borde
-				bMusic.setBorder(null);
+		// Creaci�n contenedores y componentes
+		pInferior = new JPanel();
+		pMenu = new JPanel();
+		pCentral = new JPanel();
+		pCentral.setBackground(Color.WHITE);
 		
-				getContentPane().add (pCentral, BorderLayout.CENTER);
-				getContentPane().add(pMenu, BorderLayout.NORTH);
-				
-				bVolver = new JButton();
-				bVolver.setIcon(new ImageIcon(frCarrera.class.getResource("/img/back.png")));
-				bVolver.setOpaque(false);            // Fondo Transparente (los gráficos son png transparentes)
-				bVolver.setContentAreaFilled(false); // No rellenar el área
-				bVolver.setBorderPainted(false);     // No pintar el borde
-				bVolver.setBorder(null);    
-				 
-				lblMapa = new JLabel();
-				lblMapa.setIcon(new ImageIcon(frCarrera.class.getResource("/img/mapa.jpeg")));
-				
-				lblMapa.setHorizontalAlignment(SwingConstants.CENTER);
-				    	
-				pCentral.add(lblMapa, BorderLayout.NORTH);
-				
-				pMenu.setLayout(new BorderLayout(0, 0));
-				pMenu.add(bVolver, BorderLayout.WEST);
-				
-				lblRealizarCarrera = new JLabel("Realizar Carrera    ");
-				lblRealizarCarrera.setHorizontalAlignment(SwingConstants.CENTER);
-				lblRealizarCarrera.setFont(new Font("Tahoma", Font.PLAIN, 17));
-				pMenu.add(lblRealizarCarrera, BorderLayout.CENTER);
-				
-				panel = new JPanel();
-				pMenu.add(panel, BorderLayout.SOUTH);
-				
-				panel_1 = new JPanel();
-				pMenu.add(panel_1, BorderLayout.NORTH);
-				
-				// Formato de ventana
-				setSize(375,667);
-				setResizable(false);
-				
-				
-				bVolver.addActionListener( new ActionListener() 
+		getContentPane().add( pInferior, BorderLayout.SOUTH );
+		pInferior.setBackground( Color.white );
+		pInferior.setLayout(new GridLayout(0, 3, 0, 0));
+		
+		bVolumen = new JButton("");
+		bVolumen.setHorizontalAlignment(SwingConstants.RIGHT);
+		bVolumen.setIcon(new ImageIcon(frCarrera.class.getResource("/img/volumenOn.png")));
+		pInferior.add(bVolumen);
+		bVolumen.setOpaque(false);            // Fondo Transparente (los gráficos son png transparentes)
+		bVolumen.setContentAreaFilled(false); // No rellenar el área
+		bVolumen.setBorderPainted(false);     // No pintar el borde
+		bVolumen.setBorder(null);
+		
+		bEmpezar = new JButton();
+		pInferior.add(bEmpezar);
+		bEmpezar.setIcon(new ImageIcon(frCarrera.class.getResource("/img/go.png")));
+		bEmpezar.setOpaque(false);            // Fondo Transparente (los gráficos son png transparentes)
+		bEmpezar.setContentAreaFilled(false); // No rellenar el área
+		bEmpezar.setBorderPainted(false);     // No pintar el borde
+		bEmpezar.setBorder(null);
+		
+		bMusic = new JButton("");
+		bMusic.setHorizontalAlignment(SwingConstants.LEFT);
+		bMusic.setIcon(new ImageIcon(frCarrera.class.getResource("/img/music.png")));
+		pInferior.add(bMusic);
+		bMusic.setOpaque(false);            // Fondo Transparente (los gráficos son png transparentes)
+		bMusic.setContentAreaFilled(false); // No rellenar el área
+		bMusic.setBorderPainted(false);     // No pintar el borde
+		bMusic.setBorder(null);
+
+		getContentPane().add (pCentral, BorderLayout.CENTER);
+		getContentPane().add(pMenu, BorderLayout.NORTH);
+		
+		bVolver = new JButton();
+		bVolver.setIcon(new ImageIcon(frCarrera.class.getResource("/img/back.png")));
+		bVolver.setOpaque(false);            // Fondo Transparente (los gráficos son png transparentes)
+		bVolver.setContentAreaFilled(false); // No rellenar el área
+		bVolver.setBorderPainted(false);     // No pintar el borde
+		bVolver.setBorder(null);    
+		pCentral.setLayout(new BorderLayout(0, 0));
+		 
+		lblMapa = new JLabel();
+		lblMapa.setIcon(new ImageIcon(frCarrera.class.getResource("/img/mapa.jpg")));
+		
+		lblMapa.setHorizontalAlignment(SwingConstants.CENTER);
+		    	
+		pCentral.add(lblMapa);
+		
+		pMenu.setLayout(new BorderLayout(0, 0));
+		pMenu.add(bVolver, BorderLayout.WEST);
+		
+		lblRealizarCarrera = new JLabel("Realizar Carrera     ");
+		lblRealizarCarrera.setHorizontalAlignment(SwingConstants.CENTER);
+		lblRealizarCarrera.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		pMenu.add(lblRealizarCarrera, BorderLayout.CENTER);
+		
+		panel = new JPanel();
+		pMenu.add(panel, BorderLayout.SOUTH);
+		
+		panel_1 = new JPanel();
+		pMenu.add(panel_1, BorderLayout.NORTH);
+		
+		// Formato de ventana
+		setSize(375,667);
+		setResizable(false);
+		
+		
+		bVolver.addActionListener( new ActionListener() 
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				frPrincipal ventana = new frPrincipal (user);
+				ventana.setVisible(true);
+				dispose();
+			}
+		});
+		bEmpezar.addActionListener( new ActionListener() 
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				if (!volumen) ficherosLista=null;
+				frCorrer ventana = new frCorrer (user,ficherosLista);
+				dispose();
+			}
+		});
+		bVolumen.addActionListener( new ActionListener() 
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				if (volumen)
+		        {
+		        	volumen = false;
+		        	bVolumen.setIcon(new ImageIcon(frCorrer.class.getResource("/img/volumenOff.png")));
+		        }
+		        else 
+		        {
+		        	volumen = true;
+		        	bVolumen.setIcon(new ImageIcon(frCorrer.class.getResource("/img/volumenOn.png")));
+		        }
+			}
+		});
+		bMusic.addActionListener( new ActionListener() 
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				File fichero = pedirCarpeta();
+				if (fichero==null) return;
+				else
 				{
-					@Override
-					public void actionPerformed(ActionEvent e) 
-					{
-						frPrincipal ventana = new frPrincipal (user);
-						ventana.setVisible(true);
-						dispose();
-					}
-				});
-				bEmpezar.addActionListener( new ActionListener() 
-				{
-					@Override
-					public void actionPerformed(ActionEvent e) 
-					{
-						if (!volumen) ficherosLista=null;
-						frCorrer ventana = new frCorrer (user,ficherosLista);
-						dispose();
-					}
-				});
-				bVolumen.addActionListener( new ActionListener() 
-				{
-					@Override
-					public void actionPerformed(ActionEvent e) 
-					{
-						if (volumen)
-				        {
-				        	volumen = false;
-				        	bVolumen.setIcon(new ImageIcon(frCorrer.class.getResource("/img/volumenOff.png")));
-				        }
-				        else 
-				        {
-				        	volumen = true;
-				        	bVolumen.setIcon(new ImageIcon(frCorrer.class.getResource("/img/volumenOn.png")));
-				        }
-					}
-				});
-				bMusic.addActionListener( new ActionListener() 
-				{
-					@Override
-					public void actionPerformed(ActionEvent e) 
-					{
-//						cancion = pedirFichero();
-						
-						File fichero = pedirCarpeta();
-						if (fichero==null) return;
-						else
-						{
-							path = fichero.getAbsolutePath();
-							ultimaCarpeta = path;					
-							procesaCarpeta(fichero);
-						}	
-					}
-				});
+					path = fichero.getAbsolutePath();
+					ultimaCarpeta = path;					
+					procesaCarpeta(fichero);
+				}	
+			}
+		});		
 	}
 	
 	private static File pedirCarpeta() 
@@ -201,20 +200,16 @@ public class frCarrera extends JFrame
 				procesaCarpeta(f);
 			}
 		} 
-		else if(fic.getAbsolutePath().endsWith(".mp3")) ficherosLista.add( fic ); 
-	}
-	
-	private File pedirFichero() 
-	{
-		File dirActual = new File( System.getProperty("user.dir") );
-		JFileChooser chooser = new JFileChooser( dirActual );
-		chooser.setFileSelectionMode( JFileChooser.FILES_ONLY );
-		chooser.setFileFilter( new FileNameExtensionFilter("MP3 File","mp3"));
-		int returnVal = chooser.showOpenDialog( null );
-		if (returnVal == JFileChooser.APPROVE_OPTION)
-			return chooser.getSelectedFile();
 		else 
-			return null;
+		{
+			String filtroFicheros = ".*\\.mp3";
+			Pattern Pfic = Pattern.compile( filtroFicheros, Pattern.CASE_INSENSITIVE );
+			if (Pfic.matcher(fic.getName()).matches() ) 
+			{
+//				fic.getAbsolutePath().endsWith(".mp3")) ficherosLista.add( fic ); 
+				ficherosLista.add(fic);
+			}
+		}
 	}
 	
 	public void add(String carpetaFicheros) 
@@ -232,21 +227,6 @@ public class frCarrera extends JFrame
 			}
 		}
 	}
-	
-//	private File pedirFicheroMP3() 
-//	{
-//		File dirActual = new File( System.getProperty("user.dir") );
-//		JFileChooser chooser = new JFileChooser( dirActual );
-//		chooser.setFileSelectionMode( JFileChooser.FILES_ONLY );
-//		chooser.setFileFilter( new FileNameExtensionFilter("mp3"));
-//		int returnVal = chooser.showOpenDialog( null );
-//		if (returnVal == JFileChooser.APPROVE_OPTION)
-//			return chooser.getSelectedFile();
-//		else 
-//			return null;
-//	}
-	
-	
 	
 	@SuppressWarnings("unused")
 	private void cargaProperties() 

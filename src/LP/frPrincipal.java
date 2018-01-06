@@ -76,7 +76,7 @@ public class frPrincipal extends JFrame
 		getContentPane().add(pMenu, BorderLayout.SOUTH);
 		
 		bEntrenar = new JButton();
-		bEntrenar.setIcon(new ImageIcon(frPrincipal.class.getResource("/img/ientrena.jpg")));
+		bEntrenar.setIcon(new ImageIcon(frPrincipal.class.getResource("/img/entrenar.jpg")));
 		bEntrenar.setHorizontalAlignment(SwingConstants.CENTER);
 		bEntrenar.setOpaque(false);            // Fondo Transparente (los gráficos son png transparentes)
 		bEntrenar.setContentAreaFilled(false); // No rellenar el área
@@ -84,7 +84,7 @@ public class frPrincipal extends JFrame
 		bEntrenar.setBorder(null);  
 		
 		bCorrer = new JButton();
-		bCorrer.setIcon(new ImageIcon(frPrincipal.class.getResource("/img/icorrer.jpg")));
+		bCorrer.setIcon(new ImageIcon(frPrincipal.class.getResource("/img/correr.jpg")));
 		bCorrer.setHorizontalAlignment(SwingConstants.CENTER);
 		bCorrer.setOpaque(false);            // Fondo Transparente (los gráficos son png transparentes)
 		bCorrer.setContentAreaFilled(false); // No rellenar el área

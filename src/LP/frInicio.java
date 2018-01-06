@@ -32,6 +32,7 @@ import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.io.File;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -219,7 +220,7 @@ public class frInicio extends JFrame
 					BD.crearTablaEntrenamiento();
 					BD.crearTablaOpcEntrenamiento();
 					BD.crearTablaUsuarios();
-					BD.meterOpciones();
+					meterOpciones();
 					
 					frInicio frame = new frInicio ();
 					frame.setVisible(true);
@@ -231,4 +232,15 @@ public class frInicio extends JFrame
 			}
 		});
 	}
+	
+	public static void meterOpciones()
+	{
+		File f = new File ("C:\\Users\\ALUMNO\\workspace\\prog3.proyecto\\videos\\Abdominales.mp4");
+		BD.registrarOpcEntrenamiento(f,"001", "Abdominales", "Principiante", 0.01,10);
+		f = new File ("C:\\Users\\ALUMNO\\workspace\\prog3.proyecto\\videos\\Cardio.mp4");
+		BD.registrarOpcEntrenamiento(f,"002", "Cardio quema grasas", "Intermedio", 0.02, 20);
+		f = new File ("C:\\Users\\ALUMNO\\workspace\\prog3.proyecto\\videos\\Kickboxing.mp4");
+		BD.registrarOpcEntrenamiento(f,"003", "Cardio Kick Boxing", "Experto", 0.03, 15);
+	} 
+	
 }

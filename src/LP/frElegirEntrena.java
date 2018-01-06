@@ -2,6 +2,7 @@ package LP;
 
 import java.awt.BorderLayout;
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -11,7 +12,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JTable;
 
-import COMUN.clsOpcEntrenamientoRepetida;
 import LD.BD;
 import LN.clsOpcEntrenamiento;
 import LN.clsUsuario;
@@ -19,6 +19,7 @@ import LN.clsUsuario;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.ListSelectionModel;
@@ -37,12 +38,15 @@ import javax.swing.JTextField;
 import java.awt.GridLayout;
 
 import javax.swing.JComboBox;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.border.EmptyBorder;
 
 public class frElegirEntrena extends JFrame 
 {
 	private static final long serialVersionUID = 1L;
 	
-	private JPanel pTabla,pSuperior,pInferior,pDatos,pTexto,pNombre,pNivel,pCalorias,pFichero,pDuracion,panel,panel_1,panel_2,panel_3;
+	private JPanel pTabla,pSuperior,pInferior,pDatos,pTexto,pNombre,pNivel,pCalorias,pFichero,pDuracion,panel,panel_1;
 	private JSplitPane spCentral;
 	private JLabel lblElegirEntrenamiento,lblAadirMiEntrenamiento,lblNombre,lblNivel,lblCaloras,lblFicheroMultimedia,lblMin;
 	private JButton btnEmpezar,bFichero,btnAñadir,bVolver;
@@ -103,7 +107,8 @@ public class frElegirEntrena extends JFrame
 				row[0]=lista.get(i).getCodigo();
 				row[1]=lista.get(i).getNombre();
 				row[2]=lista.get(i).getNivel();
-				row[3]=lista.get(i).getCalxsec();
+				DecimalFormat df = new DecimalFormat("#.##");
+				row[3]= df.format(lista.get(i).getCalxsec()*60);
 				row[4]=lista.get(i).getDuracion();
 				model.addRow(row);
 			}	
@@ -148,19 +153,35 @@ public class frElegirEntrena extends JFrame
 		pDatos = new JPanel();
 		pDatos.setBackground(Color.WHITE);
 		pInferior.add(pDatos, BorderLayout.CENTER);
-		pDatos.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		pNombre = new JPanel();
-		pDatos.add(pNombre);
 		pNombre.setBackground(Color.WHITE);
 		lblNombre = new JLabel("Nombre:");
-		pNombre.add(lblNombre);
 		txtNombre = new JTextField();
-		pNombre.add(txtNombre);
 		txtNombre.setColumns(20);
+		pDatos.setLayout(new GridLayout(0, 1, 0, 0));
+		pDatos.add(pNombre);
+		GroupLayout gl_pNombre = new GroupLayout(pNombre);
+		gl_pNombre.setHorizontalGroup(
+			gl_pNombre.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pNombre.createSequentialGroup()
+					.addGap(77)
+					.addComponent(lblNombre)
+					.addGap(5)
+					.addComponent(txtNombre, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+		);
+		gl_pNombre.setVerticalGroup(
+			gl_pNombre.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pNombre.createSequentialGroup()
+					.addGap(8)
+					.addComponent(lblNombre))
+				.addGroup(gl_pNombre.createSequentialGroup()
+					.addGap(5)
+					.addComponent(txtNombre, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+		);
+		pNombre.setLayout(gl_pNombre);
 		
 		pCalorias = new JPanel();
-		pDatos.add(pCalorias);
 		pCalorias.setBackground(Color.WHITE);
 		lblCaloras = new JLabel("Calor\u00EDas (cal/min) :");
 		pCalorias.add(lblCaloras);
@@ -168,6 +189,7 @@ public class frElegirEntrena extends JFrame
 		txtCal = new JTextField();
 		pCalorias.add(txtCal);
 		txtCal.setColumns(10);
+		pDatos.add(pCalorias);
 		
 		pDuracion = new JPanel();
 		pDatos.add(pDuracion);
@@ -200,8 +222,17 @@ public class frElegirEntrena extends JFrame
 		
 		bFichero = new JButton("+");
 		pFichero.add(bFichero);
+		bFichero.addActionListener( new ActionListener() 
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				fichero = pedirFicheroVPD();
+			}
+		});
 		
 		pTexto = new JPanel();
+		pTexto.setBorder(new EmptyBorder(5, 5, 5, 5));
 		pTexto.setBackground(Color.WHITE);
 		pInferior.add(pTexto, BorderLayout.NORTH);
 		pTexto.setLayout(new BorderLayout(0, 0));
@@ -209,14 +240,6 @@ public class frElegirEntrena extends JFrame
 		lblAadirMiEntrenamiento.setHorizontalAlignment(SwingConstants.LEFT);
 		lblAadirMiEntrenamiento.setFont(new Font("Tahoma", Font.BOLD, 12));
 		pTexto.add(lblAadirMiEntrenamiento);
-		
-		panel_2 = new JPanel();
-		panel_2.setBackground(Color.WHITE);
-		pTexto.add(panel_2, BorderLayout.SOUTH);
-		
-		panel_3 = new JPanel();
-		panel_3.setBackground(Color.WHITE);
-		pTexto.add(panel_3, BorderLayout.NORTH);
 		
 		btnAñadir = new JButton ("Añadir");
 		pInferior.add(btnAñadir, BorderLayout.SOUTH);
@@ -233,13 +256,20 @@ public class frElegirEntrena extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-				int row = table.getSelectedRow();
-				String codigo = (String) table.getValueAt(row, 0);
-				clsOpcEntrenamiento entrena = BD.getEntrena(codigo);
-				
-				frEntrena ventana = new frEntrena (entrena, user);
-				ventana.setVisible(true);
-				dispose();
+				try
+				{
+					int row = table.getSelectedRow();
+					String codigo = (String) table.getValueAt(row, 0);
+					clsOpcEntrenamiento entrena = BD.getEntrena(codigo);
+					
+					frEntrena ventana = new frEntrena (entrena, user);
+					ventana.setVisible(true);
+					dispose();
+				}
+				catch (NullPointerException a)
+				{
+					
+				}
 			}
 		});
 		bVolver.addActionListener( new ActionListener() 
@@ -259,49 +289,34 @@ public class frElegirEntrena extends JFrame
 			{
 				Random rn = new Random();
 				
-				try
+				if (fichero!=null)
 				{
-					if (fichero!=null)
-					{
-						String codigo=rn.nextInt(999)+"";	
-						double calxsec = Double.parseDouble(txtCal.getText())/60;
-						String nivel = String.valueOf(cmbNivel.getSelectedItem());
-						int duracion = Integer.parseInt(txtMin.getText());
+					String codigo=rn.nextInt(999)+"";	
+					double calxsec = Double.parseDouble(txtCal.getText())/60;
+					String nivel = String.valueOf(cmbNivel.getSelectedItem());
+					int duracion = Integer.parseInt(txtMin.getText());
+					
+					BD.registrarOpcEntrenamiento(fichero,codigo,txtNombre.getText(),nivel,calxsec,duracion);
+					
+					lista = BD.getLista();
+					
+					int i = lista.size();
+					row[0]=lista.get(i-1).getNombre();
+					row[1]=lista.get(i-1).getNivel();
+					row[2]=lista.get(i-1).getCalxsec();
+					row[3]=lista.get(i-1).getDuracion();
+					model.addRow(row);
+					table.repaint();
 						
-						BD.registrarOpcEntrenamiento(fichero,codigo,txtNombre.getText(),nivel,calxsec,duracion);
-							
-						lista = BD.getLista();
-						
-						int i = lista.size();
-						row[0]=lista.get(i-1).getNombre();
-						row[1]=lista.get(i-1).getNivel();
-						row[2]=lista.get(i-1).getCalxsec();
-						row[3]=lista.get(i-1).getDuracion();
-						model.addRow(row);
-						table.repaint();
-						
-						txtMin.setText("");
-						txtNombre.setText("");
-						txtCal.setText("");
-						fichero=null;
-					}
-					else
-					{
-						System.out.println("Error al cargar el fichero");
-					}
-				}	
-				catch (clsOpcEntrenamientoRepetida a)
-				{
-					btnAñadir.setSelected(true);
+					txtMin.setText("");
+					txtNombre.setText("");
+					txtCal.setText("");
+					fichero=null;
 				}
-			}
-		});
-		bFichero.addActionListener( new ActionListener() 
-		{
-			@Override
-			public void actionPerformed(ActionEvent e) 
-			{
-				fichero = pedirFicheroVPD();
+				else
+				{
+					Error();
+				}
 			}
 		});
 	}
@@ -310,12 +325,20 @@ public class frElegirEntrena extends JFrame
 		File dirActual = new File( System.getProperty("user.dir") );
 		JFileChooser chooser = new JFileChooser( dirActual );
 		chooser.setFileSelectionMode( JFileChooser.FILES_ONLY );
-		chooser.setFileFilter( new FileNameExtensionFilter("vpd","wmv"));
+		chooser.setFileFilter( new FileNameExtensionFilter("vpd","wmv","mp4"));
 		int returnVal = chooser.showOpenDialog( null );
 		if (returnVal == JFileChooser.APPROVE_OPTION)
 			return chooser.getSelectedFile();
 		else 
 			return null;
+	}
+	protected void Error()
+	{
+		JOptionPane.showMessageDialog(this, "Error al cargar el fichero");
+	}
+	protected void ErrorSeleccion()
+	{
+		JOptionPane.showMessageDialog(this, "Error. Selecciona algún entrenamiento");
 	}
 }
 

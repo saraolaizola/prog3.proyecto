@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import COMUN.clsOpcEntrenamientoRepetida;
+import COMUN.clsSinActividad;
 import COMUN.clsUsuarioRepetido;
 import LN.clsCarrera;
 import LN.clsEntrenamiento;
@@ -144,13 +144,13 @@ public class BD
 	
 	/**
 	 * Guarda los datos del usuario en la tabla Usuarios
+	 * @param usuario
+	 * @param contraseña
 	 * @param nombre
 	 * @param apellido
 	 * @param peso
 	 * @param altura
 	 * @param sexo
-	 * @param usuario 
-	 * @param contraseña
 	 * @throws ClassNotFoundException
 	 * @throws clsUsuarioRepetido
 	 */
@@ -168,6 +168,13 @@ public class BD
 	}
 	 
 
+	/**
+	 * Actualiza los atributos del usuario (nombre y apellido)
+	 * usando como identificativo el nombre de usuario
+	 * @param usuario
+	 * @param nombre
+	 * @param apellido
+	 */
 	public static void editarUsuario (String usuario, String nombre, String apellido)
 	{
 		try
@@ -185,7 +192,7 @@ public class BD
 	  * @param usuario
 	  * @param contraseña
 	  * @return true si es correcto, false si no coinciden
-	  * @throws ClassNotFoundException ?¿
+	  * @throws ClassNotFoundException 
 	  */
 	public static boolean inicioSesion (String usuario, String contraseña) throws ClassNotFoundException
 	{
@@ -212,6 +219,12 @@ public class BD
 		return false;
 	}
 	 
+	/**
+	 * Método que devuelve el objeto usuario con todos sus atributos
+	 * identificandolo mediante el nombre de usuario
+	 * @param usuario
+	 * @return el objeto usuario
+	 */
 	public static clsUsuario getUser (String usuario)
 	{
 		clsUsuario user = new clsUsuario();
@@ -240,6 +253,12 @@ public class BD
 		return user;
 	}
 	
+	/**
+	 * Método para conseguir una opción de entrenamiento con todos sus atributos
+	 * identificandolo meidante su código 
+	 * @param codigo
+	 * @return el objeto entrenamiento
+	 */
 	public static clsOpcEntrenamiento getEntrena (String codigo)
 	{
 		clsOpcEntrenamiento entrena = new clsOpcEntrenamiento();
@@ -268,6 +287,12 @@ public class BD
 		return entrena;
 	}
 	
+	/**
+	 * Método para conseguir un de entrenamiento con todos sus atributos
+	 * identificandolo meidante la fecha
+	 * @param fecha
+	 * @return el objeto entrenamiento
+	 */
 	public static clsEntrenamiento getEntrenamiento (String fecha)
 	{
 		clsEntrenamiento entrena = new clsEntrenamiento();
@@ -282,8 +307,7 @@ public class BD
 					entrena.setCodigo(rs.getString("codigo"));
 					entrena.setFecha(rs.getString("fecha"));
 					entrena.setDuracion(rs.getString("duracion"));
-					entrena.setCalorias(rs.getDouble("calorias"));
-					
+					entrena.setCalorias(rs.getDouble("calorias"));		
 		       	}
 			}
 		}	 
@@ -294,6 +318,12 @@ public class BD
 		return entrena;
 	}
 	
+	/**
+	 * Método para conseguir una carrera con todos sus atributos
+	 * identificandolo meidante su fecha 
+	 * @param fecha
+	 * @return el objeto carrera
+	 */
 	public static clsCarrera getCarrera (String fecha)
 	{
 		clsCarrera carrera = new clsCarrera();
@@ -363,8 +393,16 @@ public class BD
 		} 
 	}
 	
-	
-	public static void registrarOpcEntrenamiento (File file, String codigo, String nombre, String nivel, double calxsec, int duracion) throws clsOpcEntrenamientoRepetida
+	/**
+	 * Guarda los datos de la opción de entrenamiento en la tabla OpcionEntrenamiento
+	 * @param file
+	 * @param codigo
+	 * @param nombre
+	 * @param nivel
+	 * @param calxsec
+	 * @param duracion
+	 */
+	public static void registrarOpcEntrenamiento (File file, String codigo, String nombre, String nivel, double calxsec, int duracion) 
 	{
 		try
 		{	
@@ -373,28 +411,14 @@ public class BD
 		catch(SQLException e)
 		{
 			logger.log(Level.WARNING, e.getMessage());
-			throw new clsOpcEntrenamientoRepetida();
 		} 
 	}
 	
-	public static void meterOpciones()
-	{
-		try 
-		{
-			File f = new File ("C:\\Users\\ALUMNO\\workspace\\prog3.proyecto\\videos\\Wildlife.wmv");
-			BD.registrarOpcEntrenamiento(f,"001", "Abdominales", "Principiante", 0.01,10);
-			//https://www.youtube.com/watch?v=1919eTCoESo&list=PL6070A835F843D79F
-			BD.registrarOpcEntrenamiento(f,"002", "Cardio quema grasas", "Intermedio", 0.02, 20);
-			//https://www.youtube.com/watch?v=fcN37TxBE_s
-			BD.registrarOpcEntrenamiento(f,"003", "Cardio Kick Boxing", "Experto", 0.03, 15);
-			//https://www.youtube.com/watch?v=Vve4BVTZ0QU
-		} 
-		catch (clsOpcEntrenamientoRepetida e){
-		}
-		
-	}
-	
-	
+	/**
+	 * Método para obtener todas las opciones de entrenamiento registradas en la 
+	 * base de datos OpcionEntrenamiento mediante una lista de objetos clsOpcEntrenamiento
+	 * @return ArrayList de todas las opciones de entrenamiento registradas
+	 */
 	public static ArrayList <clsOpcEntrenamiento> getLista ()
 	{
 		lista = new ArrayList<clsOpcEntrenamiento>();
@@ -421,7 +445,14 @@ public class BD
 		return lista;
 	}
 	
-	public static ArrayList <clsCarrera> getMisCarreras(String usuario)
+	/**
+	 * Método para obtener todas lascarreras registradas en la 
+	 * base de datos Carreras mediante una lista de objetos clsCarrera
+	 * @param usuario
+	 * @return ArrayList de objetos carrera
+	 * @throws clsSinActividad
+	 */
+	public static ArrayList <clsCarrera> getMisCarreras (String usuario) throws clsSinActividad
 	{
 		listaCarreras = new ArrayList<clsCarrera>();
 		try
@@ -438,6 +469,7 @@ public class BD
 				clsCarrera carrera = new clsCarrera(fecha, duracion, calorias, km, ritmo);
 				listaCarreras.add(carrera);
 			}
+			if (listaCarreras.size()<1) throw new clsSinActividad();
 		}	 
 		catch(SQLException e)
 		{
@@ -446,7 +478,14 @@ public class BD
 		return listaCarreras;
 	}
 	
-	public static ArrayList <clsEntrenamiento> getMisEntrenamientos(String usuario)
+	/**
+	 * Método para obtener todos los entrenamientos registrados en la 
+	 * base de datos Entrenamiento mediante una lista de objetos clsEntrenamiento
+	 * @param usuario
+	 * @return ArrayList de entrenamientos
+	 * @throws clsSinActividad
+	 */
+	public static ArrayList <clsEntrenamiento> getMisEntrenamientos(String usuario) throws clsSinActividad 
 	{
 		ArrayList <clsEntrenamiento> listaEntrenas = new ArrayList<clsEntrenamiento>();
 		try
@@ -462,6 +501,8 @@ public class BD
 				entrena.setCalorias(rs.getDouble("calorias"));
 				listaEntrenas.add(entrena);
 			}
+			
+			if (listaEntrenas.size()<1) throw new clsSinActividad();
 		}	 
 		catch(SQLException e)
 		{

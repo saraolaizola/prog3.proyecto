@@ -1,9 +1,11 @@
 package LN;
 
-import java.sql.Date;
-
-import LD.BD;
-
+/**
+ * Clase hija para guardar la información de los entrenamietos
+ * Tendrá el siguiente atributos (además de los del padre): código
+ * @author ALUMNO
+ *
+ */
 public class clsEntrenamiento extends clsActividad
 {
 
@@ -15,9 +17,7 @@ public class clsEntrenamiento extends clsActividad
 		this.codigo = codigo;
 	}
 	
-	public clsEntrenamiento()
-	{
-		
+	public clsEntrenamiento(){
 	}
 
 	public String getCodigo() {

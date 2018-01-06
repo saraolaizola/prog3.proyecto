@@ -1,7 +1,11 @@
 package LN;
 
-import java.sql.Date;
-
+/**
+ * Clase hija para guardar la información de las carreras 
+ * Tendrá los siguientes atributos (además de los del padre): km y ritmo 
+ * @author ALUMNO
+ *
+ */
 public class clsCarrera extends clsActividad
 {
 	private double km;
@@ -14,9 +18,7 @@ public class clsCarrera extends clsActividad
 		this.ritmo = ritmo;
 	}
 	
-	public clsCarrera()
-	{
-		
+	public clsCarrera(){
 	}
 	
 	public double getKm() {

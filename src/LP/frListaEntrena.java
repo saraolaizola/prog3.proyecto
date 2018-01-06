@@ -2,18 +2,16 @@ package LP;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
@@ -22,53 +20,57 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import COMUN.clsSinActividad;
 import LD.BD;
-import LN.clsCarrera;
 import LN.clsEntrenamiento;
 import LN.clsUsuario;
+
 import java.awt.Font;
+
 import javax.swing.SwingConstants;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.factories.FormFactory;
-import java.awt.FlowLayout;
 
-public class frListaEntrena extends JFrame {
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
+import java.awt.SystemColor;
+
+public class frListaEntrena extends JFrame 
+{
 	private static final long serialVersionUID = 1L;
 	
-	private JPanel pPrincipal,pTabla,pSuperior,pDatos;
-	private JButton btnMasInfo,bVolver;
+	private JPanel pPrincipal,pTabla,pSuperior,pDibujo;
+	private JSplitPane spDatos;
+	private JButton btnVer,bVolver;
 	private JTable table;
 
-	private ArrayList<clsEntrenamiento>lista;
-	private clsUsuario usuario;
-	private JLabel lblEntrenamientos;
-	private JLabel lblNument;
-	private JLabel lblNumTime;
-	private JLabel lblDuracion;
-	private JLabel lblEntrenamientos_1;
-	private JPanel panel;
-	private JPanel panel_1;
-	private JLabel label_1;
+	private ArrayList<clsEntrenamiento> lista = new ArrayList<clsEntrenamiento>();
+	
+	private ChartPanel dibujo;
+	private JLabel lblEntrenas;
 
 	/**
 	 * Create the frame.
+	 * @throws clsSinActividad 
 	 */
-	public frListaEntrena(clsUsuario user) 
+	public frListaEntrena(clsUsuario user) throws clsSinActividad 
 	{
 		setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
 		
 		pPrincipal = new JPanel();
 		pPrincipal.setBackground(Color.WHITE);
 		
+		pTabla = new JPanel();
+		pTabla.setBackground(Color.WHITE);
+		
+		spDatos = new JSplitPane( JSplitPane.VERTICAL_SPLIT );
+		spDatos.setBackground(Color.WHITE);
+		
 		getContentPane().add( pPrincipal, BorderLayout.CENTER );
-	
-		usuario = user;
+		pPrincipal.setLayout(new BorderLayout(0, 0));
 		
 		String[] columnNames = {"Fecha","Duración"};
 		DefaultTableModel model = new DefaultTableModel(columnNames,0)
@@ -81,6 +83,14 @@ public class frListaEntrena extends JFrame {
 		};
 		DefaultTableCellRenderer RendererCentro = new DefaultTableCellRenderer();
 		RendererCentro.setHorizontalAlignment(JLabel.CENTER);
+		
+		pPrincipal.add(spDatos, BorderLayout.CENTER);
+		pTabla.setLayout(new BorderLayout(0, 0));
+		
+		table = new JTable(model);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		pTabla.add(new JScrollPane(table));
 		
 		lista = BD.getMisEntrenamientos(user.getUsuario());
 		
@@ -95,10 +105,18 @@ public class frListaEntrena extends JFrame {
 				row[0]=lista.get(i).getFecha();
 				
 				String minutos = lista.get(i).getDuracion().split("\\.")[0];
-				String segundos = lista.get(i).getDuracion().split("\\.")[1];
 				int min = Integer.parseInt(minutos);
-				int seg = Integer.parseInt(segundos);
-				totalMin=totalMin+min;
+				String segundos;
+				int seg;
+				try
+				{
+					segundos = lista.get(i).getDuracion().split("\\.")[1];
+					seg = Integer.parseInt(segundos);
+				}
+				catch(NullPointerException e){
+					seg=0;
+				}
+				totalMin=totalMin+min+(seg/60);
 				
 				if (min<10) minutos = "0"+min;
 				else minutos = ""+min;
@@ -111,86 +129,25 @@ public class frListaEntrena extends JFrame {
 		}
 		catch (NullPointerException e){
 		}
-		pPrincipal.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
-		pDatos = new JPanel();
-		pPrincipal.add(pDatos);
-		pDatos.setBackground(Color.BLACK);
-		GridBagLayout gbl_pDatos = new GridBagLayout();
-		gbl_pDatos.columnWidths = new int[]{367, 0};
-		gbl_pDatos.rowHeights = new int[]{0, 65, 13, 24, 13, 0, 0, 0, 0};
-		gbl_pDatos.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gbl_pDatos.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		pDatos.setLayout(gbl_pDatos);
-		
-		label_1 = new JLabel("    ");
-		GridBagConstraints gbc_label_1 = new GridBagConstraints();
-		gbc_label_1.insets = new Insets(0, 0, 5, 0);
-		gbc_label_1.gridx = 0;
-		gbc_label_1.gridy = 0;
-		pDatos.add(label_1, gbc_label_1);
-		
-		lblNument = new JLabel(lista.size()+"");
-		lblNument.setForeground(Color.WHITE);
-		lblNument.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNument.setFont(new Font("Arial", Font.BOLD, 65));
-		GridBagConstraints gbc_lblNument = new GridBagConstraints();
-		gbc_lblNument.anchor = GridBagConstraints.SOUTH;
-		gbc_lblNument.fill = GridBagConstraints.HORIZONTAL;
-		gbc_lblNument.insets = new Insets(0, 0, 5, 0);
-		gbc_lblNument.gridx = 0;
-		gbc_lblNument.gridy = 1;
-		pDatos.add(lblNument, gbc_lblNument);
-		
-		lblEntrenamientos = new JLabel("Entrenamientos totales");
-		lblEntrenamientos.setForeground(Color.WHITE);
-		lblEntrenamientos.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEntrenamientos.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		GridBagConstraints gbc_lblEntrenamientos = new GridBagConstraints();
-		gbc_lblEntrenamientos.fill = GridBagConstraints.BOTH;
-		gbc_lblEntrenamientos.insets = new Insets(0, 0, 5, 0);
-		gbc_lblEntrenamientos.gridx = 0;
-		gbc_lblEntrenamientos.gridy = 2;
-		pDatos.add(lblEntrenamientos, gbc_lblEntrenamientos);
-		
-		lblNumTime = new JLabel(totalMin+"");
-		lblNumTime.setForeground(Color.WHITE);
-		lblNumTime.setFont(new Font("Arial", Font.BOLD, 20));
-		GridBagConstraints gbc_lblNumTime = new GridBagConstraints();
-		gbc_lblNumTime.fill = GridBagConstraints.VERTICAL;
-		gbc_lblNumTime.insets = new Insets(0, 0, 5, 0);
-		gbc_lblNumTime.gridx = 0;
-		gbc_lblNumTime.gridy = 4;
-		pDatos.add(lblNumTime, gbc_lblNumTime);
-		
-		lblDuracion = new JLabel("Minutos totales");
-		lblDuracion.setForeground(Color.WHITE);
-		lblDuracion.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		GridBagConstraints gbc_lblDuracion = new GridBagConstraints();
-		gbc_lblDuracion.insets = new Insets(0, 0, 5, 0);
-		gbc_lblDuracion.fill = GridBagConstraints.VERTICAL;
-		gbc_lblDuracion.gridx = 0;
-		gbc_lblDuracion.gridy = 5;
-		pDatos.add(lblDuracion, gbc_lblDuracion);
-		
-		pTabla = new JPanel();
-		pPrincipal.add(pTabla);
-		pTabla.setBackground(Color.WHITE);
-		pTabla.setLayout(new BorderLayout(0, 0));
-		
-		table = new JTable(model);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
-		pTabla.add(new JScrollPane(table));
 		
 		table.getColumnModel().getColumn(0).setCellRenderer(RendererCentro);
 		table.getColumnModel().getColumn(1).setCellRenderer(RendererCentro);
 		
-		btnMasInfo = new JButton("Más información");
-		pTabla.add(btnMasInfo, BorderLayout.SOUTH);
+		btnVer = new JButton("Más información");
+		pTabla.add(btnVer, BorderLayout.SOUTH);
+
+		pDibujo = new JPanel();
+		pDibujo.setBackground(Color.WHITE);
+		pDibujo.setLayout(new BorderLayout(0, 0));
+		dibujo = pintar();
+		pDibujo.add(dibujo,BorderLayout.CENTER);
+		
+		spDatos.setTopComponent(pDibujo);
+		spDatos.setBottomComponent(pTabla);
 		
 		pSuperior = new JPanel();
-		pSuperior.setBackground(Color.WHITE);
+		pSuperior.setBorder(new EmptyBorder(6, 2, 6, 0));
+		pSuperior.setBackground(SystemColor.menu);
 		getContentPane().add(pSuperior, BorderLayout.NORTH);
 		pSuperior.setLayout(new BorderLayout(0, 0));
 		
@@ -198,25 +155,20 @@ public class frListaEntrena extends JFrame {
 		bVolver.setIcon(new ImageIcon(frCarrera.class.getResource("/img/back.png")));
 		bVolver.setOpaque(false);            
 		bVolver.setContentAreaFilled(false);
-		bVolver.setBorderPainted(false);     // No pintar el borde
+		bVolver.setBorderPainted(false);     
 		bVolver.setBorder(null); 
 		pSuperior.add(bVolver, BorderLayout.WEST);
 		
-		lblEntrenamientos_1 = new JLabel("Entrenamientos         ");
-		lblEntrenamientos_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEntrenamientos_1.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		pSuperior.add(lblEntrenamientos_1, BorderLayout.CENTER);
+		lblEntrenas = new JLabel("Entrenamientos       ");
+		lblEntrenas.setHorizontalAlignment(SwingConstants.CENTER);
+		lblEntrenas.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		pSuperior.add(lblEntrenas, BorderLayout.CENTER);
 		
-		panel = new JPanel();
-		panel.setBackground(Color.WHITE);
-		pSuperior.add(panel, BorderLayout.NORTH);
-		
-		panel_1 = new JPanel();
-		panel_1.setBackground(Color.WHITE);
-		pSuperior.add(panel_1, BorderLayout.SOUTH);
+		spDatos.setResizeWeight(.5d);
 		
 		setSize(375,667);
 		setResizable(false);
+		
 		bVolver.addActionListener( new ActionListener() 
 		{
 			@Override
@@ -227,20 +179,59 @@ public class frListaEntrena extends JFrame {
 				dispose();
 			}
 		});
-		//Intentar que al clicar ya diriga a detalle carrera sin el botón más información
-		btnMasInfo.addActionListener( new ActionListener() 
+		btnVer.addActionListener( new ActionListener() 
 		{
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-				int row = table.getSelectedRow();
-				String fecha = (String) table.getValueAt(row, 0);
-				clsEntrenamiento entrena = BD.getEntrenamiento(fecha);
-						
-				frDetalleEntrena ventana = new frDetalleEntrena (user, entrena);
-				ventana.setVisible(true);
-				dispose();
-		}
+				try
+				{
+					int row = table.getSelectedRow();
+					String fecha = (String) table.getValueAt(row, 0);
+					clsEntrenamiento entrena = BD.getEntrenamiento(fecha);
+							
+					frDetalleEntrena ventana = new frDetalleEntrena (user, entrena);
+					ventana.setVisible(true);
+					dispose();
+				}
+				catch (ArrayIndexOutOfBoundsException a)
+				{
+					Error();
+				}
+			}
 		});
+	}
+	public ChartPanel pintar()
+	{
+		XYSeries series = new XYSeries("Duración");
+		for (int i=0; i<lista.size(); i++)
+		{
+			int min,seg;
+			
+			String minutos = lista.get(i).getDuracion().split("\\.")[0];
+			min = Integer.parseInt(minutos);
+			try
+			{
+				String segundos = lista.get(i).getDuracion().split("\\.")[1];
+				seg = Integer.parseInt(segundos);
+			}
+			catch(NullPointerException e){
+				seg=0;
+			}
+			double duracion = min + (seg/60);
+			series.add(i+1, duracion);
+		}
+				
+		XYSeriesCollection dataset = new XYSeriesCollection();
+		dataset.addSeries(series);
+		        
+		JFreeChart chart = ChartFactory.createXYLineChart("","Nºcarrera","Min",  dataset, PlotOrientation.VERTICAL, true, false,false);       		
+		
+		ChartPanel dibujo = new ChartPanel(chart);
+		return dibujo;
+	}
+	protected void Error()
+	{
+		JOptionPane.showMessageDialog(this,"Error. Selecciona un registro de carrera");
 	}
 }

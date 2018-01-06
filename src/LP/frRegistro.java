@@ -4,21 +4,18 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerListModel;
-import javax.swing.SwingConstants;
 
 import COMUN.clsUsuarioRepetido;
 import LD.BD;
@@ -30,7 +27,7 @@ public class frRegistro extends JFrame
 {
 	private static final long serialVersionUID = 1L;
 
-	private JPanel pPrincipal, pSuperior, pVolver;
+	private JPanel pPrincipal, pSuperior;
 	private JPanel pCentral;
 	private JPanel pInferior;
 	
@@ -56,8 +53,6 @@ public class frRegistro extends JFrame
 		pCentral = new JPanel();
 		pInferior = new JPanel();
 		pSuperior= new JPanel();
-		
-		// Formato y layouts
 		
 		// Añadido de componentes a contenedores
 		getContentPane().add( pPrincipal );
@@ -104,11 +99,6 @@ public class frRegistro extends JFrame
 		comboSexo = new JComboBox();
 		comboSexo.addItem("Femenino");
 		comboSexo.addItem("Masculino");
-		
-		
-//		lblPeso = new JLabel ("Peso:");
-//		lblAltura = new JLabel ("Altura:");
-//		lblSexo = new JLabel ("Contraseña:");
 		
 		pCentral.add(lblUsuario);
 		pCentral.add(txtUsuario);
@@ -162,17 +152,11 @@ public class frRegistro extends JFrame
 				} 
 				catch (clsUsuarioRepetido a)
 				{
-					logger.log( Level.SEVERE, a.getMessage());
-					
-				} 
-				catch (ClassNotFoundException b) 
-				{
-					logger.log( Level.SEVERE, "Class Nout Found Exception" );
+					errorUsuario(a);
 				}
-				catch (NullPointerException c)
+				catch (Exception b)
 				{
-					logger.log( Level.SEVERE, "Null Pointer Exception" );
-					
+					error(b);
 				}
 			}
 		});
@@ -186,8 +170,15 @@ public class frRegistro extends JFrame
 				dispose();
 			}
 		});
-		
-		
-		
+	}
+	
+	protected void errorUsuario(clsUsuarioRepetido a)
+	{
+		JOptionPane.showMessageDialog(this, a.getMessage());
+	}
+	
+	protected void error(Exception b)
+	{
+		JOptionPane.showMessageDialog(this, b.getStackTrace());
 	}
 }
