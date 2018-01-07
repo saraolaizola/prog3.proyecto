@@ -40,9 +40,7 @@ public class clsReproductor implements Runnable
 				i++;
 			}
 		} 
-		catch (FileNotFoundException | JavaLayerException | NullPointerException e) 
-		{
-			e.printStackTrace();
+		catch (FileNotFoundException | JavaLayerException | NullPointerException e) {	
 		}
 	}
 	

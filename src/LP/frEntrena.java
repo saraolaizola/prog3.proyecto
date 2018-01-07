@@ -145,6 +145,7 @@ public class frEntrena extends JFrame implements Runnable
 		
 		btnFin.addActionListener( new ActionListener() 
 		{
+			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
@@ -182,6 +183,7 @@ public class frEntrena extends JFrame implements Runnable
 		});
 		btnPause.addActionListener( new ActionListener() 
 		{
+			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{

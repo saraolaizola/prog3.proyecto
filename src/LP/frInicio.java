@@ -3,16 +3,11 @@ package LP;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.logging.Logger;
 
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,13 +20,6 @@ import javax.swing.SwingConstants;
 import LD.BD;
 import LN.clsUsuario;
 
-import javax.swing.UIManager;
-
-import java.awt.SystemColor;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.io.File;
 
 import javax.swing.GroupLayout;
@@ -40,6 +28,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class frInicio extends JFrame
 {
+	private static final long serialVersionUID = 1L;
+	
 	JPanel pPrincipal;
 	JLabel foto,lblInicia,lblUsuario,lblContrasenya,lblError;
 	JButton bIniciar,bRegistrar;

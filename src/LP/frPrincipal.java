@@ -2,22 +2,15 @@ package LP;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 
 import LN.clsUsuario;
@@ -25,8 +18,6 @@ import LN.clsUsuario;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.SystemColor;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * Pantalla principal de la applicación. 
@@ -37,6 +28,8 @@ import java.io.IOException;
  */
 public class frPrincipal extends JFrame 
 {
+	private static final long serialVersionUID = 1L;
+	
 	JPanel pPrincipal, pMenu;
 	JButton bRegistro,bActividad,bPerfil, bEmpezar, bCorrer, bEntrenar;
 	private JPanel pSuperior;

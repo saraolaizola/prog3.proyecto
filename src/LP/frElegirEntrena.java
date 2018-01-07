@@ -52,7 +52,7 @@ public class frElegirEntrena extends JFrame
 	private JButton btnEmpezar,bFichero,btnAñadir,bVolver;
 	private JTable table;
 	private JTextField txtNombre,txtCal,txtMin;
-	private JComboBox cmbNivel;
+	private JComboBox<String> cmbNivel;
 	private File fichero;
 	private ArrayList <clsOpcEntrenamiento> lista;
 	
@@ -208,7 +208,7 @@ public class frElegirEntrena extends JFrame
 		lblNivel = new JLabel("Nivel:");
 		pNivel.add(lblNivel);
 		
-		cmbNivel = new JComboBox();
+		cmbNivel = new JComboBox<String>();
 		cmbNivel.addItem("Principiante");
 		cmbNivel.addItem("Intermedio");
 		cmbNivel.addItem("Experto");

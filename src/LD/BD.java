@@ -373,7 +373,24 @@ public class BD
 	}
 	
 	/**
-	 * Guarda los datos del entrenamiento en la tabla Entrenamiento
+	 * Elimina el statement identificado con la fecha de la tabla carrera
+	 * @param fecha
+	 */
+	public static void borrarCarrera (String fecha)
+	{
+		try
+		{	
+			statement.executeUpdate("delete from carrera where fecha = '"+fecha+"';");
+		}	 
+		catch(SQLException e)
+		{
+			logger.log(Level.WARNING, e.getMessage());
+		} 
+	}
+	
+	
+	/**
+	 * Guarda los datos del entrenamiento en la tabla entrenamiento
 	 * @param fecha
 	 * @param duracion
 	 * @param calorias
@@ -386,6 +403,22 @@ public class BD
 		try
 		{	
 			statement.executeUpdate("insert into entrenamiento values("+fecha+", "+duracion+", "+calorias+", '"+codigo+"', '"+usuario+"')");
+		}	 
+		catch(SQLException e)
+		{
+			logger.log(Level.WARNING, e.getMessage());
+		} 
+	}
+	
+	/**
+	 * Elimina el statement identificado con la fecha de la tabla entrenamiento 
+	 * @param fecha
+	 */
+	public static void borrarEntrena (String fecha)
+	{
+		try
+		{	
+			statement.executeUpdate("delete from entrenamiento where fecha = '"+fecha+"';");
 		}	 
 		catch(SQLException e)
 		{
@@ -509,5 +542,24 @@ public class BD
 			logger.log(Level.WARNING, e.getMessage());
 		}
 		return listaEntrenas;
+	}
+	
+	/**
+	 * Método para eliminar todas las tablas de la base de datos
+	 */
+	public static void Borrar()
+	{
+		try
+		{
+			statement = connection.createStatement();
+			statement.executeQuery("drop table if exists usuarios");
+			statement.executeQuery("drop table if exists carrera");
+			statement.executeQuery("drop table if exists entrenamiento");
+			statement.executeQuery("drop table if exists opcionentrenamiento");
+		}	 
+		catch(SQLException e)
+		{
+			logger.log(Level.WARNING, e.getMessage());
+		}
 	}
 }

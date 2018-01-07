@@ -44,17 +44,19 @@ public class frListaCarrera extends JFrame
 {
 	private static final long serialVersionUID = 1L;
 	
-	private JPanel pPrincipal,pTabla,pSuperior,pDibujo,pBotones;
+	private JPanel pPrincipal,pTabla,pSuperior,pDibujo,pBotones, pTexto,pText;
 	private JSplitPane spDatos;
+	private JLabel lblCarreras,lblNewLabel,lblTuHistorialDe;
 	private JButton btnVer,bVolver;
 	private JTable table;
 
 	private ArrayList<clsCarrera>lista;
 	
 	private ChartPanel dibujo;
+	private JFreeChart chart;
 	private ButtonGroup BG;
 	private JRadioButton rdbtnDistancia, rdbtnRitmo,rdbtnDuracion, rdbtnCalorias;
-	private JLabel lblCarreras;
+	
 
 	/**
 	 * Create the frame.
@@ -98,14 +100,15 @@ public class frListaCarrera extends JFrame
 		table = new JTable(model);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
-		pTabla.add(new JScrollPane(table));
+		JScrollPane scrollPane = new JScrollPane(table);
+		pTabla.add(scrollPane);
 		
 		lista = BD.getMisCarreras(user.getUsuario());
 		
 		Object [] row = new Object [2];
 		try
 		{
-			for (int i=0;i<lista.size();i++)
+			for (int i=lista.size()-1;i>-1;i--)
 			{
 				row[0]=lista.get(i).getFecha();
 				
@@ -118,7 +121,7 @@ public class frListaCarrera extends JFrame
 					segundos = lista.get(i).getDuracion().split("\\.")[1];
 					seg = Integer.parseInt(segundos);
 				}
-				catch(NullPointerException e){
+				catch(ArrayIndexOutOfBoundsException e){
 					seg=0;
 				}
 				if (min<10) minutos = "0"+min;
@@ -150,6 +153,15 @@ public class frListaCarrera extends JFrame
 		rdbtnCalorias = new JRadioButton("Calor\u00EDas");
 		
 		rdbtnDistancia.setSelected(true);
+		
+		pTexto = new JPanel();
+		pTexto.setBackground(Color.WHITE);
+		pTexto.setBorder(new EmptyBorder(5, 5, 5, 5));
+		pDibujo.add(pTexto, BorderLayout.NORTH);
+		pTexto.setLayout(new BorderLayout(0, 0));
+		
+		lblTuHistorialDe = new JLabel("Tu historial de carreras:");
+		pTexto.add(lblTuHistorialDe, BorderLayout.NORTH);
 		dibujo = pintarKm();
 		pDibujo.add(dibujo,BorderLayout.CENTER);
 		
@@ -166,6 +178,16 @@ public class frListaCarrera extends JFrame
 		
 		spDatos.setTopComponent(pDibujo);
 		spDatos.setBottomComponent(pTabla);
+		
+		pText = new JPanel();
+		pText.setBackground(Color.WHITE);
+		pText.setBorder(new EmptyBorder(5, 5, 5, 5));
+		pTabla.add(pText, BorderLayout.NORTH);
+		pText.setLayout(new BorderLayout(0, 0));
+		
+		lblNewLabel = new JLabel("Detalles de cada carrera:");
+		pText.add(lblNewLabel);
+		lblNewLabel.setBackground(Color.WHITE);
 		
 		pSuperior = new JPanel();
 		pSuperior.setBorder(new EmptyBorder(6, 2, 6, 0));
@@ -191,7 +213,6 @@ public class frListaCarrera extends JFrame
 		setSize(375,667);
 		setResizable(false);
 		
-		//Intentar que al clicar ya diriga a detalle carrera sin el botón más información
 		btnVer.addActionListener( new ActionListener() 
 		{
 			@Override
@@ -224,45 +245,50 @@ public class frListaCarrera extends JFrame
 				dispose();
 			}
 		});
-		rdbtnDuracion.addActionListener(new ActionListener()
+		ActionListener listener = new ActionListener() 
 		{
-		  public void actionPerformed(ActionEvent e)
-		  {
-			 //PROBLEMA: no se redibuja
-			  dibujo=pintarMin();
-			  dibujo.repaint();
-			  pDibujo.repaint();
-		  }
-		});
-		rdbtnDistancia.addActionListener(new ActionListener()
-		{
-		  public void actionPerformed(ActionEvent e)
-		  {
-			  dibujo=pintarKm();
-			  dibujo.repaint();
-			  pDibujo.repaint();
-		  }
-		});
-		rdbtnCalorias.addActionListener(new ActionListener()
-		{
-		  public void actionPerformed(ActionEvent e)
-		  {
-			  dibujo=pintarCal();
-			  dibujo.repaint();
-			  pDibujo.repaint();
-		  }
-		});
-		
-		rdbtnRitmo.addActionListener(new ActionListener()
-		{
-		  public void actionPerformed(ActionEvent e)
-		  {
-			  dibujo=pintarRitmo();
-			  dibujo.repaint();
-			  pDibujo.repaint();
-		  }
-		});
+	        @Override
+	        public void actionPerformed(ActionEvent e) 
+	        {
+	            JRadioButton btn = (JRadioButton) e.getSource();
+	            
+	            JPanel viejoDibujo = dibujo;
+	            
+	            switch (btn.getText())
+	            {
+	            	case "Distancia (km)":
+	            		dibujo=pintarKm();
+	            		break;
+	            		
+	            	case "Ritmo":
+	            		dibujo = pintarRitmo();
+	            		break;
+	            		
+	            	case "Duraci\u00F3n (min)":
+	            		dibujo=pintarMin();
+	            		break;
+	            		
+	            	case "Calor\u00EDas":
+	            		dibujo=pintarCal();
+	            		break;
+	            }
+	            
+	            if (viejoDibujo != null) 
+        		{
+        			pDibujo.remove(viejoDibujo);
+        		}
+	            pDibujo.add(dibujo,BorderLayout.CENTER);
+        		pDibujo.revalidate();
+        		pDibujo.repaint();
+	        }
+	    };
+	    
+	    rdbtnDuracion.addActionListener(listener);
+		rdbtnDistancia.addActionListener(listener);
+		rdbtnRitmo.addActionListener(listener);
+		rdbtnCalorias.addActionListener(listener);
 	}
+	
 	public ChartPanel pintarKm()
 	{
 		XYSeries series = new XYSeries("Distancia");
@@ -274,9 +300,9 @@ public class frListaCarrera extends JFrame
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		dataset.addSeries(series);
 		        
-		JFreeChart chart = ChartFactory.createXYLineChart("","Nºcarrera","Km",  dataset, PlotOrientation.VERTICAL, true, false,false);       		
+		chart = ChartFactory.createXYLineChart("Distancia","Nºcarrera","Km",  dataset, PlotOrientation.VERTICAL, true, false,false);       		
+		dibujo = new ChartPanel(chart);
 		
-		ChartPanel dibujo = new ChartPanel(chart);
 		return dibujo;
 	}
 	public ChartPanel pintarMin()
@@ -293,7 +319,7 @@ public class frListaCarrera extends JFrame
 				segundos = lista.get(i).getDuracion().split("\\.")[1];
 				seg = Integer.parseInt(segundos);
 			}
-			catch(NullPointerException e){
+			catch(ArrayIndexOutOfBoundsException e){
 				seg=0;
 			}
 			double duracion = min + (seg/60);
@@ -303,9 +329,9 @@ public class frListaCarrera extends JFrame
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		dataset.addSeries(series);
 		        
-		JFreeChart chart = ChartFactory.createXYLineChart("","Nºcarrera","Min",  dataset, PlotOrientation.VERTICAL, true, false,false);       		
+		chart = ChartFactory.createXYLineChart("Duración","Nºcarrera","Min",  dataset, PlotOrientation.VERTICAL, true, false,false);       		
+		dibujo = new ChartPanel(chart);
 		
-		ChartPanel dibujo = new ChartPanel(chart);
 		return dibujo;
 	}
 	public ChartPanel pintarCal()
@@ -319,9 +345,9 @@ public class frListaCarrera extends JFrame
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		dataset.addSeries(series);
 		        
-		JFreeChart chart = ChartFactory.createXYLineChart("","Nºcarrera","Cal",  dataset, PlotOrientation.VERTICAL, true, false,false);       		
+		chart = ChartFactory.createXYLineChart("Calorías","Nºcarrera","Cal",  dataset, PlotOrientation.VERTICAL, true, false,false);       		
+		dibujo = new ChartPanel(chart);
 		
-		ChartPanel dibujo = new ChartPanel(chart);
 		return dibujo;
 	}
 	public ChartPanel pintarRitmo()
@@ -338,7 +364,7 @@ public class frListaCarrera extends JFrame
 				segundos = lista.get(i).getRitmo().split("\\.")[1];
 				seg = Integer.parseInt(segundos);
 			}
-			catch(NullPointerException e){
+			catch(ArrayIndexOutOfBoundsException e){
 				seg=0;
 			}
 			double ritmo = min + (seg/60);
@@ -348,9 +374,9 @@ public class frListaCarrera extends JFrame
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		dataset.addSeries(series);
 		        
-		JFreeChart chart = ChartFactory.createXYLineChart("","Nºcarrera","Min/Km",  dataset, PlotOrientation.VERTICAL, true, false,false);       		
+		chart = ChartFactory.createXYLineChart("Ritmo","Nºcarrera","Min/Km",  dataset, PlotOrientation.VERTICAL, true, false,false);       		
+		dibujo = new ChartPanel(chart);
 		
-		ChartPanel dibujo = new ChartPanel(chart);
 		return dibujo;
 	}
 	

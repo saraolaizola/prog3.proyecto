@@ -2,27 +2,22 @@ package LP;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import LD.BD;
 import LN.clsUsuario;
 
-import java.awt.FlowLayout;
 import java.awt.Font;
 
 import javax.swing.SwingConstants;
@@ -30,22 +25,19 @@ import javax.swing.SwingConstants;
 import java.awt.SystemColor;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
 
 public class frPerfil extends JFrame 
 {
-	private JButton bRegistro, bActividad, bPerfil, bCerrarSesion;
-	private JPanel pPrincipal, pCentral, pMenu;
-	private JLabel foto,lblUsuario;
-	private JLabel foto_1;
-	private JTextField txtNombre, txtApellido;
-	private Logger logger = Logger.getLogger(this.getClass().getName());
-	private JLabel lblPerfil;
-	private JPanel pDatos, pFoto;
+	private static final long serialVersionUID = 1L;
 	
+	private JButton bRegistro, bActividad, bPerfil, bCerrarSesion;
+	private JPanel pPrincipal, pCentral, pMenu, pDatos, pFoto,panel, panel_1,panel_2;
+	private JLabel lblUsuario,lblPerfil,foto;
+	private JTextField txtNombre, txtApellido;
 	private clsUsuario usuario;
-	private JPanel panel, panel_1,panel_2;
+	
+	private Logger logger = Logger.getLogger(this.getClass().getName());
 	
 	public frPerfil(clsUsuario user) 
 	{
@@ -99,8 +91,6 @@ public class frPerfil extends JFrame
 		bPerfil.setHorizontalTextPosition(SwingConstants.CENTER);
 		bPerfil.setBorderPainted(false); 
 		
-		foto = new JLabel();
-		
 		pMenu.add( bRegistro );
 		pMenu.add( bActividad );
 		pMenu.add( bPerfil );
@@ -113,11 +103,11 @@ public class frPerfil extends JFrame
 		pCentral.add(pFoto, BorderLayout.NORTH);
 		pFoto.setLayout(new BorderLayout(0, 0));
 		
-		foto_1 = new JLabel("");
-		pFoto.add(foto_1, BorderLayout.CENTER);
-		foto_1.setHorizontalAlignment(SwingConstants.CENTER);
-		foto_1.setFont(new Font("Tahoma", Font.PLAIN, 35));
-		foto_1.setIcon(new ImageIcon(frPerfil.class.getResource("/img/user.png")));
+		foto = new JLabel("");
+		pFoto.add(foto, BorderLayout.CENTER);
+		foto.setHorizontalAlignment(SwingConstants.CENTER);
+		foto.setFont(new Font("Tahoma", Font.PLAIN, 35));
+		foto.setIcon(new ImageIcon(frPerfil.class.getResource("/img/user.png")));
 			
 		lblUsuario = new JLabel(user.getUsuario());
 		pFoto.add(lblUsuario, BorderLayout.SOUTH);

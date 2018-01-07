@@ -2,7 +2,6 @@ package LP;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.text.DecimalFormat;
 
@@ -12,7 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
 
 import COMUN.clsSinActividad;
 import LD.BD;
@@ -21,12 +19,11 @@ import LN.clsOpcEntrenamiento;
 import LN.clsUsuario;
 
 import java.awt.GridLayout;
-import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.SystemColor;
+
+import javax.swing.border.EmptyBorder;
 
 public class frDetalleEntrena extends JFrame 
 {
@@ -34,11 +31,12 @@ public class frDetalleEntrena extends JFrame
 	private static final long serialVersionUID = 1L;
 	
 	private JPanel pPrincipal, pSuperior, pDatos;
-	private String codigo, fecha, duracion, calorias, nombre, nivel;
-	private JLabel lblFecha, lblDuracion, lblCalorias, lblNombre, lblNivel,lblEntrenamiento,label_2,label_3;
+	private String codigo, duracion, calorias, nivel;
+	private JLabel lblFecha, lblDuracion, lblCalorias, lblNombre, lblNivel,lblEntrenamiento;
 	private JPanel pNombre,pOtros,pDuracion,pCentral;
 	private JButton bVolver;
 	private JPanel panel;
+	private JButton bBorrar;
 
 	public frDetalleEntrena(clsUsuario user, clsEntrenamiento entrenamiento) 
 	{
@@ -50,10 +48,6 @@ public class frDetalleEntrena extends JFrame
 		pPrincipal.setLayout(new BorderLayout(0, 0));
 		setContentPane(pPrincipal);
 		
-		//DATOS
-		
-		fecha = entrenamiento.getFecha();
-		
 		String minutos = entrenamiento.getDuracion().split("\\.")[0];
 		int min = Integer.parseInt(minutos);
 		String segundos;
@@ -63,7 +57,7 @@ public class frDetalleEntrena extends JFrame
 			segundos = entrenamiento.getDuracion().split("\\.")[1];
 			seg = Integer.parseInt(segundos);
 		}
-		catch(NullPointerException e){
+		catch(ArrayIndexOutOfBoundsException e){
 			seg=0;
 		}
 		if (min<10) minutos = "0"+min;
@@ -79,8 +73,7 @@ public class frDetalleEntrena extends JFrame
 		
 		codigo = entrenamiento.getCodigo();
 		clsOpcEntrenamiento opcEntrena = BD.getEntrena(codigo);
-		
-		nombre = "Entrenamiento '"+opcEntrena.getNombre()+"'";
+
 		nivel = opcEntrena.getNivel();
 		
 		//COMPONENTES
@@ -158,31 +151,32 @@ public class frDetalleEntrena extends JFrame
 		lblNivel.setVerticalAlignment(SwingConstants.TOP);
 		
 		pSuperior = new JPanel();
+		pSuperior.setBorder(new EmptyBorder(5, 5, 5, 5));
 		pSuperior.setBackground(SystemColor.menu);
 		pPrincipal.add(pSuperior, BorderLayout.NORTH);
 		pSuperior.setLayout(new BorderLayout(0, 0));
 		
 		bVolver = new JButton();
 		bVolver.setIcon(new ImageIcon(frCarrera.class.getResource("/img/back.png")));
-		bVolver.setOpaque(false);            // Fondo Transparente (los gráficos son png transparentes)
-		bVolver.setContentAreaFilled(false); // No rellenar el área
-		bVolver.setBorderPainted(false);     // No pintar el borde
+		bVolver.setOpaque(false);            
+		bVolver.setContentAreaFilled(false); 
+		bVolver.setBorderPainted(false);     
 		bVolver.setBorder(null);    
 		pSuperior.add(bVolver, BorderLayout.WEST);
 		
-		lblFecha = new JLabel(entrenamiento.getFecha()+"  ");
+		lblFecha = new JLabel(entrenamiento.getFecha());
 		lblFecha.setHorizontalAlignment(SwingConstants.CENTER);
 		pSuperior.add(lblFecha, BorderLayout.CENTER);
 		lblFecha.setForeground(Color.BLACK);
 		lblFecha.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		
-		label_2 = new JLabel(" ");
-		label_2.setFont(new Font("Tahoma", Font.PLAIN, 5));
-		pSuperior.add(label_2, BorderLayout.SOUTH);
-		
-		label_3 = new JLabel("  ");
-		label_3.setFont(new Font("Tahoma", Font.PLAIN, 5));
-		pSuperior.add(label_3, BorderLayout.NORTH);
+		bBorrar = new JButton("");
+		bBorrar.setIcon(new ImageIcon(frDetalleEntrena.class.getResource("/img/basura.png")));
+		bBorrar.setOpaque(false);            
+		bBorrar.setContentAreaFilled(false);
+		bBorrar.setBorderPainted(false);     
+		bBorrar.setBorder(null);
+		pSuperior.add(bBorrar, BorderLayout.EAST);
 		
 		setSize(375,667);
 		setResizable(false);
@@ -202,6 +196,23 @@ public class frDetalleEntrena extends JFrame
 				catch (clsSinActividad e1){
 				}
 				
+			}
+		});
+		bBorrar.addActionListener( new ActionListener() 
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				frListaEntrena ventana;
+				try
+				{
+					BD.borrarEntrena(entrenamiento.getFecha());
+					ventana = new frListaEntrena (user);
+					ventana.setVisible(true);
+					dispose();
+				}
+				catch (clsSinActividad a){
+				}
 			}
 		});
 	}

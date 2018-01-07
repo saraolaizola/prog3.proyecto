@@ -33,7 +33,7 @@ public class frRegistro extends JFrame
 	
 	private JButton bAceptar, bVolver;
 	private JLabel lblPeso, lblAltura, lblSexo, lblContrasenya, lblNombre, lblApellido, lblUsuario;
-	private JComboBox  comboSexo;
+	private JComboBox<String>  comboSexo;
 	private JSpinner spinPeso, spinAltura;
 	private JTextField txtUsuario, txtNombre, txtContrasenya, txtApellido;  
 	private SpinnerListModel slm1, slm2;
@@ -96,7 +96,7 @@ public class frRegistro extends JFrame
 		spinAltura.setValue("170");
 		
 		lblSexo = new JLabel ("Sexo:");
-		comboSexo = new JComboBox();
+		comboSexo = new JComboBox<String>();
 		comboSexo.addItem("Femenino");
 		comboSexo.addItem("Masculino");
 		
@@ -180,5 +180,13 @@ public class frRegistro extends JFrame
 	protected void error(Exception b)
 	{
 		JOptionPane.showMessageDialog(this, b.getStackTrace());
+	}
+
+	public Logger getLogger() {
+		return logger;
+	}
+
+	public void setLogger(Logger logger) {
+		this.logger = logger;
 	}
 }

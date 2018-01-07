@@ -51,6 +51,10 @@ public class frListaEntrena extends JFrame
 	
 	private ChartPanel dibujo;
 	private JLabel lblEntrenas;
+	private JPanel pTexto;
+	private JLabel lblTuHistorialDe;
+	private JPanel panel;
+	private JLabel lblDetalles;
 
 	/**
 	 * Create the frame.
@@ -87,6 +91,16 @@ public class frListaEntrena extends JFrame
 		pPrincipal.add(spDatos, BorderLayout.CENTER);
 		pTabla.setLayout(new BorderLayout(0, 0));
 		
+		panel = new JPanel();
+		panel.setBackground(Color.WHITE);
+		panel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		pTabla.add(panel, BorderLayout.NORTH);
+		panel.setLayout(new BorderLayout(0, 0));
+		
+		lblDetalles = new JLabel("Detalles de cada entrenamiento:");
+		lblDetalles.setBackground(Color.WHITE);
+		panel.add(lblDetalles);
+		
 		table = new JTable(model);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
@@ -100,7 +114,7 @@ public class frListaEntrena extends JFrame
 		
 		try
 		{
-			for (int i=0;i<lista.size();i++)
+			for (int i=lista.size()-1;i>-1;i--)
 			{
 				row[0]=lista.get(i).getFecha();
 				
@@ -113,7 +127,7 @@ public class frListaEntrena extends JFrame
 					segundos = lista.get(i).getDuracion().split("\\.")[1];
 					seg = Integer.parseInt(segundos);
 				}
-				catch(NullPointerException e){
+				catch(ArrayIndexOutOfBoundsException e){
 					seg=0;
 				}
 				totalMin=totalMin+min+(seg/60);
@@ -139,6 +153,16 @@ public class frListaEntrena extends JFrame
 		pDibujo = new JPanel();
 		pDibujo.setBackground(Color.WHITE);
 		pDibujo.setLayout(new BorderLayout(0, 0));
+		
+		pTexto = new JPanel();
+		pTexto.setBorder(new EmptyBorder(5, 5, 5, 5));
+		pTexto.setBackground(Color.WHITE);
+		pDibujo.add(pTexto, BorderLayout.NORTH);
+		pTexto.setLayout(new BorderLayout(0, 0));
+		
+		lblTuHistorialDe = new JLabel("Tu historial de entrenamientos:");
+		lblTuHistorialDe.setBackground(Color.WHITE);
+		pTexto.add(lblTuHistorialDe);
 		dibujo = pintar();
 		pDibujo.add(dibujo,BorderLayout.CENTER);
 		
@@ -215,7 +239,7 @@ public class frListaEntrena extends JFrame
 				String segundos = lista.get(i).getDuracion().split("\\.")[1];
 				seg = Integer.parseInt(segundos);
 			}
-			catch(NullPointerException e){
+			catch(ArrayIndexOutOfBoundsException e){
 				seg=0;
 			}
 			double duracion = min + (seg/60);
@@ -225,13 +249,13 @@ public class frListaEntrena extends JFrame
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		dataset.addSeries(series);
 		        
-		JFreeChart chart = ChartFactory.createXYLineChart("","Nºcarrera","Min",  dataset, PlotOrientation.VERTICAL, true, false,false);       		
+		JFreeChart chart = ChartFactory.createXYLineChart("Duración","Nºcarrera","Min",  dataset, PlotOrientation.VERTICAL, true, false,false);       		
 		
 		ChartPanel dibujo = new ChartPanel(chart);
 		return dibujo;
 	}
 	protected void Error()
 	{
-		JOptionPane.showMessageDialog(this,"Error. Selecciona un registro de carrera");
+		JOptionPane.showMessageDialog(this,"Error. Selecciona un registro de entrenamiento");
 	}
 }

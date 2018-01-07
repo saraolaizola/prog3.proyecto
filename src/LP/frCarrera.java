@@ -2,7 +2,6 @@ package LP;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,23 +10,18 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import LN.clsUsuario;
 
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.FlowLayout;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Properties;
-import java.util.logging.Level;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -38,12 +32,13 @@ public class frCarrera extends JFrame
 	private JPanel pInferior, pMenu, pCentral,panel,panel_1;
 	private JButton bVolver, bEmpezar,bMusic,bVolumen;
 	private JLabel lblMapa, lblRealizarCarrera;
-	private File fichero, cancion;
-	private boolean volumen=true;
-	private static String path, ficheros;
-	private static String ultimaCarpeta = null;
+	
 	private Properties misProperties;
+	private static String ultimaCarpeta = null;
+	
+	private static String path;
 	ArrayList<File> ficherosLista= new ArrayList<File>();
+	private boolean volumen=true;
 	
 	public frCarrera(clsUsuario user)
 	{
@@ -52,13 +47,14 @@ public class frCarrera extends JFrame
 				
 		// Creación contenedores y componentes
 		pInferior = new JPanel();
-		pMenu = new JPanel();
-		pCentral = new JPanel();
-		pCentral.setBackground(Color.WHITE);
-		
-		getContentPane().add( pInferior, BorderLayout.SOUTH );
 		pInferior.setBackground( Color.white );
 		pInferior.setLayout(new GridLayout(0, 3, 0, 0));
+		getContentPane().add( pInferior, BorderLayout.SOUTH );
+		
+		pMenu = new JPanel();
+		
+		pCentral = new JPanel();
+		pCentral.setBackground(Color.WHITE);
 		
 		bVolumen = new JButton("");
 		bVolumen.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -140,6 +136,7 @@ public class frCarrera extends JFrame
 			{
 				if (!volumen) ficherosLista=null;
 				frCorrer ventana = new frCorrer (user,ficherosLista);
+				ventana.setVisible(true);
 				dispose();
 			}
 		});

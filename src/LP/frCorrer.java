@@ -44,9 +44,6 @@ public class frCorrer extends JFrame implements Runnable
 	boolean cronometroActivo, cronometroPlay;
 	
 	private ArrayList<File>lista;
-//	private int cancionEnCurso=0;
-//	EmbeddedMediaPlayerComponent mediaPlayerComponent;
-//	EmbeddedMediaPlayer mediaPlayer;
 	public static String path;
 	File cancion;
 	private JPanel pDatos;
@@ -185,18 +182,6 @@ public class frCorrer extends JFrame implements Runnable
 					.addContainerGap(62, Short.MAX_VALUE))
 		);
 		pInferior.setLayout(gl_pInferior);
-		
-//		reproductor = new clsReproductor(lista);		
-		
-//		Player apl;
-//		try {
-//			apl = new Player(new FileInputStream(list.get(0).getAbsolutePath()));
-//			apl.play();
-//		} catch (FileNotFoundException | JavaLayerException e2) {
-//			// TODO Auto-generated catch block
-//			e2.printStackTrace();
-//		}
-		
 
 		setSize(375,667);
 		setResizable(false);
@@ -215,6 +200,7 @@ public class frCorrer extends JFrame implements Runnable
 		
 		btnPause.addActionListener( new ActionListener() 
 		{
+			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
@@ -237,6 +223,7 @@ public class frCorrer extends JFrame implements Runnable
 		});
 		btnFin.addActionListener( new ActionListener() 
 		{
+			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
